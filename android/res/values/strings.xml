@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">RealFitness</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="placeholder">DEFAULT</string>
+    <string name="addFifteen">Add 15 secs</string>
+    <string name="continueWithWorkout">Continue</string>
+    <string name="done">Done</string>
+    <string name="edit">Edit done reps</string>
+
+</resources>
