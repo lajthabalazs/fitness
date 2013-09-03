@@ -1,4 +1,4 @@
-package hu.droidium.fitness_app;
+package hu.droidium.fitness_app.model;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,10 +11,15 @@ public class SimpleSharedPrefsWorkoutProgress extends WorkoutProgress {
 	private static final String STATE_SUFFIX = "_done";
 	private static final String SEPARATOR = " ";
 	private SharedPreferences prefs;
+	
+	private Context context;
+	private long eventId;
 
 
-	public SimpleSharedPrefsWorkoutProgress(long eventId, Workout workout, Context context){
-		super(eventId, workout, context);
+	public SimpleSharedPrefsWorkoutProgress(long eventId, Context context){
+		super();
+		this.eventId = eventId;
+		this.context = context;
 		prefs = context.getSharedPreferences(WORKOUT_PROGRESS_STORAGE, Context.MODE_PRIVATE);
 	}
 	

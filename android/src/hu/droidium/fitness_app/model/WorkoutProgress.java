@@ -1,22 +1,13 @@
-package hu.droidium.fitness_app;
+package hu.droidium.fitness_app.model;
 
 import java.util.List;
 
-import android.content.Context;
-
 public abstract class WorkoutProgress {
 	
-	protected Context context;
-	protected long eventId;
-	protected Workout workout;
-	
-	public WorkoutProgress(long eventId, Workout workout, Context context){
-		this.eventId = eventId;
-		this.workout = workout;
-		this.context = context;
+	public WorkoutProgress(){
 	}
 	
-	public boolean exerciseDone(int blockIndex, int exerciseIndex, int reps, int durationSecs, long date) {
+	public boolean exerciseDone(int blockIndex, int exerciseIndex, int reps, long durationSecs, Workout workout, long date) {
 		if (isDone()) {
 			throw new IllegalArgumentException("Workout already finished.");
 		}
@@ -26,9 +17,9 @@ public abstract class WorkoutProgress {
 		}		
 		// Saves reps to temporary storage
 		saveReps(blockIndex, exerciseIndex, reps);
-		List<List<Exercise>> exercises = workout.getExercises();
-		if (exerciseIndex == exercises.get(blockIndex).size() - 1) {
-			if (blockIndex == exercises.size() - 1) {
+		List<Block> blocks = workout.getBlocks();
+		if (exerciseIndex == blocks.get(blockIndex).getExercises().size() - 1) {
+			if (blockIndex == blocks.size() - 1) {
 				done();
 				return true;
 			} else {

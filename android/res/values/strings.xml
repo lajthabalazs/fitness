@@ -9,5 +9,8 @@
     <string name="continueWithWorkout">Continue</string>
     <string name="done">Done</string>
     <string name="edit">Edit done reps</string>
+    <string name="workoutCompleted">Well done, you completed this workout!</string>
+    <string name="secs">s</string>
+    <string name="redoWorkout">Redo workout</string>
 
 </resources>

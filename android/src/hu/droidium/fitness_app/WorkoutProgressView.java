@@ -1,5 +1,9 @@
 package hu.droidium.fitness_app;
 
+import hu.droidium.fitness_app.model.Block;
+import hu.droidium.fitness_app.model.Exercise;
+import hu.droidium.fitness_app.model.Workout;
+
 import java.util.List;
 
 import android.content.Context;
@@ -21,13 +25,14 @@ public class WorkoutProgressView extends View {
 
 	//private Paint bgPaint = new Paint();
 	private Paint actualPaint = new Paint();
+	private Paint nextPaint = new Paint();
 	private Paint donePaint = new Paint();
 	private Paint remainingPaint = new Paint();
 	private int actualBlock;
 	private int actualExercise;
 	private boolean inExercise;
 	{
-		//bgPaint.setColor(Color.BLUE);
+		nextPaint.setColor(Color.BLUE);
 		actualPaint.setColor(Color.RED);
 		donePaint.setColor(Color.GRAY);
 		remainingPaint.setColor(Color.LTGRAY);
@@ -54,12 +59,14 @@ public class WorkoutProgressView extends View {
 		this.actualBlock = blockIndex;
 		this.actualExercise = excerciseIndex;
 		this.inExercise = true;
+		invalidate();
 	}
 
 	public void setActiveBreak(int blockIndex, int excerciseIndex) {
 		this.actualBlock = blockIndex;
 		this.actualExercise = excerciseIndex;
 		this.inExercise = false;
+		invalidate();
 	}
 
 	@Override
@@ -74,12 +81,12 @@ public class WorkoutProgressView extends View {
 			float unit = this.width / total;
 			int maxRep = workout.getMaxRep();
 			float offset = x;
-			List<List<Exercise>> blocks = workout.getExercises();
+			List<Block> blocks = workout.getBlocks();
 			for (int i = 0; i < blocks.size(); i++) {
 				if (i != 0) {
 					offset += unit * BLOCK_BREAK_WIDTH;
 				}
-				List<Exercise> exercises = blocks.get(i);
+				List<Exercise> exercises = blocks.get(i).getExercises();
 				for (int j = 0; j < exercises.size(); j++) {
 					if (j != 0) {
 						offset += unit * EXERCISE_BREAK_WIDTH;
@@ -94,16 +101,15 @@ public class WorkoutProgressView extends View {
 							if (inExercise) {
 								paint = actualPaint;
 							} else {
-								paint = donePaint;
+								paint = nextPaint;
 							}
 						}
 					}
-					canvas.drawRect(offset, y + height - (height * exercises.get(j).reps) / maxRep, offset + unit, y + height, paint);
+					canvas.drawRect(offset, y + height - (height * exercises.get(j).getReps()) / maxRep, offset + unit, y + height, paint);
 					offset += unit;
 				}
 			}
 		}
-
 	}
 
 	@Override
@@ -114,5 +120,12 @@ public class WorkoutProgressView extends View {
 		this.height = h - (getPaddingTop() + getPaddingBottom());
 		this.x = getPaddingLeft();
 		this.y = getPaddingTop();
+	}
+
+	public void done() {
+		this.actualBlock = workout.getNumberOfBlocks() - 1;
+		this.actualExercise = workout.getBlocks().get(actualBlock).getExercises().size() - 1;
+		this.inExercise = false;
+		invalidate();
 	}
 }

@@ -24,16 +24,19 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f08000a;
+        public static final int action_settings=0x7f08000d;
         public static final int addFifteen=0x7f080003;
         public static final int breakDuration=0x7f080002;
         public static final int breakLayout=0x7f080001;
         public static final int continueWorkout=0x7f080004;
         public static final int editExercise=0x7f080008;
+        public static final int endOfExerciseLayout=0x7f08000a;
         public static final int exerciseDone=0x7f080009;
         public static final int exerciseLabel=0x7f080006;
         public static final int exerciseLayout=0x7f080005;
         public static final int reps=0x7f080007;
+        public static final int restartWorkout=0x7f08000c;
+        public static final int wellDoneText=0x7f08000b;
         public static final int workoutProgress=0x7f080000;
     }
     public static final class layout {
@@ -52,6 +55,9 @@ public final class R {
         public static final int edit=0x7f050007;
         public static final int hello_world=0x7f050002;
         public static final int placeholder=0x7f050003;
+        public static final int redoWorkout=0x7f05000a;
+        public static final int secs=0x7f050009;
+        public static final int workoutCompleted=0x7f050008;
     }
     public static final class style {
         /** 
