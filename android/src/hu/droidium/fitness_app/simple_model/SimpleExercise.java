@@ -1,13 +1,16 @@
-package hu.droidium.fitness_app.model;
+package hu.droidium.fitness_app.simple_model;
+
+import hu.droidium.fitness_app.model.Exercise;
+import hu.droidium.fitness_app.model.ExerciseType;
 
 public class SimpleExercise implements Exercise{
 
-	private int type;
+	private ExerciseType type;
 	private int reps;
 	private int targetSecs;
 	private int breakSecs;
 
-	public SimpleExercise(int type, int reps, int targetSecs, int breakSecs) {
+	public SimpleExercise(ExerciseType type, int reps, int targetSecs, int breakSecs) {
 		this.type = type;
 		this.reps = reps;
 		this.targetSecs = targetSecs;
@@ -15,7 +18,7 @@ public class SimpleExercise implements Exercise{
 	}
 	
 	@Override
-	public int getType() {
+	public ExerciseType getType() {
 		return type;
 	}
 

@@ -12,5 +12,6 @@
     <string name="workoutCompleted">Well done, you completed this workout!</string>
     <string name="secs">s</string>
     <string name="redoWorkout">Redo workout</string>
+    <string name="startNewProgram">Start a new program</string>
 
 </resources>

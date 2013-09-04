@@ -15,34 +15,40 @@ public class ORMWorkout extends hu.droidium.fitness_app.model.Workout{
 	
 	@DatabaseField(id=true)
 	private long id;
-	
 	@DatabaseField
 	private String name;
-	
-	@ForeignCollectionField
+	@DatabaseField
+	private int day; // The day of the program the workout is scheduled to
+	@ForeignCollectionField(orderColumnName="order")
 	private ForeignCollection<ORMBlock> blocks;
 
 	public long getId() {
 		return id;
 	}
 
-
 	public void setId(long id) {
 		this.id = id;
 	}
+	public int getDay() {
+		return day;
+	}
+
+	public void setDay(int day) {
+		this.day = day;
+	}
+
 
 
 	public String getName() {
 		return name;
 	}
 
-
 	public void setName(String name) {
 		this.name = name;
 	}
 
-
-	public void setBlocks(List<ORMBlock> blocks) {
+	public void setBlocks(ForeignCollection<ORMBlock> blocks) {
+		this.blocks = blocks;
 	}
 
 	@Override

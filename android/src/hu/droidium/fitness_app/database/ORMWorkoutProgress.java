@@ -9,21 +9,18 @@ import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class ORMWorkoutProgress extends hu.droidium.fitness_app.model.WorkoutProgress {
+public class ORMWorkoutProgress {
 	
 	@DatabaseField(id=true)
 	private long id;
-	
 	@DatabaseField
 	private int actualBlock;
-
 	@DatabaseField
 	private int actualExercise;
-	
 	@ForeignCollectionField
 	private ForeignCollection<ORMExerciseProgress> doneExercises;
-	
-	/* ************************ OrmLite helper methods *************************** */
+	@DatabaseField(defaultValue="-1")
+	private long finishDate;
 	
 	public long getId() {
 		return id;
@@ -49,35 +46,24 @@ public class ORMWorkoutProgress extends hu.droidium.fitness_app.model.WorkoutPro
 		return exerciseProgresses;
 	}
 
-	public void setDoneExercises(List<ORMExerciseProgress> doneExercises) {
-		// TOOD
+	public void setDoneExercises(ForeignCollection<ORMExerciseProgress> doneExercises) {
+		this.doneExercises = doneExercises;
 	}
 
 	public void setActualExercise(int actualExercise) {
 		this.actualExercise = actualExercise;
 	}
 	
-	@Override
-	protected void actualExerciseChanged(int blockIndex, int exerciseIndex) {
-		setActualBlock(blockIndex);
-		setActualExercise(exerciseIndex);
+	public int getActualExercise(){
+		return actualExercise;
+	}
+	
+	public long getFinishDate() {
+		return finishDate;
 	}
 
-	@Override
-	protected void saveReps(int blockIndex, int exerciseIndex, int reps) {
+	public void setFinishDate(long finishDate) {
+		this.finishDate = finishDate;
 	}
 
-	@Override
-	protected void done() {
-	}
-
-	@Override
-	public boolean isDone() {
-		return false;
-	}
-
-	@Override
-	public int[] getActualExercise() {
-		return null;
-	}
 }

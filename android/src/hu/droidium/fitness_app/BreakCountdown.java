@@ -1,10 +1,13 @@
 package hu.droidium.fitness_app;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class BreakCountdown extends AsyncTask<Integer, Integer, Void> {
 	
+	private static final String TAG = "BreakCountdown";
 	private ExerciseActivity activity;
+	private boolean canceled;
 	
 	public BreakCountdown(ExerciseActivity activity) {
 		this.activity = activity;
@@ -28,12 +31,26 @@ public class BreakCountdown extends AsyncTask<Integer, Integer, Void> {
 	}
 	
 	@Override
+	protected void onCancelled() {
+		canceled = true;
+		super.onCancelled();
+	}
+	
+	@Override
 	protected void onProgressUpdate(Integer... values) {
-		activity.displayBreakTime(values[0]);
+		if (!canceled) {
+			activity.displayBreakTime(values[0]);
+		} else {
+			Log.e(TAG, "Already canceled.");
+		}
 	}
 	
 	@Override
 	protected void onPostExecute(Void result) {
-		activity.endOfBreak();
+		if (!canceled) {
+			activity.endOfBreak();
+		} else {
+			Log.e(TAG, "Already canceled.");
+		}
 	}	
 }
