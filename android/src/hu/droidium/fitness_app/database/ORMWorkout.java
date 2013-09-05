@@ -18,7 +18,9 @@ public class ORMWorkout extends hu.droidium.fitness_app.model.Workout{
 	@DatabaseField
 	private String name;
 	@DatabaseField
-	private int day; // The day of the program the workout is scheduled to
+	private int day; // The day of the program the workout is scheduled, starting from the beginning of the program
+	@DatabaseField
+	private String description;
 	@ForeignCollectionField(orderColumnName="order")
 	private ForeignCollection<ORMBlock> blocks;
 
@@ -37,7 +39,14 @@ public class ORMWorkout extends hu.droidium.fitness_app.model.Workout{
 		this.day = day;
 	}
 
-
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	@Override
+	public String getDescription() {
+		return null;
+	}
 
 	public String getName() {
 		return name;

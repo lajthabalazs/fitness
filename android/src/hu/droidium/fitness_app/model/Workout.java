@@ -4,6 +4,8 @@ import java.util.List;
 
 public abstract class Workout {
 	
+	public abstract String getName();
+	public abstract String getDescription();
 	public abstract List<Block> getBlocks();
 	
 	public final int getMaxRep(){

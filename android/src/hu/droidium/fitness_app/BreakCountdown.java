@@ -6,10 +6,10 @@ import android.util.Log;
 public class BreakCountdown extends AsyncTask<Integer, Integer, Void> {
 	
 	private static final String TAG = "BreakCountdown";
-	private ExerciseActivity activity;
+	private DoWorkoutActivity activity;
 	private boolean canceled;
 	
-	public BreakCountdown(ExerciseActivity activity) {
+	public BreakCountdown(DoWorkoutActivity activity) {
 		this.activity = activity;
 	}
 

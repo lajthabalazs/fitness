@@ -2,9 +2,7 @@ package hu.droidium.fitness_app;
 
 import hu.droidium.fitness_app.model.Exercise;
 import hu.droidium.fitness_app.model.Workout;
-import hu.droidium.fitness_app.model.WorkoutProgressManager;
-import hu.droidium.fitness_app.simple_model.SimpleWorkout;
-import hu.droidium.fitness_app.simple_model.SimpleSharedPrefsWorkoutProgress;
+import hu.droidium.fitness_app.model.WorkoutProgress;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,8 +10,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.newrelic.agent.android.NewRelic;
 
-public class ExerciseActivity extends Activity implements OnClickListener {
+public class DoWorkoutActivity extends Activity implements OnClickListener {
 	@SuppressWarnings("unused")
 	private static final String TAG = "ExerciseActivity";
 	private WorkoutProgressView progressView; 
@@ -28,16 +27,18 @@ public class ExerciseActivity extends Activity implements OnClickListener {
 	private Button doneButton;
 	private Button redoButton;
 	private TextView exerciseLabel;
-	private WorkoutProgressManager progress;
+	private WorkoutProgress progress;
 	private long endOfBreak = -1;
 	private long startOfExercise = -1;
 	private BreakCountdown task;
-	private long progressId = 3;
 	private View endLayout;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		NewRelic.withApplicationToken(
+				"AAf0a0158c59a11bc4f28eabd1cec40e370a37fc4f"
+				).start(this.getApplication());		
 		setContentView(R.layout.exercise_layout);
 		progressView = (WorkoutProgressView)findViewById(R.id.workoutProgress);
 
@@ -64,15 +65,14 @@ public class ExerciseActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		workout = new SimpleWorkout();
-		progress = new SimpleSharedPrefsWorkoutProgress(progressId, workout, this);
-		progressView.setWorkout(workout);
-		progressChanged();
+		// TODO get a workout and the progress
+		//progressView.setWorkout(workout);
+		//progressChanged();
 	}
 
 	private void progressChanged() {
 		long now = System.currentTimeMillis();
-		if (progress.getFinishDate() == -1) {
+		if (progress.getFinishedDate() == -1) {
 			int[] actualExercise = progress.getActualExerciseIndex();
 			Exercise exercise = workout.getBlocks().get(actualExercise[0]).getExercises().get(actualExercise[1]);
 			if (endOfBreak == -1 || endOfBreak < now) {
@@ -111,8 +111,8 @@ public class ExerciseActivity extends Activity implements OnClickListener {
 				long now = System.currentTimeMillis();
 				int[] actualExercise = progress.getActualExerciseIndex();
 				Exercise exercise = workout.getBlocks().get(actualExercise[0]).getExercises().get(actualExercise[1]);
-				progress.exerciseDone(actualExercise[0], actualExercise[1], exercise.getReps(), now - startOfExercise, now);
-				if (progress.getFinishDate() == -1) {
+				progress.exerciseDone(exercise, exercise.getReps(), now - startOfExercise, now);
+				if (progress.getFinishedDate() == -1) {
 					endOfBreak = now + 1000 * exercise.getBreakSecs();
 				}
 				progressChanged();
@@ -124,8 +124,7 @@ public class ExerciseActivity extends Activity implements OnClickListener {
 				break;
 			}
 			case R.id.restartWorkout : {
-				progressId = (int) (Math.random() * 1000000);
-				progress = new SimpleSharedPrefsWorkoutProgress(progressId, workout, this);
+				// TODO new progress
 				progressChanged();
 				break;
 			}
