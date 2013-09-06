@@ -14,8 +14,8 @@ import hu.droidium.fitness_app.model.Workout;
 @DatabaseTable
 public class ORMProgram implements Program {
 	
-	@DatabaseField(id=true, generatedId=true)
-	private long id;
+	@DatabaseField(id=true)
+	private String id;
 	@DatabaseField
 	private String name;
 	@DatabaseField
@@ -23,10 +23,10 @@ public class ORMProgram implements Program {
 	@ForeignCollectionField(orderColumnName="day")
 	private ForeignCollection<ORMWorkout> workouts;
 	
-	public long getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getName() {

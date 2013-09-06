@@ -2,8 +2,8 @@ package hu.droidium.fitness_app;
 
 import hu.droidium.fitness_app.database.ORMProgramProgressManager;
 import hu.droidium.fitness_app.model.ProgramProgress;
-import hu.droidium.fitness_app.model.ProgramProgressHelper;
 import hu.droidium.fitness_app.model.ProgramProgressManager;
+import hu.droidium.fitness_app.model.helpers.ProgramProgressHelper;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,7 +21,7 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 	private TextView nextWorkoutText;
 	private Button doWorkout;
 	private long programId;
-	private ORMProgramProgressManager programProgressManager;
+	private ProgramProgressManager programProgressManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

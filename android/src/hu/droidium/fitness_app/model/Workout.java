@@ -7,6 +7,7 @@ public abstract class Workout {
 	public abstract String getName();
 	public abstract String getDescription();
 	public abstract List<Block> getBlocks();
+	public abstract int getDay();
 	
 	public final int getMaxRep(){
 		int maxRep = 0;

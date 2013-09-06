@@ -1,8 +1,8 @@
 package hu.droidium.fitness_app;
 
 import hu.droidium.fitness_app.model.ProgramProgress;
-import hu.droidium.fitness_app.model.ProgramProgressHelper;
 import hu.droidium.fitness_app.model.ProgramProgressManager;
+import hu.droidium.fitness_app.model.helpers.ProgramProgressHelper;
 
 import java.util.ArrayList;
 import java.util.HashSet;
