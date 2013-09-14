@@ -1,6 +1,6 @@
 {"programs":[
 	{
-		"programId": "hundred_10031",
+		"programId": "hundred_pushups_10031",
 		"programName":"Hundred pushups, level three, week one",
 		"programDescription":"Start here if you can do at least 25 consecutive good form pushups.",
 		"workouts":[
@@ -52,7 +52,7 @@
 		]
 	},
 	{
-		"programId":"hundred_10032",
+		"programId":"hundred_pushups_10032",
 		"programName":"Hundred pushups, level three, week two",
 		"workouts":[
 		{
@@ -103,7 +103,7 @@
 		]
 	},
 	{
-		"programId":"hundred_10033",
+		"programId":"hundred_pushups_10033",
 		"programName":"Hundred pushups, level three, week three",
 		"workouts":[
 		{
@@ -154,7 +154,7 @@
 		]
 	},
 	{
-		"programId":"hundred_10034",
+		"programId":"hundred_pushups_10034",
 		"programName":"Hundred pushups, level three, week four",
 		"workouts":[
 		{
@@ -205,7 +205,7 @@
 		]
 	},
 	{
-		"programId":"hundred_10035",
+		"programId":"hundred_pushups_10035",
 		"programName":"Hundred pushups, level three, week five",
 		"workouts":[
 		{
@@ -262,7 +262,7 @@
 		]
 	},
 	{
-		"programId":"hundred_10036",
+		"programId":"hundred_pushups_10036",
 		"programName":"Hundred pushups, level three, week six",
 		"workouts":[
 		{

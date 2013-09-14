@@ -1,5 +1,6 @@
 package hu.droidium.fitness_app.database;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,6 +120,21 @@ public class ORMExerciseType implements ExerciseType {
 	 */
 	public void updateMuscles(List<ORMMuscle> muscles,
 			Dao<ORMExerciseTypeMuscle, String> exerciseTypeMuscleDao) {
+		try {
+			exerciseTypeMuscleDao.delete(this.muscles);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		this.muscles.clear();
+		for (ORMMuscle muscle : muscles) {
+			ORMExerciseTypeMuscle muscleHelper = new ORMExerciseTypeMuscle(muscle, this);
+			try {
+				exerciseTypeMuscleDao.createIfNotExists(muscleHelper);
+				this.muscles.add(muscleHelper);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 }

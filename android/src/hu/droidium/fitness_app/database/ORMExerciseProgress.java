@@ -9,6 +9,8 @@ public class ORMExerciseProgress {
 	@DatabaseField(id=true)
 	private long id;
 	@DatabaseField(foreign=true)
+	private ORMWorkoutProgress workoutProgress;
+	@DatabaseField(foreign=true)
 	private ORMExercise exercise;
 	@DatabaseField
 	private int doneReps;
@@ -18,9 +20,19 @@ public class ORMExerciseProgress {
 	public long getId() {
 		return id;
 	}
+	
 	public void setId(long id) {
 		this.id = id;
 	}
+	
+	public ORMWorkoutProgress getWorkoutProgress() {
+		return workoutProgress;
+	}
+	
+	public void setWorkoutProgress(ORMWorkoutProgress workoutProgress) {
+		this.workoutProgress = workoutProgress;
+	}
+
 	public ORMExercise getExercise() {
 		return exercise;
 	}

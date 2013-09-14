@@ -15,6 +15,8 @@ public class ORMWorkout extends hu.droidium.fitness_app.model.Workout{
 	
 	@DatabaseField(id=true)
 	private String id;
+	@DatabaseField(foreign=true)
+	private ORMProgram program;
 	@DatabaseField
 	private String name;
 	@DatabaseField
@@ -41,6 +43,15 @@ public class ORMWorkout extends hu.droidium.fitness_app.model.Workout{
 	public void setId(String id) {
 		this.id = id;
 	}
+	
+	public ORMProgram getProgram() {
+		return program;
+	}
+
+	public void setProgram(ORMProgram program) {
+		this.program = program;
+	}
+
 	public int getDay() {
 		return day;
 	}

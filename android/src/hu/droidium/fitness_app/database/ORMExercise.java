@@ -10,6 +10,8 @@ public class ORMExercise implements hu.droidium.fitness_app.model.Exercise {
 
 	@DatabaseField(id=true)
 	private String id;
+	@DatabaseField(foreign=true)
+	private ORMBlock block;
 	@DatabaseField
 	private int order;
 	@DatabaseField(foreign=true)
@@ -20,8 +22,6 @@ public class ORMExercise implements hu.droidium.fitness_app.model.Exercise {
 	private int targetSecs;
 	@DatabaseField
 	private int breakSecs;
-	@DatabaseField(foreign=true)
-	private ORMBlock block;
 	
 	public ORMExercise() {
 		

@@ -15,6 +15,8 @@ public class ORMBlock implements hu.droidium.fitness_app.model.Block{
 
 	@DatabaseField(id=true)
 	private String id;
+	@DatabaseField(foreign=true)
+	private ORMWorkout workout;
 	@DatabaseField
 	private int order;
 	@DatabaseField
@@ -37,6 +39,14 @@ public class ORMBlock implements hu.droidium.fitness_app.model.Block{
 		this.id = id;
 	}
 	
+	public ORMWorkout getWorkout() {
+		return workout;
+	}
+
+	public void setWorkout(ORMWorkout workout) {
+		this.workout = workout;
+	}
+
 	public int getOrder() {
 		return order;
 	}

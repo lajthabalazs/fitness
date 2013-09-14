@@ -1,20 +1,17 @@
 {"muscles":[
 	{
-		"muscleId":0,
+		"muscleId":"triceps",
 		"muscleName":"triceps",
-		"muscleLatin":"triceps",
 		"muscleDescription":"A muscle that helps you extend your arms."
 	},
 	{
-		"muscleId":1,
+		"muscleId":"biceps",
 		"muscleName":"biceps",
-		"muscleLatin":"triceps",
 		"muscleDescription":"A muscle that helps you bend your arms."
 	},
 	{
-		"muscleId":2, 
+		"muscleId":"legs", 
 		"muscleName":"legs",
-		"muscleLatin":"legs",
 		"muscleDescription":"Your legs. Don't you know them?"
 	}	
 ]}

@@ -10,7 +10,7 @@ public class ORMExerciseTypeMuscle {
 	private String id;
 	@DatabaseField(foreign=true)
 	private ORMMuscle muscle;
-	@DatabaseField(foreign=true)
+	@DatabaseField(foreign=true, foreignAutoRefresh=true)
 	private ORMExerciseType exerciseType;
 
 	public ORMExerciseTypeMuscle(){}

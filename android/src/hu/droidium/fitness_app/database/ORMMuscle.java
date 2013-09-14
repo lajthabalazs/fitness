@@ -1,10 +1,13 @@
 package hu.droidium.fitness_app.database;
 
+import android.util.Log;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
 public class ORMMuscle {
+	private static final String TAG = "ORMMuscle";
 	@DatabaseField(id=true)
 	private String id;
 	@DatabaseField
@@ -12,7 +15,8 @@ public class ORMMuscle {
 	@DatabaseField
 	private String description;
 	
-	public ORMMuscle() {}
+	public ORMMuscle() {
+	}
 	
 	public ORMMuscle(String id, String name, String description) {
 		this.id = id;

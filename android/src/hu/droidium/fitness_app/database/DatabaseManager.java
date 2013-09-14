@@ -15,6 +15,7 @@ public class DatabaseManager {
 	
 	private DatabaseHelper helper;
 	
+	
 	private DatabaseManager(Context context) {
 		helper = new DatabaseHelper(context);
 	}

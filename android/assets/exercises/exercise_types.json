@@ -11,7 +11,7 @@
 		"flexibility":0,
 		"balance":1,
 		"muscles":[
-			0,1
+			"legs","biceps"
 		]
 	},
 	{
@@ -26,7 +26,7 @@
 		"flexibility":1,
 		"balance":2,
 		"muscles":[
-			2
+			"legs"
 		]
 	}
 	

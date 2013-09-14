@@ -55,23 +55,26 @@ public class DataLoader {
 	private static final String REPS_KEY = "reps";
 	private static final String BREAK_KEY = "break";
 	
-
 	private static final String MUSCLE_FILE = "muscles.json";
 	private static final String MUSCLES_KEY = "muscles";
 	private static final String MUSCLE_ID_KEY = "muscleId";
 	private static final String MUSCLE_NAME_KEY = "muscleName";
 	private static final String MUSCLE_DESCRIPTION_KEY = "muscleDescription";
 
-
-
 	private static final String UNIT_KEY = "unit";
-
 
 	public static void loadDataFromAssets(Context context) throws IOException{
 		AssetManager assetManager =  context.getAssets();
 		// Load meta data
-		loadMuscleDataFromFile(META_FOLDER + File.separator + MUSCLE_FILE,context);
+		loadMuscleDataFromAsset(META_FOLDER + File.separator + MUSCLE_FILE,context);
+		DatabaseManager databaseManager = DatabaseManager.getInstance(context);
+		List<ORMMuscle> muscles = databaseManager.getMuscles();
+		Log.e(TAG, "Count " + muscles.size());
+		for (ORMMuscle muscle : muscles) {
+			Log.e(TAG, "Muscle " + muscle.getId() + " " + muscle.getName());
+		}
 		// Load exercises
+		/*
 		String[] exercisesFiles = assetManager.list(EXERCISES_FOLDER);
 		for(String exercisesFile : exercisesFiles){
 			loadExerciseMetaDataFromFile(EXERCISES_FOLDER + File.separator + exercisesFile, context);
@@ -81,10 +84,12 @@ public class DataLoader {
 		for(String programFile : programFiles){
 			loadProgramsFromFile(PROGRAM_FOLDER + File.separator + programFile, context);
 		}
+		*/
 	}
 	
-	private static void loadMuscleDataFromFile(String assetPath, Context context) {
-		Log.e(TAG, "Loading muscle data from file " + assetPath);
+	private static void loadMuscleDataFromAsset(String assetPath, Context context) {
+		Log.e(TAG, "Loading muscle data from asset " + assetPath);
+		
 		DatabaseManager databaseManager = DatabaseManager.getInstance(context);
 		JSONArray muscles = null;
 		try {
@@ -116,6 +121,7 @@ public class DataLoader {
 				}
 				ORMMuscle ormMuscle = new ORMMuscle(muscleId, muscleName, muscleDescription);
 				databaseManager.addMuscle(ormMuscle);
+				Log.e(TAG, "Added muscle " + ormMuscle.getId());
 			} catch (Exception e) {
 				Log.e(TAG, "Couldn't parse muscle: " + e.getLocalizedMessage());
 				e.printStackTrace();
@@ -186,7 +192,7 @@ public class DataLoader {
 						exerciseName, exerciseDescription, exerciseInstructions, unit,
 						stamina, strength, speed, flexibility, balance);
 				databaseManager.addExerciseType(ormExercise);
-				ormExercise = databaseManager.getExerciseType(exerciseId);
+				//ormExercise = databaseManager.getExerciseType(exerciseId);
 				ormExercise.updateMuscles(ormMuscles, databaseManager.getHelper().getExerciseTypeMuscleDao());
 				databaseManager.addExerciseType(ormExercise);
 			} catch (Exception e) {
