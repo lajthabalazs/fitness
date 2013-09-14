@@ -1,0 +1,33 @@
+{"exercises":[
+	{
+		"exerciseId":0,
+		"exerciseName":"pushup",
+		"exerciseDescription":"It's a pushup, stupid!",
+		"exerciseInstructions":"Get down, push up.",
+		"unit":"reps",
+		"stamina":2,
+		"strength":5,
+		"speed":0,
+		"flexibility":0,
+		"balance":1,
+		"muscles":[
+			0,1
+		]
+	},
+	{
+		"exerciseId":1,
+		"exerciseName":"squats",
+		"exerciseDescription":"It's a squat, stupid!",
+		"exerciseInstructions":"Bend your knees. Now stand up!",
+		"unit":"reps",
+		"stamina":4,
+		"strength":3,
+		"speed":1,
+		"flexibility":1,
+		"balance":2,
+		"muscles":[
+			2
+		]
+	}
+	
+]}

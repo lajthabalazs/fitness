@@ -18,13 +18,13 @@
         <activity
             android:name="hu.droidium.fitness_app.MainActivity"
             android:label="@string/app_name" >
-        </activity>
-        <activity android:name="ExerciseActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name="ExerciseActivity">
         </activity>
     </application>
 

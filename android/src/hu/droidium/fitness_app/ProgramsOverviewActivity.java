@@ -1,8 +1,7 @@
 package hu.droidium.fitness_app;
 
-import hu.droidium.fitness_app.database.ORMProgramProgressManager;
+import hu.droidium.fitness_app.database.ProgramProgressManager;
 import hu.droidium.fitness_app.model.ProgramProgress;
-import hu.droidium.fitness_app.model.ProgramProgressManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,7 +26,7 @@ public class ProgramsOverviewActivity extends Activity implements OnClickListene
 		programList = (ListView)findViewById(R.id.programList);
 		programList.setOnItemClickListener(this);
 		programList.setOnItemLongClickListener(this);
-		programProgressManager = new ORMProgramProgressManager();
+		programProgressManager = new ProgramProgressManager();
 		programAdapter = new ActiveProgramListAdapter(this, programProgressManager);
 		programList.setAdapter(programAdapter);
 		startNewProgram = (Button)findViewById(R.id.startNewProgram);

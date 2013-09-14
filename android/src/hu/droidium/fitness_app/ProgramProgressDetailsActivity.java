@@ -1,8 +1,7 @@
 package hu.droidium.fitness_app;
 
-import hu.droidium.fitness_app.database.ORMProgramProgressManager;
+import hu.droidium.fitness_app.database.ProgramProgressManager;
 import hu.droidium.fitness_app.model.ProgramProgress;
-import hu.droidium.fitness_app.model.ProgramProgressManager;
 import hu.droidium.fitness_app.model.helpers.ProgramProgressHelper;
 import android.app.Activity;
 import android.content.Intent;
@@ -39,7 +38,7 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 		nextWorkoutText = (TextView)findViewById(R.id.nextWorkoutOnProgressDetails);
 		doWorkout = (Button)findViewById(R.id.doTodaysWorkoutOnProgressDetails);
 		doWorkout.setOnClickListener(this);
-		programProgressManager = new ORMProgramProgressManager();
+		programProgressManager = new ProgramProgressManager();
 	}
 	
 	@Override

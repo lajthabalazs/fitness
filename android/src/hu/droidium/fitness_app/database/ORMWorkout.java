@@ -14,7 +14,7 @@ import com.j256.ormlite.table.DatabaseTable;
 public class ORMWorkout extends hu.droidium.fitness_app.model.Workout{
 	
 	@DatabaseField(id=true)
-	private long id;
+	private String id;
 	@DatabaseField
 	private String name;
 	@DatabaseField
@@ -24,11 +24,21 @@ public class ORMWorkout extends hu.droidium.fitness_app.model.Workout{
 	@ForeignCollectionField(orderColumnName="order")
 	private ForeignCollection<ORMBlock> blocks;
 
-	public long getId() {
+	public ORMWorkout(){
+	}
+	
+	public ORMWorkout(String id, int day, String name, String description) {
+		this.id = id; 
+		this.day = day;
+		this.name = name;
+		this.description = description;
+	}
+
+	public String getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public int getDay() {
@@ -67,5 +77,14 @@ public class ORMWorkout extends hu.droidium.fitness_app.model.Workout{
 			ret.add(block);
 		}
 		return ret;
+	}
+
+	/**
+	 * WARNING use only after object has been saved to database and reloaded
+	 * @param blocks
+	 */
+	public void updateBlocks(List<ORMBlock> blocks) {
+		this.blocks.clear();
+		this.blocks.addAll(blocks);
 	}
 }

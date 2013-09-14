@@ -13,8 +13,8 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable
 public class ORMBlock implements hu.droidium.fitness_app.model.Block{
 
-	@DatabaseField(id=true, generatedId=true)
-	private long id;
+	@DatabaseField(id=true)
+	private String id;
 	@DatabaseField
 	private int order;
 	@DatabaseField
@@ -22,11 +22,18 @@ public class ORMBlock implements hu.droidium.fitness_app.model.Block{
 	@ForeignCollectionField(orderColumnName="order")
 	private ForeignCollection<ORMExercise> exercises;
 	
-	public long getId() {
+	public ORMBlock() {}
+	
+	public ORMBlock(String id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+
+	public String getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	
@@ -54,6 +61,15 @@ public class ORMBlock implements hu.droidium.fitness_app.model.Block{
 			exercises.add(exercise);
 		}
 		return exercises;
+	}
+	
+	/**
+	 * WARNING can call only after an object has been stored and reloaded
+	 * @param exercises
+	 */
+	public void updateExercises(List<ORMExercise> exercises){
+		this.exercises.clear();
+		this.exercises.addAll(exercises);
 	}
 	
 	public void setExercises(ForeignCollection<ORMExercise> exercises){

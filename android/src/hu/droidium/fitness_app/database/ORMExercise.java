@@ -8,8 +8,8 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable
 public class ORMExercise implements hu.droidium.fitness_app.model.Exercise {
 
-	@DatabaseField(id=true, generatedId=true)
-	private long id;
+	@DatabaseField(id=true)
+	private String id;
 	@DatabaseField
 	private int order;
 	@DatabaseField(foreign=true)
@@ -20,8 +20,27 @@ public class ORMExercise implements hu.droidium.fitness_app.model.Exercise {
 	private int targetSecs;
 	@DatabaseField
 	private int breakSecs;
+	@DatabaseField(foreign=true)
+	private ORMBlock block;
 	
-	public void setId(long id){
+	public ORMExercise() {
+		
+	}
+	
+	public ORMExercise(String id, int order, ORMExerciseType type, int reps, int targetSecs, int breakSecs) {
+		this.id = id;
+		this.order = order;
+		this.type = type;
+		this.reps = reps;
+		this.targetSecs = targetSecs;
+		this.breakSecs = breakSecs;
+	}
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id){
 		this.id = id;
 	}
 	
@@ -29,16 +48,36 @@ public class ORMExercise implements hu.droidium.fitness_app.model.Exercise {
 		this.type = type;
 	}
 	
+	@Override
+	public ExerciseType getType() {
+		return type;
+	}
+
 	public void setReps(int reps) {
 		this.reps = reps;
 	}
-	
+
+	@Override
+	public int getReps() {
+		return reps;
+	}
+
 	public void setTargetSecs(int targetSecs){
 		this.targetSecs = targetSecs;
 	}
 	
+	@Override
+	public int getTargetSecs() {
+		return targetSecs;
+	}
+
 	public void setBreakSecs(int breakSecs){
 		this.breakSecs = breakSecs;
+	}
+
+	@Override
+	public int getBreakSecs() {
+		return breakSecs;
 	}
 
 	public int getOrder() {
@@ -49,29 +88,7 @@ public class ORMExercise implements hu.droidium.fitness_app.model.Exercise {
 		this.order = order;
 	}
 
-	
-	public long getId() {
-		return id;
-	}
-	
-	@Override
-	public ExerciseType getType() {
-		return type;
-	}
+		
 
-	@Override
-	public int getReps() {
-		return reps;
-	}
-
-	@Override
-	public int getTargetSecs() {
-		return targetSecs;
-	}
-
-	@Override
-	public int getBreakSecs() {
-		return breakSecs;
-	}
 
 }

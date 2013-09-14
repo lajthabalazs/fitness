@@ -6,7 +6,7 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable
 public class ORMExerciseProgress {
 	
-	@DatabaseField(id=true,generatedId=true)
+	@DatabaseField(id=true)
 	private long id;
 	@DatabaseField(foreign=true)
 	private ORMExercise exercise;
