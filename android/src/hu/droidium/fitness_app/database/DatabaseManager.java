@@ -117,6 +117,16 @@ public class DatabaseManager {
 		return program;
 	}
 
+	public List<ORMProgram> getPrograms() {
+		List<ORMProgram> programs = null;
+		try {
+			programs = helper.getProgramDao().queryForAll();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return programs;
+		
+	}
 	public boolean addMuscle(ORMMuscle muscle) {
 		try {
 			helper.getMuscleDao().createOrUpdate(muscle);
@@ -164,6 +174,7 @@ public class DatabaseManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
 		return exercises;
 	}
 

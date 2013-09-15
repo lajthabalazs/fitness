@@ -1,5 +1,6 @@
 package hu.droidium.fitness_app;
 
+import hu.droidium.fitness_app.activities.ProgramsOverviewActivity;
 import hu.droidium.fitness_app.model.ProgramProgress;
 import hu.droidium.fitness_app.model.ProgramProgressManager;
 import hu.droidium.fitness_app.model.helpers.ProgramProgressHelper;

@@ -1,5 +1,6 @@
 package hu.droidium.fitness_app;
 
+import hu.droidium.fitness_app.activities.DoWorkoutActivity;
 import android.os.AsyncTask;
 import android.util.Log;
 

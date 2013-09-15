@@ -3,6 +3,8 @@ package hu.droidium.fitness_app.database;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
+
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
@@ -14,19 +16,22 @@ import hu.droidium.fitness_app.model.Workout;
 @DatabaseTable
 public class ORMProgram implements Program {
 	
+	private static final String TAG = "ORMProgram";
 	@DatabaseField(id=true)
 	private String id;
 	@DatabaseField
 	private String name;
 	@DatabaseField
 	private String description;
-	@ForeignCollectionField(orderColumnName="day")
+	@ForeignCollectionField
 	private ForeignCollection<ORMWorkout> workouts;
 	
 	public ORMProgram() {}
 	
 	public ORMProgram(String id, String name, String description) {
-		
+		this.id = id;
+		this.name = name;
+		this.description = description;
 	}
 	
 	public String getId() {
@@ -57,5 +62,20 @@ public class ORMProgram implements Program {
 	}
 	public void setWorkouts(ForeignCollection<ORMWorkout> workouts) {
 		this.workouts = workouts;
+	}
+	
+	@Override
+	public String toString() {
+		int workoutSize = 0;
+		int length = 0;
+		try {
+			workoutSize =  workouts.size();
+			for (ORMWorkout workout:workouts) {
+				length = Math.max(length, workout.getDay());
+			}
+		} catch (NullPointerException e) {
+			Log.w(TAG, "No workouts");
+		}
+		return id + " " + name + " " + description + " " + workoutSize + " workouts in " + (length + 1) + " days";
 	}
 }

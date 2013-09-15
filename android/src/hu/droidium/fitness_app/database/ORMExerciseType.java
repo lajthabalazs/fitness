@@ -59,6 +59,22 @@ public class ORMExerciseType implements ExerciseType {
 		this.id = id;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getInstructions() {
+		return instructions;
+	}
+
+	public void setInstructions(String instructions) {
+		this.instructions = instructions;
+	}
+
 	public void setName(String name){
 		this.name = name;
 	}
@@ -128,5 +144,10 @@ public class ORMExerciseType implements ExerciseType {
 			}
 		}
 		return ret;
-	}	
+	}
+	
+	@Override
+	public String toString() {
+		return id + " " + name + " " + description + " " + instructions;
+	}
 }

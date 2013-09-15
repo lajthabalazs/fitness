@@ -1,5 +1,8 @@
-package hu.droidium.fitness_app;
+package hu.droidium.fitness_app.activities;
 
+import hu.droidium.fitness_app.ActiveProgramListAdapter;
+import hu.droidium.fitness_app.Constants;
+import hu.droidium.fitness_app.R;
 import hu.droidium.fitness_app.database.ProgramProgressManager;
 import hu.droidium.fitness_app.model.ProgramProgress;
 import android.app.Activity;

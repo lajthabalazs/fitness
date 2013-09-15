@@ -1,5 +1,11 @@
-package hu.droidium.fitness_app;
+package hu.droidium.fitness_app.activities;
 
+import hu.droidium.fitness_app.BreakCountdown;
+import hu.droidium.fitness_app.R;
+import hu.droidium.fitness_app.WorkoutProgressView;
+import hu.droidium.fitness_app.R.id;
+import hu.droidium.fitness_app.R.layout;
+import hu.droidium.fitness_app.R.string;
 import hu.droidium.fitness_app.model.Exercise;
 import hu.droidium.fitness_app.model.Workout;
 import hu.droidium.fitness_app.model.WorkoutProgress;
