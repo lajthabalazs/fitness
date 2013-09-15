@@ -26,8 +26,9 @@ public class ORMBlock implements hu.droidium.fitness_app.model.Block{
 	
 	public ORMBlock() {}
 	
-	public ORMBlock(String id, String name) {
+	public ORMBlock(String id, ORMWorkout workout, String name) {
 		this.id = id;
+		this.workout = workout;
 		this.name = name;
 	}
 
@@ -71,15 +72,6 @@ public class ORMBlock implements hu.droidium.fitness_app.model.Block{
 			exercises.add(exercise);
 		}
 		return exercises;
-	}
-	
-	/**
-	 * WARNING can call only after an object has been stored and reloaded
-	 * @param exercises
-	 */
-	public void updateExercises(List<ORMExercise> exercises){
-		this.exercises.clear();
-		this.exercises.addAll(exercises);
 	}
 	
 	public void setExercises(ForeignCollection<ORMExercise> exercises){

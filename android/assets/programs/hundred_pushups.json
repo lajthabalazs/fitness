@@ -6,45 +6,45 @@
 		"workouts":[
 		{
 			"workoutName":"Level 3, Week 1, Day 1",
-			"day":0,
+			"workoutDay":0,
 			"blocks":[
 			{
 				"exercises":[
-				{"type":0,"reps":10, "break":60},
-				{"type":0,"reps":12, "break":60},
-				{"type":0,"reps":7, "break":60},
-				{"type":0,"reps":7, "break":60},
-				{"type":0,"reps":9}
+				{"type":"0","reps":10, "break":60},
+				{"type":"0","reps":12, "break":60},
+				{"type":"0","reps":7, "break":60},
+				{"type":"0","reps":7, "break":60},
+				{"type":"0","reps":9}
 				]
 			}
 			]
 		},
 		{
 			"workoutName":"Level 3, Week 1, Day 2",
-			"day":2,
+			"workoutDay":2,
 			"blocks":[
 			{
 				"exercises":[
-				{"type":0,"reps":10, "break":90},
-				{"type":0,"reps":12, "break":90},
-				{"type":0,"reps":8, "break":90},
-				{"type":0,"reps":8, "break":90},
-				{"type":0,"reps":12}
+				{"type":"0","reps":10, "break":90},
+				{"type":"0","reps":12, "break":90},
+				{"type":"0","reps":8, "break":90},
+				{"type":"0","reps":8, "break":90},
+				{"type":"0","reps":12}
 				]
 			}
 			]
 		},
 		{
 			"workoutName":"Level 3, Week 1, Day 3",
-			"day":4,
+			"workoutDay":4,
 			"blocks":[
 			{
 				"exercises":[
-				{"type":0,"reps":11, "break":120},
-				{"type":0,"reps":15, "break":120},
-				{"type":0,"reps":9, "break":120},
-				{"type":0,"reps":9, "break":120},
-				{"type":0,"reps":13}
+				{"type":"0","reps":11, "break":120},
+				{"type":"0","reps":15, "break":120},
+				{"type":"0","reps":9, "break":120},
+				{"type":"0","reps":9, "break":120},
+				{"type":"0","reps":13}
 				]
 			}
 			]
@@ -57,45 +57,45 @@
 		"workouts":[
 		{
 			"workoutName":"Level 3, Week 2, Day 1",
-			"day":0,
+			"workoutDay":0,
 			"blocks":[
 			{
 				"exercises":[
-				{"type":0,"reps":14, "break":60},
-				{"type":0,"reps":14, "break":60},
-				{"type":0,"reps":10, "break":60},
-				{"type":0,"reps":10, "break":60},
-				{"type":0,"reps":15}
+				{"type":"0","reps":14, "break":60},
+				{"type":"0","reps":14, "break":60},
+				{"type":"0","reps":10, "break":60},
+				{"type":"0","reps":10, "break":60},
+				{"type":"0","reps":15}
 				]
 			}
 			]
 		},
 		{
 			"workoutName":"Level 3, Week 2, Day 2",
-			"day":2,
+			"workoutDay":2,
 			"blocks":[
 			{
 				"exercises":[
-				{"type":0,"reps":14, "break":90},
-				{"type":0,"reps":16, "break":90},
-				{"type":0,"reps":12, "break":90},
-				{"type":0,"reps":12, "break":90},
-				{"type":0,"reps":17}
+				{"type":"0","reps":14, "break":90},
+				{"type":"0","reps":16, "break":90},
+				{"type":"0","reps":12, "break":90},
+				{"type":"0","reps":12, "break":90},
+				{"type":"0","reps":17}
 				]
 			}
 			]
 		},
 		{
 			"workoutName":"Level 3, Week 2, Day 3",
-			"day":4,
+			"workoutDay":4,
 			"blocks":[
 			{
 				"exercises":[
-				{"type":0,"reps":16, "break":120},
-				{"type":0,"reps":17, "break":120},
-				{"type":0,"reps":14, "break":120},
-				{"type":0,"reps":14, "break":120},
-				{"type":0,"reps":20}
+				{"type":"0","reps":16, "break":120},
+				{"type":"0","reps":17, "break":120},
+				{"type":"0","reps":14, "break":120},
+				{"type":"0","reps":14, "break":120},
+				{"type":"0","reps":20}
 				]
 			}
 			]
@@ -108,45 +108,45 @@
 		"workouts":[
 		{
 			"workoutName":"Level 3, Week 3, Day 1",
-			"day":0,
+			"workoutDay":0,
 			"blocks":[
 			{
 				"exercises":[
-				{"type":0,"reps":14, "break":60},
-				{"type":0,"reps":18, "break":60},
-				{"type":0,"reps":14, "break":60},
-				{"type":0,"reps":14, "break":60},
-				{"type":0,"reps":20}
+				{"type":"0","reps":14, "break":60},
+				{"type":"0","reps":18, "break":60},
+				{"type":"0","reps":14, "break":60},
+				{"type":"0","reps":14, "break":60},
+				{"type":"0","reps":20}
 				]
 			}
 			]
 		},
 		{
 			"workoutName":"Level 3, Week 3, Day 2",
-			"day":2,
+			"workoutDay":2,
 			"blocks":[
 			{
 				"exercises":[
-				{"type":0,"reps":20, "break":90},
-				{"type":0,"reps":25, "break":90},
-				{"type":0,"reps":15, "break":90},
-				{"type":0,"reps":15, "break":90},
-				{"type":0,"reps":25}
+				{"type":"0","reps":20, "break":90},
+				{"type":"0","reps":25, "break":90},
+				{"type":"0","reps":15, "break":90},
+				{"type":"0","reps":15, "break":90},
+				{"type":"0","reps":25}
 				]
 			}
 			]
 		},
 		{
 			"workoutName":"Level 3, Week 3, Day 3",
-			"day":4,
+			"workoutDay":4,
 			"blocks":[
 			{
 				"exercises":[
-				{"type":0,"reps":22, "break":120},
-				{"type":0,"reps":30, "break":120},
-				{"type":0,"reps":20, "break":120},
-				{"type":0,"reps":20, "break":120},
-				{"type":0,"reps":28}
+				{"type":"0","reps":22, "break":120},
+				{"type":"0","reps":30, "break":120},
+				{"type":"0","reps":20, "break":120},
+				{"type":"0","reps":20, "break":120},
+				{"type":"0","reps":28}
 				]
 			}
 			]
@@ -159,45 +159,45 @@
 		"workouts":[
 		{
 			"workoutName":"Level 3, Week 4, Day 1",
-			"day":0,
+			"workoutDay":0,
 			"blocks":[
 			{
 				"exercises":[
-				{"type":0,"reps":21, "break":60},
-				{"type":0,"reps":25, "break":60},
-				{"type":0,"reps":21, "break":60},
-				{"type":0,"reps":21, "break":60},
-				{"type":0,"reps":32}
+				{"type":"0","reps":21, "break":60},
+				{"type":"0","reps":25, "break":60},
+				{"type":"0","reps":21, "break":60},
+				{"type":"0","reps":21, "break":60},
+				{"type":"0","reps":32}
 				]
 			}
 			]
 		},
 		{
 			"workoutName":"Level 3, Week 4, Day 2",
-			"day":2,
+			"workoutDay":2,
 			"blocks":[
 			{
 				"exercises":[
-				{"type":0,"reps":25, "break":90},
-				{"type":0,"reps":29, "break":90},
-				{"type":0,"reps":25, "break":90},
-				{"type":0,"reps":25, "break":90},
-				{"type":0,"reps":36}
+				{"type":"0","reps":25, "break":90},
+				{"type":"0","reps":29, "break":90},
+				{"type":"0","reps":25, "break":90},
+				{"type":"0","reps":25, "break":90},
+				{"type":"0","reps":36}
 				]
 			}
 			]
 		},
 		{
 			"workoutName":"Level 3, Week 4, Day 3",
-			"day":4,
+			"workoutDay":4,
 			"blocks":[
 			{
 				"exercises":[
-				{"type":0,"reps":29, "break":120},
-				{"type":0,"reps":33, "break":120},
-				{"type":0,"reps":29, "break":120},
-				{"type":0,"reps":29, "break":120},
-				{"type":0,"reps":40}
+				{"type":"0","reps":29, "break":120},
+				{"type":"0","reps":33, "break":120},
+				{"type":"0","reps":29, "break":120},
+				{"type":"0","reps":29, "break":120},
+				{"type":"0","reps":40}
 				]
 			}
 			]
@@ -210,51 +210,51 @@
 		"workouts":[
 		{
 			"workoutName":"Level 3, Week 5, Day 1",
-			"day":0,
+			"workoutDay":0,
 			"blocks":[
 			{
 				"exercises":[
-				{"type":0,"reps":36, "break":60},
-				{"type":0,"reps":40, "break":60},
-				{"type":0,"reps":30, "break":60},
-				{"type":0,"reps":24, "break":60},
-				{"type":0,"reps":40}
+				{"type":"0","reps":36, "break":60},
+				{"type":"0","reps":40, "break":60},
+				{"type":"0","reps":30, "break":60},
+				{"type":"0","reps":24, "break":60},
+				{"type":"0","reps":40}
 				]
 			}
 			]
 		},
 		{
 			"workoutName":"Level 3, Week 5, Day 2",
-			"day":2,
+			"workoutDay":2,
 			"blocks":[
 			{
 				"exercises":[
-				{"type":0,"reps":19, "break":45},
-				{"type":0,"reps":19, "break":45},
-				{"type":0,"reps":22, "break":45},
-				{"type":0,"reps":22, "break":45},
-				{"type":0,"reps":18, "break":45},
-				{"type":0,"reps":18, "break":45},
-				{"type":0,"reps":22, "break":45},
-				{"type":0,"reps":45}
+				{"type":"0","reps":19, "break":45},
+				{"type":"0","reps":19, "break":45},
+				{"type":"0","reps":22, "break":45},
+				{"type":"0","reps":22, "break":45},
+				{"type":"0","reps":18, "break":45},
+				{"type":"0","reps":18, "break":45},
+				{"type":"0","reps":22, "break":45},
+				{"type":"0","reps":45}
 				]
 			}
 			]
 		},
 		{
 			"workoutName":"Level 3, Week 5, Day 3",
-			"day":4,
+			"workoutDay":4,
 			"blocks":[
 			{
 				"exercises":[
-				{"type":0,"reps":20, "break":45},
-				{"type":0,"reps":20, "break":45},
-				{"type":0,"reps":24, "break":45},
-				{"type":0,"reps":24, "break":45},
-				{"type":0,"reps":20, "break":45},
-				{"type":0,"reps":20, "break":45},
-				{"type":0,"reps":22, "break":45},
-				{"type":0,"reps":50}
+				{"type":"0","reps":20, "break":45},
+				{"type":"0","reps":20, "break":45},
+				{"type":"0","reps":24, "break":45},
+				{"type":"0","reps":24, "break":45},
+				{"type":"0","reps":20, "break":45},
+				{"type":"0","reps":20, "break":45},
+				{"type":"0","reps":22, "break":45},
+				{"type":"0","reps":50}
 				]
 			}
 			]
@@ -267,53 +267,53 @@
 		"workouts":[
 		{
 			"workoutName":"Level 3, Week 6, Day 1",
-			"day":0,
+			"workoutDay":0,
 			"blocks":[
 			{
 				"exercises":[
-				{"type":0,"reps":45, "break":60},
-				{"type":0,"reps":55, "break":60},
-				{"type":0,"reps":35, "break":60},
-				{"type":0,"reps":30, "break":60},
-				{"type":0,"reps":55}
+				{"type":"0","reps":45, "break":60},
+				{"type":"0","reps":55, "break":60},
+				{"type":"0","reps":35, "break":60},
+				{"type":"0","reps":30, "break":60},
+				{"type":"0","reps":55}
 				]
 			}
 			]
 		},
 		{
 			"workoutName":"Level 3, Week 6, Day 2",
-			"day":2,
+			"workoutDay":2,
 			"blocks":[
 			{
 				"exercises":[
-				{"type":0,"reps":22, "break":45},
-				{"type":0,"reps":22, "break":45},
-				{"type":0,"reps":30, "break":45},
-				{"type":0,"reps":30, "break":45},
-				{"type":0,"reps":24, "break":45},
-				{"type":0,"reps":24, "break":45},
-				{"type":0,"reps":18, "break":45},
-				{"type":0,"reps":18, "break":45},
-				{"type":0,"reps":58}
+				{"type":"0","reps":22, "break":45},
+				{"type":"0","reps":22, "break":45},
+				{"type":"0","reps":30, "break":45},
+				{"type":"0","reps":30, "break":45},
+				{"type":"0","reps":24, "break":45},
+				{"type":"0","reps":24, "break":45},
+				{"type":"0","reps":18, "break":45},
+				{"type":"0","reps":18, "break":45},
+				{"type":"0","reps":58}
 				]
 			}
 			]
 		},
 		{
 			"workoutName":"Level 3, Week 6, Day 3",
-			"day":4,
+			"workoutDay":4,
 			"blocks":[
 			{
 				"exercises":[
-				{"type":0,"reps":26, "break":45},
-				{"type":0,"reps":26, "break":45},
-				{"type":0,"reps":33, "break":45},
-				{"type":0,"reps":33, "break":45},
-				{"type":0,"reps":26, "break":45},
-				{"type":0,"reps":26, "break":45},
-				{"type":0,"reps":22, "break":45},
-				{"type":0,"reps":22, "break":45},
-				{"type":0,"reps":60}
+				{"type":"0","reps":26, "break":45},
+				{"type":"0","reps":26, "break":45},
+				{"type":"0","reps":33, "break":45},
+				{"type":"0","reps":33, "break":45},
+				{"type":"0","reps":26, "break":45},
+				{"type":"0","reps":26, "break":45},
+				{"type":"0","reps":22, "break":45},
+				{"type":"0","reps":22, "break":45},
+				{"type":"0","reps":60}
 				]
 			}
 			]

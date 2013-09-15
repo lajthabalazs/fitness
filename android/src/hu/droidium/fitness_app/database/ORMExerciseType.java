@@ -1,10 +1,8 @@
 package hu.droidium.fitness_app.database;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
@@ -20,6 +18,10 @@ public class ORMExerciseType implements ExerciseType {
 	@DatabaseField
 	private String name;
 	@DatabaseField
+	private String description;
+	@DatabaseField
+	private String instructions;
+	@DatabaseField
 	private String unit;
 	@DatabaseField
 	private int stamina;
@@ -34,7 +36,18 @@ public class ORMExerciseType implements ExerciseType {
 	@ForeignCollectionField
 	private ForeignCollection<ORMExerciseTypeMuscle> muscles;
 	
-	public ORMExerciseType(String id, String name, String description, String instructions, String unit, int stamina, int strength, int speed, int flexibility, int balance) {}
+	public ORMExerciseType(String id, String name, String description, String instructions, String unit, int stamina, int strength, int speed, int flexibility, int balance) {
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.instructions = instructions;
+		this.unit = unit;
+		this.stamina = stamina;
+		this.strength = strength;
+		this.speed = speed;
+		this.flexibility = flexibility;
+		this.balance = balance;
+	}
 
 	public ORMExerciseType() {}
 
@@ -109,32 +122,11 @@ public class ORMExerciseType implements ExerciseType {
 	
 	public List<ORMMuscle> getMuscles() {
 		ArrayList<ORMMuscle> ret = new ArrayList<ORMMuscle>();
-		for (ORMExerciseTypeMuscle muscle:muscles) {
-			ret.add(muscle.getMuscle());
-		}
-		return ret;
-	}
-
-	/**
-	 * WARNING use only after object has been saved to database and reloaded
-	 */
-	public void updateMuscles(List<ORMMuscle> muscles,
-			Dao<ORMExerciseTypeMuscle, String> exerciseTypeMuscleDao) {
-		try {
-			exerciseTypeMuscleDao.delete(this.muscles);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		this.muscles.clear();
-		for (ORMMuscle muscle : muscles) {
-			ORMExerciseTypeMuscle muscleHelper = new ORMExerciseTypeMuscle(muscle, this);
-			try {
-				exerciseTypeMuscleDao.createIfNotExists(muscleHelper);
-				this.muscles.add(muscleHelper);
-			} catch (SQLException e) {
-				e.printStackTrace();
+		if (muscles != null) {
+			for (ORMExerciseTypeMuscle muscle : muscles) {
+				ret.add(muscle.getMuscle());
 			}
 		}
-	}
-	
+		return ret;
+	}	
 }

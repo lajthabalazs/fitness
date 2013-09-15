@@ -1,80 +1,80 @@
 {"programs":[
 	{
-		"programId":0;
-		"programDescription":"A basic pushup workout.";
+		"programId":"initial_1",
+		"programDescription":"A basic pushup workout.",
 		"workouts":[
 		{
-			"workoutName":"Starting out easy";
-			"workoutDescription":"An easy day to get the feel of it.";
-			"day":0;
+			"workoutName":"Starting out easy",
+			"workoutDescription":"An easy day to get the feel of it.",
+			"workoutDay":0,
 			"blocks":[
 			{
-				"blockName":"Just pushups";
-				"exercises":[{"type":0;"reps":10; "break":60;},
-				{"type":0;"reps":10; "break":60;},
-				{"type":0;"reps":10; "break":60;},
-				{"type":0;"reps":10; "break":60;},
-				{"type":0;"reps":10; "break":120;}
+				"blockName":"Just pushups",
+				"exercises":[{"type":"0","reps":10, "break":60},
+				{"type":"0","reps":10, "break":60},
+				{"type":"0","reps":10, "break":60},
+				{"type":"0","reps":10, "break":60},
+				{"type":"0","reps":10, "break":120}
 				]
-			}
+			},
 			{
-				"blockName":"More pushups";
+				"blockName":"More pushups",
 				"exercises":[
-				{"type":0;"reps":10; "break":60;},
-				{"type":0;"reps":10; "break":60;},
-				{"type":0;"reps":10; "break":60;},
-				{"type":0;"reps":10; "break":60;},
-				{"type":0;"reps":10; "break":120;}
+				{"type":"0","reps":10, "break":60},
+				{"type":"0","reps":10, "break":60},
+				{"type":"0","reps":10, "break":60},
+				{"type":"0","reps":10, "break":60},
+				{"type":"0","reps":10, "break":120}
 				]
-			}
+			},
 			{
-				"blockName":"Wrapping it up";
+				"blockName":"Wrapping it up",
 				"exercises":[
-				{"type":0;"reps":10; "break":60;},
-				{"type":0;"reps":10; "break":60;},
-				{"type":0;"reps":10; "break":60;},
-				{"type":0;"reps":10; "break":60;},
-				{"type":0;"reps":10; "break":120;}
+				{"type":"0","reps":10, "break":60},
+				{"type":"0","reps":10, "break":60},
+				{"type":"0","reps":10, "break":60},
+				{"type":"0","reps":10, "break":60},
+				{"type":"0","reps":10, "break":120}
 				]
 			}
 			]
 		},
 		{
-			"workoutName":"Second day in hell";
-			"workoutDescription":"An easy day to get the feel of it.";
-			"day":1;
+			"workoutName":"Second day in hell",
+			"workoutDescription":"An easy day to get the feel of it.",
+			"workoutDay":1,
 			"blocks":[
 			{
-				"blockName":"Just pushups";
-				"exercises":[{"type":0;"reps":10; "break":60;},
-				{"type":0;"reps":10; "break":60;},
-				{"type":0;"reps":10; "break":60;},
-				{"type":0;"reps":10; "break":60;},
-				{"type":0;"reps":10; "break":120;}
+				"blockName":"Just pushups",
+				"exercises":[{"type":"0","reps":10, "break":60},
+				{"type":"0","reps":10, "break":60},
+				{"type":"0","reps":10, "break":60},
+				{"type":"0","reps":10, "break":60},
+				{"type":"0","reps":10, "break":120}
 				]
-			}
+			},
 			{
-				"blockName":"More pushups";
+				"blockName":"More pushups",
 				"exercises":[
-				{"type":0;"reps":10; "break":60;},
-				{"type":0;"reps":10; "break":60;},
-				{"type":0;"reps":10; "break":60;},
-				{"type":0;"reps":10; "break":60;},
-				{"type":0;"reps":10; "break":120;}
+				{"type":"0","reps":10, "break":60},
+				{"type":"0","reps":10, "break":60},
+				{"type":"0","reps":10, "break":60},
+				{"type":"0","reps":10, "break":60},
+				{"type":"0","reps":10, "break":120}
 				]
-			}
+			},
 			{
-				"blockName":"Wrapping it up";
+				"blockName":"Wrapping it up",
 				"exercises":[
-				{"type":0;"reps":10; "break":60;},
-				{"type":0;"reps":10; "break":60;},
-				{"type":0;"reps":10; "break":60;},
-				{"type":0;"reps":10; "break":60;},
-				{"type":0;"reps":10; "break":120;}
+				{"type":"0","reps":10, "break":60},
+				{"type":"0","reps":10, "break":60},
+				{"type":"0","reps":10, "break":60},
+				{"type":"0","reps":10, "break":60},
+				{"type":"0","reps":10, "break":120}
 				]
 			}
 			]
-		},
+		}
 		]
 	}
 ]}

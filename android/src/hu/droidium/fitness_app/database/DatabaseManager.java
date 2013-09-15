@@ -148,6 +148,15 @@ public class DatabaseManager {
 		}
 	}
 	
+	public void associateMuscleWithExercise(ORMExerciseType exerciseType, ORMMuscle muscle) {
+		ORMExerciseTypeMuscle exerciseTypeMuscle = new ORMExerciseTypeMuscle(muscle, exerciseType);
+		try {
+			helper.getExerciseTypeMuscleDao().createOrUpdate(exerciseTypeMuscle );
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public List<ORMExerciseType> getExerciseTypes() {
 		List<ORMExerciseType> exercises = null;
 		try {

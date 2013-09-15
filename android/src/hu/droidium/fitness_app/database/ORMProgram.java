@@ -58,9 +58,4 @@ public class ORMProgram implements Program {
 	public void setWorkouts(ForeignCollection<ORMWorkout> workouts) {
 		this.workouts = workouts;
 	}
-
-	public void updateWorkouts(List<ORMWorkout> workouts) {
-		this.workouts.clear();
-		this.workouts.addAll(workouts);
-	}
 }

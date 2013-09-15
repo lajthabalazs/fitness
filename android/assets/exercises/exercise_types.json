@@ -1,6 +1,6 @@
 {"exercises":[
 	{
-		"exerciseId":0,
+		"exerciseId":"0",
 		"exerciseName":"pushup",
 		"exerciseDescription":"It's a pushup, stupid!",
 		"exerciseInstructions":"Get down, push up.",
@@ -15,7 +15,7 @@
 		]
 	},
 	{
-		"exerciseId":1,
+		"exerciseId":"1",
 		"exerciseName":"squats",
 		"exerciseDescription":"It's a squat, stupid!",
 		"exerciseInstructions":"Bend your knees. Now stand up!",

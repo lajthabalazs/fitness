@@ -1,6 +1,5 @@
 package hu.droidium.fitness_app.database;
 
-
 import java.sql.SQLException;
 
 import android.content.Context;
@@ -37,6 +36,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
 		try {
+			
 			TableUtils.createTable(connectionSource, ORMExerciseType.class);
 			TableUtils.createTable(connectionSource, ORMMuscle.class);
 			TableUtils.createTable(connectionSource, ORMExerciseTypeMuscle.class);

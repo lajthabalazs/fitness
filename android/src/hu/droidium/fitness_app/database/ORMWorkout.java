@@ -29,8 +29,9 @@ public class ORMWorkout extends hu.droidium.fitness_app.model.Workout{
 	public ORMWorkout(){
 	}
 	
-	public ORMWorkout(String id, int day, String name, String description) {
+	public ORMWorkout(String id, ORMProgram program, int day, String name, String description) {
 		this.id = id; 
+		this.program = program;
 		this.day = day;
 		this.name = name;
 		this.description = description;
@@ -88,14 +89,5 @@ public class ORMWorkout extends hu.droidium.fitness_app.model.Workout{
 			ret.add(block);
 		}
 		return ret;
-	}
-
-	/**
-	 * WARNING use only after object has been saved to database and reloaded
-	 * @param blocks
-	 */
-	public void updateBlocks(List<ORMBlock> blocks) {
-		this.blocks.clear();
-		this.blocks.addAll(blocks);
 	}
 }

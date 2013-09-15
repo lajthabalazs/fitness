@@ -27,8 +27,9 @@ public class ORMExercise implements hu.droidium.fitness_app.model.Exercise {
 		
 	}
 	
-	public ORMExercise(String id, int order, ORMExerciseType type, int reps, int targetSecs, int breakSecs) {
+	public ORMExercise(String id, ORMBlock block, int order, ORMExerciseType type, int reps, int targetSecs, int breakSecs) {
 		this.id = id;
+		this.block = block;
 		this.order = order;
 		this.type = type;
 		this.reps = reps;
