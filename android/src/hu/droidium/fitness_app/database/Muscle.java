@@ -4,8 +4,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class ORMMuscle {
-	private static final String TAG = "ORMMuscle";
+public class Muscle {
 	@DatabaseField(id=true)
 	private String id;
 	@DatabaseField
@@ -13,10 +12,10 @@ public class ORMMuscle {
 	@DatabaseField
 	private String description;
 	
-	public ORMMuscle() {
+	public Muscle() {
 	}
 	
-	public ORMMuscle(String id, String name, String description) {
+	public Muscle(String id, String name, String description) {
 		this.id = id;
 		this.name = name;
 		this.description = description;

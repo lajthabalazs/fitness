@@ -2,7 +2,7 @@ package hu.droidium.fitness_app.activities;
 
 import hu.droidium.fitness_app.R;
 import hu.droidium.fitness_app.database.DatabaseManager;
-import hu.droidium.fitness_app.database.ORMExerciseType;
+import hu.droidium.fitness_app.database.ExerciseType;
 
 import java.util.List;
 
@@ -19,10 +19,10 @@ public class ExerciseListActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.simple_list_layout);
 		list = (ListView)findViewById(R.id.stringList);
-		ArrayAdapter<ORMExerciseType> exerciseTypeAdapter = new ArrayAdapter<ORMExerciseType>(this, android.R.layout.simple_list_item_1);
+		ArrayAdapter<ExerciseType> exerciseTypeAdapter = new ArrayAdapter<ExerciseType>(this, android.R.layout.simple_list_item_1);
 		DatabaseManager databaseManager = DatabaseManager.getInstance(this);
-		List<ORMExerciseType> types = databaseManager.getExerciseTypes();
-		for (ORMExerciseType type : types) {
+		List<ExerciseType> types = databaseManager.getExerciseTypes();
+		for (ExerciseType type : types) {
 			exerciseTypeAdapter.add(type);
 		}
 		list.setAdapter(exerciseTypeAdapter);

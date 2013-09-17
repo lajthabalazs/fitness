@@ -8,10 +8,8 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import hu.droidium.fitness_app.model.ExerciseType;
-
 @DatabaseTable
-public class ORMExerciseType implements ExerciseType {
+public class ExerciseType {
 
 	@DatabaseField(id=true)
 	private String id;
@@ -34,9 +32,9 @@ public class ORMExerciseType implements ExerciseType {
 	@DatabaseField
 	private int balance;
 	@ForeignCollectionField
-	private ForeignCollection<ORMExerciseTypeMuscle> muscles;
+	private ForeignCollection<ExerciseTypeMuscle> muscles;
 	
-	public ORMExerciseType(String id, String name, String description, String instructions, String unit, int stamina, int strength, int speed, int flexibility, int balance) {
+	public ExerciseType(String id, String name, String description, String instructions, String unit, int stamina, int strength, int speed, int flexibility, int balance) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -49,7 +47,7 @@ public class ORMExerciseType implements ExerciseType {
 		this.balance = balance;
 	}
 
-	public ORMExerciseType() {}
+	public ExerciseType() {}
 
 	public String getId() {
 		return id;
@@ -79,7 +77,6 @@ public class ORMExerciseType implements ExerciseType {
 		this.name = name;
 	}
 
-	@Override
 	public String getName() {
 		return name;
 	}
@@ -87,7 +84,7 @@ public class ORMExerciseType implements ExerciseType {
 	public void setUnit(String unit){
 		this.unit = unit;
 	}
-	@Override
+
 	public String getUnit() {
 		return unit;
 	}
@@ -132,14 +129,14 @@ public class ORMExerciseType implements ExerciseType {
 		this.balance = balance;
 	}
 
-	public void setMuscles(ForeignCollection<ORMExerciseTypeMuscle> muscles) {
+	public void setMuscles(ForeignCollection<ExerciseTypeMuscle> muscles) {
 		this.muscles = muscles;
 	}
 	
-	public List<ORMMuscle> getMuscles() {
-		ArrayList<ORMMuscle> ret = new ArrayList<ORMMuscle>();
+	public List<Muscle> getMuscles() {
+		ArrayList<Muscle> ret = new ArrayList<Muscle>();
 		if (muscles != null) {
-			for (ORMExerciseTypeMuscle muscle : muscles) {
+			for (ExerciseTypeMuscle muscle : muscles) {
 				ret.add(muscle.getMuscle());
 			}
 		}

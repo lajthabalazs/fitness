@@ -1,8 +1,8 @@
 package hu.droidium.fitness_app;
 
-import hu.droidium.fitness_app.model.Block;
-import hu.droidium.fitness_app.model.Exercise;
-import hu.droidium.fitness_app.model.Workout;
+import hu.droidium.fitness_app.database.Block;
+import hu.droidium.fitness_app.database.Exercise;
+import hu.droidium.fitness_app.database.Workout;
 
 import java.util.List;
 

@@ -17,17 +17,17 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	private static final int DATABASE_VERSION = 1;
 	private static final String TAG = "DatabaseHelper";
 	
-	private Dao<ORMExerciseType, String> exerciseTypeDao;
-	private Dao<ORMMuscle, String> muscleDao;	
-	private Dao<ORMExerciseTypeMuscle, String> exerciseTypeMuscleDao;	
+	private Dao<ExerciseType, String> exerciseTypeDao;
+	private Dao<Muscle, String> muscleDao;	
+	private Dao<ExerciseTypeMuscle, String> exerciseTypeMuscleDao;	
 
-	private Dao<ORMBlock, String> blockDao;
-	private Dao<ORMExercise, String> exerciseDao;
-	private Dao<ORMProgram, String> programDao;
-	private Dao<ORMWorkout, String> workoutDao;
+	private Dao<Block, String> blockDao;
+	private Dao<Exercise, String> exerciseDao;
+	private Dao<Program, String> programDao;
+	private Dao<Workout, String> workoutDao;
 
-	private Dao<ORMExerciseProgress, Long> exerciseProgressDao;
-	private Dao<ORMWorkoutProgress, Long> workoutProgressDao;
+	private Dao<ExerciseProgress, Long> exerciseProgressDao;
+	private Dao<WorkoutProgress, Long> workoutProgressDao;
 
 	public DatabaseHelper (Context context){
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -37,17 +37,17 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
 		try {
 			
-			TableUtils.createTable(connectionSource, ORMExerciseType.class);
-			TableUtils.createTable(connectionSource, ORMMuscle.class);
-			TableUtils.createTable(connectionSource, ORMExerciseTypeMuscle.class);
+			TableUtils.createTable(connectionSource, ExerciseType.class);
+			TableUtils.createTable(connectionSource, Muscle.class);
+			TableUtils.createTable(connectionSource, ExerciseTypeMuscle.class);
 			
-			TableUtils.createTable(connectionSource, ORMBlock.class);
-			TableUtils.createTable(connectionSource, ORMExercise.class);
-			TableUtils.createTable(connectionSource, ORMProgram.class);
-			TableUtils.createTable(connectionSource, ORMWorkout.class);
+			TableUtils.createTable(connectionSource, Block.class);
+			TableUtils.createTable(connectionSource, Exercise.class);
+			TableUtils.createTable(connectionSource, Program.class);
+			TableUtils.createTable(connectionSource, Workout.class);
 
-			TableUtils.createTable(connectionSource, ORMExerciseProgress.class);
-			TableUtils.createTable(connectionSource, ORMWorkoutProgress.class);			
+			TableUtils.createTable(connectionSource, ExerciseProgress.class);
+			TableUtils.createTable(connectionSource, WorkoutProgress.class);			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException("Can't create database.", e);
@@ -59,10 +59,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		// TODO think of something...
 	}
 	
-	public Dao<ORMMuscle, String> getMuscleDao() {
+	public Dao<Muscle, String> getMuscleDao() {
 		if (muscleDao == null) {
 			try {
-				muscleDao = getDao(ORMMuscle.class);
+				muscleDao = getDao(Muscle.class);
 			} catch (SQLException e) {
 				Log.e(TAG, "Error creating DAO " + e.getMessage());
 				e.printStackTrace();
@@ -71,10 +71,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		return muscleDao;
 	}
 	
-	public Dao<ORMExerciseType, String> getExerciseTypeDao() {
+	public Dao<ExerciseType, String> getExerciseTypeDao() {
 		if (exerciseTypeDao == null) {
 			try {
-				exerciseTypeDao = getDao(ORMExerciseType.class);
+				exerciseTypeDao = getDao(ExerciseType.class);
 			} catch (SQLException e) {
 				Log.e(TAG, "Error creating DAO " + e.getMessage());
 				e.printStackTrace();
@@ -83,10 +83,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		return exerciseTypeDao;
 	}
 
-	public Dao<ORMExerciseTypeMuscle, String> getExerciseTypeMuscleDao() {
+	public Dao<ExerciseTypeMuscle, String> getExerciseTypeMuscleDao() {
 		if (exerciseTypeMuscleDao == null) {
 			try {
-				exerciseTypeMuscleDao = getDao(ORMExerciseTypeMuscle.class);
+				exerciseTypeMuscleDao = getDao(ExerciseTypeMuscle.class);
 			} catch (SQLException e) {
 				Log.e(TAG, "Error creating DAO " + e.getMessage());
 				e.printStackTrace();
@@ -95,10 +95,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		return exerciseTypeMuscleDao;
 	}
 
-	public Dao<ORMBlock, String> getBlockDao() {
+	public Dao<Block, String> getBlockDao() {
 		if (blockDao == null) {
 			try {
-				blockDao = getDao(ORMBlock.class);
+				blockDao = getDao(Block.class);
 			} catch (SQLException e) {
 				Log.e(TAG, "Error creating DAO " + e.getMessage());
 				e.printStackTrace();
@@ -107,10 +107,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		return blockDao;
 	}
 
-	public Dao<ORMExercise, String> getExerciseDao() {
+	public Dao<Exercise, String> getExerciseDao() {
 		if (exerciseDao == null) {
 			try {
-				exerciseDao = getDao(ORMExercise.class);
+				exerciseDao = getDao(Exercise.class);
 			} catch (SQLException e) {
 				Log.e(TAG, "Error creating DAO " + e.getMessage());
 				e.printStackTrace();
@@ -119,10 +119,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		return exerciseDao;
 	}
 
-	public Dao<ORMProgram, String> getProgramDao() {
+	public Dao<Program, String> getProgramDao() {
 		if (programDao == null) {
 			try {
-				programDao = getDao(ORMProgram.class);
+				programDao = getDao(Program.class);
 			} catch (SQLException e) {
 				Log.e(TAG, "Error creating DAO " + e.getMessage());
 				e.printStackTrace();
@@ -131,10 +131,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		return programDao;
 	}
 
-	public Dao<ORMWorkout, String> getWorkoutDao() {
+	public Dao<Workout, String> getWorkoutDao() {
 		if (workoutDao == null) {
 			try {
-				workoutDao = getDao(ORMWorkout.class);
+				workoutDao = getDao(Workout.class);
 			} catch (SQLException e) {
 				Log.e(TAG, "Error creating DAO " + e.getMessage());
 				e.printStackTrace();
@@ -143,10 +143,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		return workoutDao;
 	}
 
-	public Dao<ORMExerciseProgress, Long> getExerciseProgressDao() {
+	public Dao<ExerciseProgress, Long> getExerciseProgressDao() {
 		if (exerciseProgressDao == null) {
 			try {
-				exerciseProgressDao = getDao(ORMExerciseProgress.class);
+				exerciseProgressDao = getDao(ExerciseProgress.class);
 			} catch (SQLException e) {
 				Log.e(TAG, "Error creating DAO " + e.getMessage());
 				e.printStackTrace();
@@ -155,10 +155,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		return exerciseProgressDao;
 	}
 
-	public Dao<ORMWorkoutProgress, Long> getWorkoutProgressDao() {
+	public Dao<WorkoutProgress, Long> getWorkoutProgressDao() {
 		if (workoutProgressDao == null) {
 			try {
-				workoutProgressDao = getDao(ORMWorkoutProgress.class);
+				workoutProgressDao = getDao(WorkoutProgress.class);
 			} catch (SQLException e) {
 				Log.e(TAG, "Error creating DAO " + e.getMessage());
 				e.printStackTrace();

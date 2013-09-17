@@ -1,21 +1,19 @@
 package hu.droidium.fitness_app.database;
 
-import hu.droidium.fitness_app.model.ExerciseType;
-
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class ORMExercise implements hu.droidium.fitness_app.model.Exercise {
+public class Exercise {
 
 	@DatabaseField(id=true)
 	private String id;
 	@DatabaseField(foreign=true)
-	private ORMBlock block;
+	private Block block;
 	@DatabaseField
 	private int order;
 	@DatabaseField(foreign=true)
-	private ORMExerciseType type;
+	private ExerciseType type;
 	@DatabaseField
 	private int reps;
 	@DatabaseField
@@ -23,11 +21,11 @@ public class ORMExercise implements hu.droidium.fitness_app.model.Exercise {
 	@DatabaseField
 	private int breakSecs;
 	
-	public ORMExercise() {
+	public Exercise() {
 		
 	}
 	
-	public ORMExercise(String id, ORMBlock block, int order, ORMExerciseType type, int reps, int targetSecs, int breakSecs) {
+	public Exercise(String id, Block block, int order, ExerciseType type, int reps, int targetSecs, int breakSecs) {
 		this.id = id;
 		this.block = block;
 		this.order = order;
@@ -45,11 +43,10 @@ public class ORMExercise implements hu.droidium.fitness_app.model.Exercise {
 		this.id = id;
 	}
 	
-	public void setType(ORMExerciseType type){
+	public void setType(ExerciseType type){
 		this.type = type;
 	}
 	
-	@Override
 	public ExerciseType getType() {
 		return type;
 	}
@@ -58,7 +55,6 @@ public class ORMExercise implements hu.droidium.fitness_app.model.Exercise {
 		this.reps = reps;
 	}
 
-	@Override
 	public int getReps() {
 		return reps;
 	}
@@ -67,7 +63,6 @@ public class ORMExercise implements hu.droidium.fitness_app.model.Exercise {
 		this.targetSecs = targetSecs;
 	}
 	
-	@Override
 	public int getTargetSecs() {
 		return targetSecs;
 	}
@@ -76,7 +71,6 @@ public class ORMExercise implements hu.droidium.fitness_app.model.Exercise {
 		this.breakSecs = breakSecs;
 	}
 
-	@Override
 	public int getBreakSecs() {
 		return breakSecs;
 	}

@@ -4,7 +4,7 @@ import java.util.List;
 
 import hu.droidium.fitness_app.R;
 import hu.droidium.fitness_app.database.DatabaseManager;
-import hu.droidium.fitness_app.database.ORMMuscle;
+import hu.droidium.fitness_app.database.Muscle;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -18,10 +18,10 @@ public class MuscleListActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.simple_list_layout);
 		list = (ListView)findViewById(R.id.stringList);
-		ArrayAdapter<ORMMuscle> muscleAdapter = new ArrayAdapter<ORMMuscle>(this, android.R.layout.simple_list_item_1);
+		ArrayAdapter<Muscle> muscleAdapter = new ArrayAdapter<Muscle>(this, android.R.layout.simple_list_item_1);
 		DatabaseManager databaseManager = DatabaseManager.getInstance(this);
-		List<ORMMuscle> muscles = databaseManager.getMuscles();
-		for (ORMMuscle muscle : muscles) {
+		List<Muscle> muscles = databaseManager.getMuscles();
+		for (Muscle muscle : muscles) {
 			muscleAdapter.add(muscle);
 		}
 		list.setAdapter(muscleAdapter);

@@ -1,7 +1,5 @@
 package hu.droidium.fitness_app.database;
 
-import hu.droidium.fitness_app.model.Block;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,12 +9,12 @@ import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class ORMWorkout extends hu.droidium.fitness_app.model.Workout{
+public class Workout{
 	
 	@DatabaseField(id=true)
 	private String id;
 	@DatabaseField(foreign=true)
-	private ORMProgram program;
+	private Program program;
 	@DatabaseField
 	private String name;
 	@DatabaseField
@@ -24,12 +22,12 @@ public class ORMWorkout extends hu.droidium.fitness_app.model.Workout{
 	@DatabaseField
 	private String description;
 	@ForeignCollectionField(orderColumnName="order")
-	private ForeignCollection<ORMBlock> blocks;
+	private ForeignCollection<Block> blocks;
 
-	public ORMWorkout(){
+	public Workout(){
 	}
 	
-	public ORMWorkout(String id, ORMProgram program, int day, String name, String description) {
+	public Workout(String id, Program program, int day, String name, String description) {
 		this.id = id; 
 		this.program = program;
 		this.day = day;
@@ -45,11 +43,11 @@ public class ORMWorkout extends hu.droidium.fitness_app.model.Workout{
 		this.id = id;
 	}
 	
-	public ORMProgram getProgram() {
+	public Program getProgram() {
 		return program;
 	}
 
-	public void setProgram(ORMProgram program) {
+	public void setProgram(Program program) {
 		this.program = program;
 	}
 
@@ -65,7 +63,6 @@ public class ORMWorkout extends hu.droidium.fitness_app.model.Workout{
 		this.description = description;
 	}
 	
-	@Override
 	public String getDescription() {
 		return null;
 	}
@@ -78,16 +75,36 @@ public class ORMWorkout extends hu.droidium.fitness_app.model.Workout{
 		this.name = name;
 	}
 
-	public void setBlocks(ForeignCollection<ORMBlock> blocks) {
+	public void setBlocks(ForeignCollection<Block> blocks) {
 		this.blocks = blocks;
 	}
 
-	@Override
 	public List<Block> getBlocks() {
 		ArrayList<Block> ret = new ArrayList<Block>();
-		for (ORMBlock block : blocks) {
+		for (Block block : blocks) {
 			ret.add(block);
 		}
 		return ret;
+	}
+	public final int getMaxRep(){
+		int maxRep = 0;
+		for(Block block : getBlocks()) {
+			for (Exercise exercise : block.getExercises()) {
+				maxRep = Math.max(maxRep, exercise.getReps());
+			}
+		}
+		return maxRep;
+	}
+	
+	public final int getNumberOfBlocks(){
+		return getBlocks().size();
+	}
+	
+	public final int getNumberOfExercises() {
+		int total = 0;
+		for(Block block : getBlocks()) {
+			total += block.getExercises().size();
+		}
+		return total;
 	}
 }

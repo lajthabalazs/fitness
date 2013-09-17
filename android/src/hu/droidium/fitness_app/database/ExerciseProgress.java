@@ -4,14 +4,14 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class ORMExerciseProgress {
+public class ExerciseProgress {
 	
 	@DatabaseField(id=true)
 	private long id;
 	@DatabaseField(foreign=true)
-	private ORMWorkoutProgress workoutProgress;
+	private WorkoutProgress workoutProgress;
 	@DatabaseField(foreign=true)
-	private ORMExercise exercise;
+	private Exercise exercise;
 	@DatabaseField
 	private int doneReps;
 	@DatabaseField
@@ -25,18 +25,18 @@ public class ORMExerciseProgress {
 		this.id = id;
 	}
 	
-	public ORMWorkoutProgress getWorkoutProgress() {
+	public WorkoutProgress getWorkoutProgress() {
 		return workoutProgress;
 	}
 	
-	public void setWorkoutProgress(ORMWorkoutProgress workoutProgress) {
+	public void setWorkoutProgress(WorkoutProgress workoutProgress) {
 		this.workoutProgress = workoutProgress;
 	}
 
-	public ORMExercise getExercise() {
+	public Exercise getExercise() {
 		return exercise;
 	}
-	public void setExercise(ORMExercise exercise) {
+	public void setExercise(Exercise exercise) {
 		this.exercise = exercise;
 	}
 	public int getDoneReps() {

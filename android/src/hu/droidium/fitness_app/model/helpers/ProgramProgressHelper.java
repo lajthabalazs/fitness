@@ -1,7 +1,7 @@
 package hu.droidium.fitness_app.model.helpers;
 
 import hu.droidium.fitness_app.R;
-import hu.droidium.fitness_app.model.ProgramProgress;
+import hu.droidium.fitness_app.database.ProgramProgress;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

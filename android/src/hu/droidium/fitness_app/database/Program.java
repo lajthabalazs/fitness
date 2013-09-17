@@ -10,11 +10,8 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import hu.droidium.fitness_app.model.Program;
-import hu.droidium.fitness_app.model.Workout;
-
 @DatabaseTable
-public class ORMProgram implements Program {
+public class Program {
 	
 	private static final String TAG = "ORMProgram";
 	@DatabaseField(id=true)
@@ -24,11 +21,11 @@ public class ORMProgram implements Program {
 	@DatabaseField
 	private String description;
 	@ForeignCollectionField
-	private ForeignCollection<ORMWorkout> workouts;
+	private ForeignCollection<Workout> workouts;
 	
-	public ORMProgram() {}
+	public Program() {}
 	
-	public ORMProgram(String id, String name, String description) {
+	public Program(String id, String name, String description) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -55,12 +52,12 @@ public class ORMProgram implements Program {
 	}
 	public List<Workout> getWorkouts() {
 		ArrayList<Workout> workouts = new ArrayList<Workout>();
-		for (ORMWorkout workout : this.workouts){
+		for (Workout workout : this.workouts){
 			workouts.add(workout);
 		}
 		return workouts;
 	}
-	public void setWorkouts(ForeignCollection<ORMWorkout> workouts) {
+	public void setWorkouts(ForeignCollection<Workout> workouts) {
 		this.workouts = workouts;
 	}
 	
@@ -70,7 +67,7 @@ public class ORMProgram implements Program {
 		int length = 0;
 		try {
 			workoutSize =  workouts.size();
-			for (ORMWorkout workout:workouts) {
+			for (Workout workout:workouts) {
 				length = Math.max(length, workout.getDay());
 			}
 		} catch (NullPointerException e) {

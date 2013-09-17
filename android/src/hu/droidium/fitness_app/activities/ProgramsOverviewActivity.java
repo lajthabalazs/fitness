@@ -3,8 +3,8 @@ package hu.droidium.fitness_app.activities;
 import hu.droidium.fitness_app.ActiveProgramListAdapter;
 import hu.droidium.fitness_app.Constants;
 import hu.droidium.fitness_app.R;
-import hu.droidium.fitness_app.database.ProgramProgressManager;
-import hu.droidium.fitness_app.model.ProgramProgress;
+import hu.droidium.fitness_app.database.DatabaseManager;
+import hu.droidium.fitness_app.database.ProgramProgress;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,7 +20,7 @@ public class ProgramsOverviewActivity extends Activity implements OnClickListene
 	private Button startNewProgram;
 	private ListView programList;
 	private ActiveProgramListAdapter programAdapter;
-	private ProgramProgressManager programProgressManager;
+	private DatabaseManager databaseManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,16 +29,22 @@ public class ProgramsOverviewActivity extends Activity implements OnClickListene
 		programList = (ListView)findViewById(R.id.programList);
 		programList.setOnItemClickListener(this);
 		programList.setOnItemLongClickListener(this);
-		programProgressManager = new ProgramProgressManager();
-		programAdapter = new ActiveProgramListAdapter(this, programProgressManager);
+		databaseManager = DatabaseManager.getInstance(this);
+		programAdapter = new ActiveProgramListAdapter(this);
 		programList.setAdapter(programAdapter);
 		startNewProgram = (Button)findViewById(R.id.startNewProgram);
 		startNewProgram.setOnClickListener(this);
 	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		programAdapter.updatePrograms(databaseManager.getProgressList());
+	}
 
 	@Override
 	public void onClick(View v) {
-		// TODO add a new workout
+		// TODO start a new program
 	}
 
 	@Override

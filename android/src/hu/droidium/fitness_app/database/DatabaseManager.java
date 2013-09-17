@@ -17,7 +17,7 @@ public class DatabaseManager {
 	
 	
 	private DatabaseManager(Context context) {
-		helper = new DatabaseHelper(context);
+		helper = new DatabaseHelper(context.getApplicationContext());
 	}
 		
 	public static DatabaseManager getInstance(Context context){
@@ -27,8 +27,8 @@ public class DatabaseManager {
 		return instance;
 	}
 	
-	public List<ORMExerciseType> getTypes(){
-		List<ORMExerciseType> types = null;
+	public List<ExerciseType> getTypes(){
+		List<ExerciseType> types = null;
 		try {
 			types = helper.getExerciseTypeDao().queryForAll();
 		} catch (SQLException e) {
@@ -37,7 +37,7 @@ public class DatabaseManager {
 		return types;
 	}
 
-	public boolean addExercise(ORMExercise ormExercise) {
+	public boolean addExercise(Exercise ormExercise) {
 		try {
 			helper.getExerciseDao().createOrUpdate(ormExercise);
 			return true;
@@ -47,8 +47,8 @@ public class DatabaseManager {
 		}
 	}
 
-	public ORMExercise getExercise(String exerciseId) {
-		ORMExercise exercise = null;
+	public Exercise getExercise(String exerciseId) {
+		Exercise exercise = null;
 		try {
 			exercise = helper.getExerciseDao().queryForId(exerciseId);
 		} catch (SQLException e) {
@@ -57,7 +57,7 @@ public class DatabaseManager {
 		return exercise;
 	}
 
-	public boolean addBlock(ORMBlock ormBlock) {
+	public boolean addBlock(Block ormBlock) {
 		try {
 			helper.getBlockDao().createOrUpdate(ormBlock);
 			return true;
@@ -67,8 +67,8 @@ public class DatabaseManager {
 		}
 	}
 
-	public ORMBlock getBlock(String blockId) {
-		ORMBlock block = null;
+	public Block getBlock(String blockId) {
+		Block block = null;
 		try {
 			 block = helper.getBlockDao().queryForId(blockId);
 		} catch (SQLException e) {
@@ -77,7 +77,7 @@ public class DatabaseManager {
 		return block;
 	}
 
-	public boolean addWorkout(ORMWorkout workout) {
+	public boolean addWorkout(Workout workout) {
 		try {
 			helper.getWorkoutDao().createOrUpdate(workout);
 			return true;
@@ -87,8 +87,8 @@ public class DatabaseManager {
 		}
 	}
 
-	public ORMWorkout getWorkout(String workoutId) {
-		ORMWorkout workout = null;
+	public Workout getWorkout(String workoutId) {
+		Workout workout = null;
 		try {
 			workout = helper.getWorkoutDao().queryForId(workoutId);
 		} catch (SQLException e) {
@@ -97,7 +97,7 @@ public class DatabaseManager {
 		return workout;
 	}
 
-	public boolean addProgram(ORMProgram program) {
+	public boolean addProgram(Program program) {
 		try {
 			helper.getProgramDao().createOrUpdate(program);
 			return true;
@@ -107,8 +107,8 @@ public class DatabaseManager {
 		}
 	}
 
-	public ORMProgram getProgram(String programId) {
-		ORMProgram program = null;
+	public Program getProgram(String programId) {
+		Program program = null;
 		try {
 			program = helper.getProgramDao().queryForId(programId);
 		} catch (SQLException e) {
@@ -117,8 +117,8 @@ public class DatabaseManager {
 		return program;
 	}
 
-	public List<ORMProgram> getPrograms() {
-		List<ORMProgram> programs = null;
+	public List<Program> getPrograms() {
+		List<Program> programs = null;
 		try {
 			programs = helper.getProgramDao().queryForAll();
 		} catch (SQLException e) {
@@ -127,7 +127,7 @@ public class DatabaseManager {
 		return programs;
 		
 	}
-	public boolean addMuscle(ORMMuscle muscle) {
+	public boolean addMuscle(Muscle muscle) {
 		try {
 			helper.getMuscleDao().createOrUpdate(muscle);
 			return true;
@@ -137,8 +137,8 @@ public class DatabaseManager {
 		}
 	}
 
-	public List<ORMMuscle> getMuscles() {
-		List<ORMMuscle> muscles = null;
+	public List<Muscle> getMuscles() {
+		List<Muscle> muscles = null;
 		try {
 			muscles = helper.getMuscleDao().queryForAll();
 		} catch (SQLException e) {
@@ -148,7 +148,7 @@ public class DatabaseManager {
 		
 	}
 
-	public boolean addExerciseType(ORMExerciseType ormExercise) {
+	public boolean addExerciseType(ExerciseType ormExercise) {
 		try {
 			helper.getExerciseTypeDao().createOrUpdate(ormExercise);
 			return true;
@@ -158,8 +158,8 @@ public class DatabaseManager {
 		}
 	}
 	
-	public void associateMuscleWithExercise(ORMExerciseType exerciseType, ORMMuscle muscle) {
-		ORMExerciseTypeMuscle exerciseTypeMuscle = new ORMExerciseTypeMuscle(muscle, exerciseType);
+	public void associateMuscleWithExercise(ExerciseType exerciseType, Muscle muscle) {
+		ExerciseTypeMuscle exerciseTypeMuscle = new ExerciseTypeMuscle(muscle, exerciseType);
 		try {
 			helper.getExerciseTypeMuscleDao().createOrUpdate(exerciseTypeMuscle );
 		} catch (SQLException e) {
@@ -167,8 +167,8 @@ public class DatabaseManager {
 		}
 	}
 
-	public List<ORMExerciseType> getExerciseTypes() {
-		List<ORMExerciseType> exercises = null;
+	public List<ExerciseType> getExerciseTypes() {
+		List<ExerciseType> exercises = null;
 		try {
 			exercises = helper.getExerciseTypeDao().queryForAll();
 		} catch (SQLException e) {
@@ -178,7 +178,7 @@ public class DatabaseManager {
 		return exercises;
 	}
 
-	public ORMExerciseType getExerciseType(String exerciseId) {
+	public ExerciseType getExerciseType(String exerciseId) {
 		try {
 			return helper.getExerciseTypeDao().queryForId(exerciseId);
 		} catch (SQLException e) {
@@ -187,7 +187,32 @@ public class DatabaseManager {
 		}
 	}
 	
+	/* **************************************************************** */
+	/* **********************   PROGRESS   **************************** */
+	/* **************************************************************** */
+	
+	public List<ProgramProgress> getProgressList() {
+		return null;
+	}
+
+	public void jumpToWorkout(int index) {
+	}
+
+	public boolean exerciseDone(ProgramProgress progress, Exercise exercise,
+			int reps, long durationSecs, long date) {
+		return false;
+	}
+
+	public ProgramProgress getProgress(long programId) {
+		return null;
+	}
+	
+	
 	public DatabaseHelper getHelper() {
 		return helper;
+	}
+
+	public WorkoutProgress getWorkoutProgress(long workoutProgressId) {
+		return null;
 	}
 }

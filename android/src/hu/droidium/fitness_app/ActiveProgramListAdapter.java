@@ -1,8 +1,7 @@
 package hu.droidium.fitness_app;
 
 import hu.droidium.fitness_app.activities.ProgramsOverviewActivity;
-import hu.droidium.fitness_app.model.ProgramProgress;
-import hu.droidium.fitness_app.model.ProgramProgressManager;
+import hu.droidium.fitness_app.database.ProgramProgress;
 import hu.droidium.fitness_app.model.helpers.ProgramProgressHelper;
 
 import java.util.ArrayList;
@@ -25,15 +24,20 @@ public class ActiveProgramListAdapter implements ListAdapter {
 	private HashSet<DataSetObserver> observers = new HashSet<DataSetObserver>();
 	
 	public ActiveProgramListAdapter(
-			ProgramsOverviewActivity programsOverviewActivity,
-			ProgramProgressManager programProgressManager) {
+			ProgramsOverviewActivity programsOverviewActivity) {
 		programs.clear();
+		this.programsOverviewActivity = programsOverviewActivity;
+	}
+	
+	public void updatePrograms(List<ProgramProgress> progresses) {
 		TreeSet<ProgramProgress> orderer = new TreeSet<ProgramProgress>(new ProgramProgress.ProgressComparator());
-		orderer.addAll(programProgressManager.getProgress());
+		orderer.addAll(progresses);
 		for (ProgramProgress progress : orderer) {
 			programs.add(progress);
 		}
-		this.programsOverviewActivity = programsOverviewActivity;
+		for (DataSetObserver observer : observers) {
+			observer.onChanged();
+		}
 	}
 
 	@Override
@@ -94,7 +98,7 @@ public class ActiveProgramListAdapter implements ListAdapter {
 
 	@Override
 	public void registerDataSetObserver(DataSetObserver observer) {
-		observers .add(observer);
+		observers.add(observer);
 	}
 
 	@Override

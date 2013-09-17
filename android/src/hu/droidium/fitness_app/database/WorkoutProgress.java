@@ -9,16 +9,21 @@ import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class ORMWorkoutProgress {
+public class WorkoutProgress {
 	
 	@DatabaseField(id=true)
 	private long id;
+	@DatabaseField(foreign=true)
+	private Workout workout;
 	@DatabaseField
 	private int actualBlock;
 	@DatabaseField
 	private int actualExercise;
 	@ForeignCollectionField
-	private ForeignCollection<ORMExerciseProgress> doneExercises;
+	private ForeignCollection<ExerciseProgress> doneExercises;
+	@DatabaseField(foreign=true)
+	private ProgramProgress programProgress;
+
 	@DatabaseField(defaultValue="-1")
 	private long finishDate;
 	
@@ -30,6 +35,14 @@ public class ORMWorkoutProgress {
 		this.id = id;
 	}
 
+	public Workout getWorkout() {
+		return workout;
+	}
+
+	public void setWorkout(Workout workout) {
+		this.workout = workout;
+	}
+
 	public int getActualBlock() {
 		return actualBlock;
 	}
@@ -38,15 +51,15 @@ public class ORMWorkoutProgress {
 		this.actualBlock = actualBlock;
 	}
 
-	public List<ORMExerciseProgress> getDoneExercises() {
-		ArrayList<ORMExerciseProgress> exerciseProgresses = new ArrayList<ORMExerciseProgress>();
-		for (ORMExerciseProgress exercise : doneExercises) {
+	public List<ExerciseProgress> getDoneExercises() {
+		ArrayList<ExerciseProgress> exerciseProgresses = new ArrayList<ExerciseProgress>();
+		for (ExerciseProgress exercise : doneExercises) {
 			exerciseProgresses.add(exercise);
 		}
 		return exerciseProgresses;
 	}
 
-	public void setDoneExercises(ForeignCollection<ORMExerciseProgress> doneExercises) {
+	public void setDoneExercises(ForeignCollection<ExerciseProgress> doneExercises) {
 		this.doneExercises = doneExercises;
 	}
 
@@ -64,6 +77,18 @@ public class ORMWorkoutProgress {
 
 	public void setFinishDate(long finishDate) {
 		this.finishDate = finishDate;
+	}
+
+	public ProgramProgress getProgramProgress() {
+		return programProgress;
+	}
+
+	public void setProgramProgress(ProgramProgress programProgress) {
+		this.programProgress = programProgress;
+	}
+
+	public void exerciseDone(Exercise exercise, int reps, long l, long now, DatabaseManager databaseManager) {
+		// TODO
 	}
 
 }

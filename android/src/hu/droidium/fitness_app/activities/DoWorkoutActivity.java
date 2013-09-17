@@ -1,14 +1,12 @@
 package hu.droidium.fitness_app.activities;
 
 import hu.droidium.fitness_app.BreakCountdown;
+import hu.droidium.fitness_app.Constants;
 import hu.droidium.fitness_app.R;
 import hu.droidium.fitness_app.WorkoutProgressView;
-import hu.droidium.fitness_app.R.id;
-import hu.droidium.fitness_app.R.layout;
-import hu.droidium.fitness_app.R.string;
-import hu.droidium.fitness_app.model.Exercise;
-import hu.droidium.fitness_app.model.Workout;
-import hu.droidium.fitness_app.model.WorkoutProgress;
+import hu.droidium.fitness_app.database.DatabaseManager;
+import hu.droidium.fitness_app.database.Exercise;
+import hu.droidium.fitness_app.database.WorkoutProgress;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,13 +14,14 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.newrelic.agent.android.NewRelic;
 
 public class DoWorkoutActivity extends Activity implements OnClickListener {
 	@SuppressWarnings("unused")
 	private static final String TAG = "ExerciseActivity";
-	private WorkoutProgressView progressView; 
-	private Workout workout;
+	private WorkoutProgressView progressView;
+	private long workoutProgressId;
 	private View exerciseLayout;
 	private View breakLayout;
 	private TextView breakDuration;
@@ -38,6 +37,7 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 	private long startOfExercise = -1;
 	private BreakCountdown task;
 	private View endLayout;
+	private DatabaseManager databaseManager;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +46,7 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 				"AAf0a0158c59a11bc4f28eabd1cec40e370a37fc4f"
 				).start(this.getApplication());		
 		setContentView(R.layout.exercise_layout);
+		workoutProgressId = getIntent().getLongExtra(Constants.WORKOUT_PROGRESS_ID, -1);
 		progressView = (WorkoutProgressView)findViewById(R.id.workoutProgress);
 
 		breakLayout = findViewById(R.id.breakLayout);
@@ -66,21 +67,27 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 		endLayout = findViewById(R.id.endOfExerciseLayout);
 		redoButton = (Button)findViewById(R.id.restartWorkout);
 		redoButton.setOnClickListener(this);
+		
+		databaseManager = DatabaseManager.getInstance(this);
 	}
 	
 	@Override
 	protected void onResume() {
 		super.onResume();
-		// TODO get a workout and the progress
-		//progressView.setWorkout(workout);
-		//progressChanged();
+		if (workoutProgressId != -1) {
+			WorkoutProgress workoutProgress = databaseManager.getWorkoutProgress(workoutProgressId); 
+			progressView.setWorkout(workoutProgress.getWorkout());
+			progressChanged();
+		}
 	}
 
 	private void progressChanged() {
 		long now = System.currentTimeMillis();
-		if (progress.getFinishedDate() == -1) {
-			int[] actualExercise = progress.getActualExerciseIndex();
-			Exercise exercise = workout.getBlocks().get(actualExercise[0]).getExercises().get(actualExercise[1]);
+		if (progress.getFinishDate() == -1) {
+			int actualBlockIndex = progress.getActualBlock();
+			int actualExerciseIndex = progress.getActualExercise();
+			WorkoutProgress workoutProgress = databaseManager.getWorkoutProgress(workoutProgressId);
+			Exercise exercise = workoutProgress.getWorkout().getBlocks().get(actualBlockIndex).getExercises().get(actualExerciseIndex);
 			if (endOfBreak == -1 || endOfBreak < now) {
 				breakLayout.setVisibility(View.GONE);
 				exerciseLayout.setVisibility(View.VISIBLE);
@@ -88,7 +95,7 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 				String unit = exercise.getType().getName();
 				reps.setText(exercise.getReps() + (unit == null?"":" " + unit));
 				endLayout.setVisibility(View.GONE);
-				progressView.setActiveExcercise(actualExercise[0], actualExercise[1]);
+				progressView.setActiveExcercise(actualBlockIndex, actualExerciseIndex);
 			} else {
 				if (task != null) {
 					task.cancel(true);
@@ -100,7 +107,7 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 				exerciseLayout.setVisibility(View.GONE);
 				endLayout.setVisibility(View.GONE);
 				task.execute(remainingSecs);
-				progressView.setActiveBreak(actualExercise[0], actualExercise[1]);
+				progressView.setActiveBreak(actualBlockIndex, actualExerciseIndex);
 			}
 		} else {
 			progressView.done();
@@ -115,10 +122,12 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 		switch(v.getId()) {
 			case R.id.exerciseDone : {
 				long now = System.currentTimeMillis();
-				int[] actualExercise = progress.getActualExerciseIndex();
-				Exercise exercise = workout.getBlocks().get(actualExercise[0]).getExercises().get(actualExercise[1]);
-				progress.exerciseDone(exercise, exercise.getReps(), now - startOfExercise, now);
-				if (progress.getFinishedDate() == -1) {
+				int actualBlockIndex = progress.getActualBlock();
+				int actualExerciseIndex = progress.getActualExercise();
+				WorkoutProgress workoutProgress = databaseManager.getWorkoutProgress(workoutProgressId);
+				Exercise exercise = workoutProgress.getWorkout().getBlocks().get(actualBlockIndex).getExercises().get(actualExerciseIndex);
+				progress.exerciseDone(exercise, exercise.getReps(), now - startOfExercise, now, databaseManager);
+				if (progress.getFinishDate() == -1) {
 					endOfBreak = now + 1000 * exercise.getBreakSecs();
 				}
 				progressChanged();
@@ -147,8 +156,10 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 	public void endOfBreak() {
 		endOfBreak = -1;
 		long now = System.currentTimeMillis();
-		int[] actualExercise = progress.getActualExerciseIndex();
-		Exercise exercise = workout.getBlocks().get(actualExercise[0]).getExercises().get(actualExercise[1]);
+		int actualBlockIndex = progress.getActualBlock();
+		int actualExerciseIndex = progress.getActualExercise();
+		WorkoutProgress workoutProgress = databaseManager.getWorkoutProgress(workoutProgressId);
+		Exercise exercise = workoutProgress.getWorkout().getBlocks().get(actualBlockIndex).getExercises().get(actualExerciseIndex);
 		this.exerciseLabel.setText(exercise.getType() + "");
 		this.startOfExercise = now;
 		this.reps.setText("" + exercise.getReps());

@@ -64,18 +64,18 @@ public class DataLoader {
 
 	public static void loadDataFromAssets(Context context) throws IOException{
 		DatabaseManager databaseManager = DatabaseManager.getInstance(context);
-		List<ORMExerciseType> exerciseTypes = databaseManager.getExerciseTypes();
+		List<ExerciseType> exerciseTypes = databaseManager.getExerciseTypes();
 		Log.e(TAG, "Type count " + exerciseTypes.size());
-		for (ORMExerciseType type : exerciseTypes) {
+		for (ExerciseType type : exerciseTypes) {
 			Log.e(TAG, "Type " + type.getId() + " " + type.getName());
 		}
 		AssetManager assetManager =  context.getAssets();
 		// Load meta data
 		
 		loadMuscleDataFromAsset(META_FOLDER + File.separator + MUSCLE_FILE,context);
-		List<ORMMuscle> muscles = databaseManager.getMuscles();
+		List<Muscle> muscles = databaseManager.getMuscles();
 		Log.e(TAG, "Count " + muscles.size());
-		for (ORMMuscle muscle : muscles) {
+		for (Muscle muscle : muscles) {
 			Log.e(TAG, "Muscle " + muscle.getId() + " " + muscle.getName());
 		}
 		// Load exercises
@@ -123,7 +123,7 @@ public class DataLoader {
 				} catch (JSONException e) {
 					Log.w(TAG, "No muscle description " + e.getMessage());
 				}
-				ORMMuscle ormMuscle = new ORMMuscle(muscleId, muscleName, muscleDescription);
+				Muscle ormMuscle = new Muscle(muscleId, muscleName, muscleDescription);
 				databaseManager.addMuscle(ormMuscle);
 				Log.e(TAG, "Added muscle " + ormMuscle.getId());
 			} catch (Exception e) {
@@ -137,9 +137,9 @@ public class DataLoader {
 		Log.e(TAG, "Loading exercise meta data from file " + assetPath);
 		DatabaseManager databaseManager = DatabaseManager.getInstance(context);
 		// Get muscles to link them to exercises
-		List<ORMMuscle> muscleList = databaseManager.getMuscles();
-		HashMap<String, ORMMuscle> muscles = new HashMap<String, ORMMuscle>();
-		for (ORMMuscle muscle : muscleList) {
+		List<Muscle> muscleList = databaseManager.getMuscles();
+		HashMap<String, Muscle> muscles = new HashMap<String, Muscle>();
+		for (Muscle muscle : muscleList) {
 			muscles.put(muscle.getId(), muscle);
 		}
 		JSONArray exercises = null;
@@ -187,7 +187,7 @@ public class DataLoader {
 				int speed = exercise.getInt(SPEED_KEY);
 				int flexibility = exercise.getInt(FLEXIBILITY_KEY);
 				int balance = exercise.getInt(BALANCE_KEY);
-				ORMExerciseType ormExercise = new ORMExerciseType(exerciseId,
+				ExerciseType ormExercise = new ExerciseType(exerciseId,
 						exerciseName, exerciseDescription, exerciseInstructions, unit,
 						stamina, strength, speed, flexibility, balance);
 				databaseManager.addExerciseType(ormExercise);
@@ -207,9 +207,9 @@ public class DataLoader {
 		Log.e(TAG, "Loading programs from file " + assetPath);
 		// Get database manager
 		DatabaseManager databaseManager = DatabaseManager.getInstance(context);
-		List<ORMExerciseType> typeList = databaseManager.getTypes();
-		HashMap<String, ORMExerciseType> types = new HashMap<String, ORMExerciseType>();
-		for (ORMExerciseType type : typeList) {
+		List<ExerciseType> typeList = databaseManager.getTypes();
+		HashMap<String, ExerciseType> types = new HashMap<String, ExerciseType>();
+		for (ExerciseType type : typeList) {
 			types.put(type.getId(), type);
 		}
 		JSONArray programs = null;
@@ -235,7 +235,7 @@ public class DataLoader {
 				} catch (JSONException e) {
 					Log.w(TAG, "No program description " + e.getMessage());
 				}
-				ORMProgram ormProgram = new ORMProgram(programId, programName, programDescription);
+				Program ormProgram = new Program(programId, programName, programDescription);
 				databaseManager.addProgram(ormProgram);
 				JSONArray workouts = program.getJSONArray(WORKOUTS_KEY);
 				for (int workoutIndex = 0; workoutIndex < workouts.length(); workoutIndex++) {
@@ -254,7 +254,7 @@ public class DataLoader {
 					} catch (JSONException e) {
 						Log.w(TAG, "No workout description " + e.getMessage());
 					}
-					ORMWorkout ormWorkout = new ORMWorkout(workoutId, ormProgram, day, workoutName, workoutDescription);
+					Workout ormWorkout = new Workout(workoutId, ormProgram, day, workoutName, workoutDescription);
 					databaseManager.addWorkout(ormWorkout);
 					JSONArray blocks = workout.getJSONArray(BLOCKS_KEY);
 					for (int blockIndex = 0; blockIndex < blocks.length(); blockIndex++) {
@@ -266,7 +266,7 @@ public class DataLoader {
 						} catch (JSONException e) {
 							Log.w(TAG, "No block name " + e.getMessage());
 						}
-						ORMBlock ormBlock = new ORMBlock(blockId, ormWorkout, blockName);
+						Block ormBlock = new Block(blockId, ormWorkout, blockName);
 						databaseManager.addBlock(ormBlock);
 						JSONArray exercises = block.getJSONArray(EXERCISES_KEY);
 						for (int exerciseIndex = 0; exerciseIndex < exercises.length(); exerciseIndex++) {
@@ -274,7 +274,7 @@ public class DataLoader {
 							try {
 								JSONObject exercise = exercises.getJSONObject(exerciseIndex);
 								String exerciseType = exercise.getString(EXERCISE_TYPE_KEY);
-								ORMExerciseType ormExerciseType = types.get(exerciseType);
+								ExerciseType ormExerciseType = types.get(exerciseType);
 								if (ormExerciseType == null) {
 									throw new JSONException("No type data available.");
 								}
@@ -292,7 +292,7 @@ public class DataLoader {
 									Log.w(TAG, "No break secs " + e.getMessage());
 								}
 								Log.e(TAG, "Exercise parsed successfully. " + exerciseId);
-								ORMExercise ormExercise = new ORMExercise(exerciseId, ormBlock, exerciseIndex, ormExerciseType, reps, targetSecs, breakSecs);
+								Exercise ormExercise = new Exercise(exerciseId, ormBlock, exerciseIndex, ormExerciseType, reps, targetSecs, breakSecs);
 								databaseManager.addExercise(ormExercise);
 							} catch (JSONException e) {
 								Log.e(TAG, "Couldn't parse exercise from " + exercises.toString(3));

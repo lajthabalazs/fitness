@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class MainActivity extends Activity implements OnClickListener {
+public class TestActivity extends Activity implements OnClickListener {
 
 	private Button showExercises;
 	private Button showMuscles;
