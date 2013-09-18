@@ -29,7 +29,7 @@ public class ProgramsOverviewActivity extends Activity implements OnClickListene
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.programs_overview);
+		setContentView(R.layout.programs_overview_activity);
 		programList = (ListView)findViewById(R.id.programList);
 		programList.setOnItemClickListener(this);
 		programList.setOnItemLongClickListener(this);

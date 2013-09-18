@@ -1,5 +1,6 @@
 package hu.droidium.fitness_app.model.helpers;
 
+import hu.droidium.fitness_app.Constants;
 import hu.droidium.fitness_app.R;
 import hu.droidium.fitness_app.database.ProgramProgress;
 
@@ -11,8 +12,6 @@ import android.content.Context;
 import android.graphics.Color;
 
 public class ProgramProgressHelper {
-	
-	private static SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-DD", Locale.getDefault());
 	
 	public static int getBackgroundColor(ProgramProgress progress, Context context) {
 		int color;
@@ -36,10 +35,10 @@ public class ProgramProgressHelper {
 		String dateMessage = null;
 		if (progress.isDone()) {
 			// Done
-			dateMessage = context.getResources().getString(R.string.programDoneLabel, format.format(new Date(progress.getTerminationDate())));
+			dateMessage = context.getResources().getString(R.string.programDoneLabel, Constants.dateFormatter.format(new Date(progress.getTerminationDate())));
 		} else if (progress.getTerminationDate() != -1) {
 			// Aborted
-			dateMessage = context.getResources().getString(R.string.programAbandonnedLabel, format.format(new Date(progress.getTerminationDate())));
+			dateMessage = context.getResources().getString(R.string.programAbandonnedLabel, Constants.dateFormatter.format(new Date(progress.getTerminationDate())));
 		} else if (progress.getFirstMissedWorkout() != -1){
 			// Missed layout
 			long dayDiff = (System.currentTimeMillis() - progress.getFirstMissedWorkout()) / (1000*3600*24);

@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.TreeSet;
 
 import android.database.DataSetObserver;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
@@ -58,14 +56,6 @@ public class ActiveProgramListAdapter implements ListAdapter {
 	@Override
 	public int getItemViewType(int position) {
 		return 0;
-		/*
-		ProgramProgress program = (ProgramProgress)getItem(position);
-		if (program.getTerminationDate() != -1) {
-			return 0;
-		} else {
-			return 1;
-		}
-		*/
 	}
 
 	@Override
@@ -76,8 +66,7 @@ public class ActiveProgramListAdapter implements ListAdapter {
 		}
 		((TextView)convertView.findViewById(R.id.programNameInActiveProgramList)).setText(progress.getProgram().getName());	
 		((TextView)convertView.findViewById(R.id.programStartInActiveProgramList)).setText(ProgramProgressHelper.getDateOfNextWorkoutText(progress, programsOverviewActivity));
-		convertView.getBackground().clearColorFilter();
-		convertView.getBackground().setColorFilter(new PorterDuffColorFilter(ProgramProgressHelper.getBackgroundColor(progress, programsOverviewActivity), PorterDuff.Mode.MULTIPLY));
+		convertView.setBackgroundColor(ProgramProgressHelper.getBackgroundColor(progress, programsOverviewActivity));
 		return convertView;
 	}
 

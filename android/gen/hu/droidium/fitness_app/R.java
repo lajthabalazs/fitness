@@ -24,7 +24,7 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f08001d;
+        public static final int action_settings=0x7f080021;
         public static final int addFifteen=0x7f08000b;
         public static final int breakDuration=0x7f08000a;
         public static final int breakLayout=0x7f080009;
@@ -37,6 +37,8 @@ public final class R {
         public static final int exerciseDone=0x7f080011;
         public static final int exerciseLabel=0x7f08000e;
         public static final int exerciseLayout=0x7f08000d;
+        public static final int newProgramNameEdit=0x7f080020;
+        public static final int newProgramNameLabel=0x7f08001f;
         public static final int nextWorkoutOnProgressDetails=0x7f080019;
         public static final int programDescription=0x7f080018;
         public static final int programList=0x7f08001b;
@@ -51,17 +53,19 @@ public final class R {
         public static final int showProgramsButton=0x7f080007;
         public static final int startNewProgram=0x7f08001c;
         public static final int stringList=0x7f080015;
+        public static final int textView1=0x7f08001d;
         public static final int toRealApp=0x7f080004;
         public static final int wellDoneText=0x7f080013;
+        public static final int workoutList=0x7f08001e;
         public static final int workoutProgress=0x7f080008;
     }
     public static final class layout {
         public static final int active_program_list_item=0x7f030000;
         public static final int activity_main=0x7f030001;
-        public static final int exercise_layout=0x7f030002;
+        public static final int do_workout_activity=0x7f030002;
         public static final int list_programs_layout=0x7f030003;
-        public static final int program_progress_details=0x7f030004;
-        public static final int programs_overview=0x7f030005;
+        public static final int program_progress_details_activity=0x7f030004;
+        public static final int programs_overview_activity=0x7f030005;
         public static final int simple_list_layout=0x7f030006;
         public static final int start_program_layout=0x7f030007;
     }
@@ -89,6 +93,7 @@ public final class R {
         public static final int programMissedWorkoutLabep=0x7f05000f;
         public static final int programNextWorkoutLabel=0x7f05000e;
         public static final int programStartedLabel=0x7f05000c;
+        public static final int progressLabel=0x7f05001d;
         public static final int redoWorkout=0x7f05000a;
         public static final int secs=0x7f050009;
         public static final int showExercises=0x7f050015;
@@ -98,6 +103,7 @@ public final class R {
         public static final int startNewProgram=0x7f05000b;
         public static final int toMuscles=0x7f050014;
         public static final int workoutCompleted=0x7f050008;
+        public static final int workoutList=0x7f05001e;
     }
     public static final class style {
         /** 

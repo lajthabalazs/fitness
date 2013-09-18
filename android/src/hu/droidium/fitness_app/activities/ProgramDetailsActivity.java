@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 public class ProgramDetailsActivity extends Activity implements OnClickListener {
@@ -20,14 +21,16 @@ public class ProgramDetailsActivity extends Activity implements OnClickListener 
 	private Button addNewProgram;
 	private ArrayAdapter<Workout> workoutAdapter;
 	private String programId;
+	private EditText progressNameEdit;
 	private DatabaseManager databaseManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.start_program_layout);
-		list = (ListView)findViewById(R.id.stringList);
+		list = (ListView)findViewById(R.id.workoutList);
 		programId = getIntent().getStringExtra(Constants.PROGRAM_ID_KEY);
+		progressNameEdit = (EditText)findViewById(R.id.newProgramNameEdit);
 		workoutAdapter = new ArrayAdapter<Workout>(this, android.R.layout.simple_list_item_1);
 		databaseManager = DatabaseManager.getInstance(this);
 		list.setAdapter(workoutAdapter);
@@ -42,6 +45,7 @@ public class ProgramDetailsActivity extends Activity implements OnClickListener 
 		super.onResume();
 		workoutAdapter.clear();
 		Program program = databaseManager.getProgram(programId);
+		setTitle(program.getName());
 		for (Workout workout : program.getWorkouts()) {
 			workoutAdapter.add(workout);
 		}
@@ -49,5 +53,21 @@ public class ProgramDetailsActivity extends Activity implements OnClickListener 
 	
 	@Override
 	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.cancelButton: {
+			setResult(Constants.RESULT_CANCEL);
+			finish();
+			break;
+		}
+		case R.id.startNewProgram: {
+			Program program = databaseManager.getProgram(programId);
+			long now = System.currentTimeMillis();
+			String progressNameName = progressNameEdit.getText().toString();
+			databaseManager.startProgram(now, program, progressNameName);
+			setResult(Constants.RESULT_STARTED_NEW_PROGRAM);
+			finish();
+			break;
+		}
+		}
 	}
 }

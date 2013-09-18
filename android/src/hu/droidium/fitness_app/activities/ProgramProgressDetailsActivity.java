@@ -27,6 +27,7 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.program_progress_details_activity);
 		if (savedInstanceState != null && savedInstanceState.containsKey(Constants.PROGRAM_PROGRESS_ID)) {
 			programId = savedInstanceState.getLong(Constants.PROGRAM_PROGRESS_ID);
 		} else if (getIntent() != null && getIntent().getExtras().containsKey(Constants.PROGRAM_PROGRESS_ID)){

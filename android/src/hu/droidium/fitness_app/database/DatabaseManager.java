@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 
 /**
  * Convenience class for encapsulating database requests.
@@ -11,6 +12,8 @@ import android.content.Context;
  *
  */
 public class DatabaseManager {
+	private static final String TAG = "DatabaseManager";
+
 	private static DatabaseManager instance;
 	
 	private DatabaseHelper helper;
@@ -174,7 +177,6 @@ public class DatabaseManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 		return exercises;
 	}
 
@@ -192,27 +194,34 @@ public class DatabaseManager {
 	/* **************************************************************** */
 	
 	public List<ProgramProgress> getProgressList() {
-		return null;
-	}
-
-	public void jumpToWorkout(int index) {
-	}
-
-	public boolean exerciseDone(ProgramProgress progress, Exercise exercise,
-			int reps, long durationSecs, long date) {
-		return false;
+		List<ProgramProgress> exercises = null;
+		try {
+			exercises = helper.getProgramProgressDao().queryForAll();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return exercises;
 	}
 
 	public ProgramProgress getProgress(long programId) {
-		return null;
+		try {
+			return helper.getProgramProgressDao().queryForId(programId);
+		} catch (SQLException e) {
+			Log.e(TAG, "Couldn't load progress " + programId + e.getMessage());
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
-	
-	public DatabaseHelper getHelper() {
-		return helper;
-	}
-
-	public WorkoutProgress getWorkoutProgress(long workoutProgressId) {
-		return null;
+	public boolean startProgram(long id, Program program, String progressName) {
+		ProgramProgress programProgress = new ProgramProgress(id, progressName, program);
+		try {
+			helper.getProgramProgressDao().create(programProgress);
+			return true;
+		} catch (SQLException e) {
+			Log.e(TAG, "Couldn't add program " + e.getMessage());
+			e.printStackTrace();
+			return false;
+		}
 	}
 }

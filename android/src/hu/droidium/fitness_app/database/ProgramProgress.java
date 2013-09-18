@@ -18,14 +18,17 @@ public class ProgramProgress {
 	private String progressName;
 	@DatabaseField (foreign = true)
 	private Program program;
-	@DatabaseField
-	private int actualWorkout;
-	@DatabaseField
-	private int actualBlock;
-	@DatabaseField
-	private int actualExercise;
 	@ForeignCollectionField
 	private ForeignCollection<WorkoutProgress> doneWorkouts;
+	@DatabaseField(foreign=true, canBeNull=true)
+	private WorkoutProgress actualWorkout;
+	
+	public ProgramProgress() {}
+	public ProgramProgress(long id, String progressName, Program program) {
+		this.progressId = id;
+		this.progressName = progressName;
+		this.program = program;		
+	}
 
 	public long getProgressId() {
 		return progressId;
@@ -51,30 +54,14 @@ public class ProgramProgress {
 		this.program = program;
 	}
 	
-	public int getActualWorkout() {
+	public WorkoutProgress getActualWorkout() {
 		return actualWorkout;
 	}
 	
-	public void setActualWorkout(int actualWorkout) {
+	public void setActualWorkout(WorkoutProgress actualWorkout) {
 		this.actualWorkout = actualWorkout;
 	}
-	
-	public int getActualBlock() {
-		return actualBlock;
-	}
-	
-	public void setActualBlock(int actualBlock) {
-		this.actualBlock = actualBlock;
-	}
-	
-	public int getActualExercise() {
-		return actualExercise;
-	}
-	
-	public void setActualExercise(int actualExercise) {
-		this.actualExercise = actualExercise;
-	}
-	
+		
 	public List<WorkoutProgress> getDoneWorkouts() {
 		ArrayList<WorkoutProgress> workouts = new ArrayList<WorkoutProgress>();
 		for (WorkoutProgress workout : doneWorkouts) {
@@ -166,7 +153,7 @@ public class ProgramProgress {
 			}
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return progressId + " " + progressName + " (" + program.getName() + ")";

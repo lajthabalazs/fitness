@@ -59,7 +59,7 @@ public class ProgramListActivity extends Activity implements OnClickListener, On
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == Constants.STARTED_NEW_PROGRAM) {
+		if (resultCode == Constants.RESULT_STARTED_NEW_PROGRAM) {
 			// If a program was selected, return immediately
 			finish();
 		} else {

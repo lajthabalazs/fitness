@@ -33,5 +33,9 @@
     <string name="startApp">To real app</string>
 
     <string name="createDatabase">Create database</string>
+
+    <string name="progressLabel">Name your workout program</string>
+
+    <string name="workoutList">Workouts</string>
     
 </resources>

@@ -28,6 +28,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
 	private Dao<ExerciseProgress, Long> exerciseProgressDao;
 	private Dao<WorkoutProgress, Long> workoutProgressDao;
+	private Dao<ProgramProgress, Long> programProgressDao;
 
 	public DatabaseHelper (Context context){
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -36,7 +37,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
 		try {
-			
 			TableUtils.createTable(connectionSource, ExerciseType.class);
 			TableUtils.createTable(connectionSource, Muscle.class);
 			TableUtils.createTable(connectionSource, ExerciseTypeMuscle.class);
@@ -166,5 +166,17 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 			}
 		}
 		return workoutProgressDao;
+	}
+
+	public Dao<ProgramProgress, Long> getProgramProgressDao() {
+		if (programProgressDao == null) {
+			try {
+				programProgressDao = getDao(ProgramProgress.class);
+			} catch (SQLException e) {
+				Log.e(TAG, "Error creating DAO " + e.getMessage());
+				e.printStackTrace();
+			}
+		}
+		return programProgressDao;
 	}	
 }
