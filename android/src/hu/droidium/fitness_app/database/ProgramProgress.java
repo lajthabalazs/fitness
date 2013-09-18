@@ -16,7 +16,7 @@ public class ProgramProgress {
 	private long progressId;
 	@DatabaseField
 	private String progressName;
-	@DatabaseField
+	@DatabaseField (foreign = true)
 	private Program program;
 	@DatabaseField
 	private int actualWorkout;
@@ -165,5 +165,10 @@ public class ProgramProgress {
 				return 0;
 			}
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return progressId + " " + progressName + " (" + program.getName() + ")";
 	}
 }

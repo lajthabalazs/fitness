@@ -1,5 +1,9 @@
 package hu.droidium.fitness_app.database;
 
+import java.util.Date;
+
+import hu.droidium.fitness_app.Constants;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -16,6 +20,8 @@ public class ExerciseProgress {
 	private int doneReps;
 	@DatabaseField
 	private int completionTime;
+	@DatabaseField
+	private long competedOn;
 	
 	public long getId() {
 		return id;
@@ -50,5 +56,18 @@ public class ExerciseProgress {
 	}
 	public void setCompletionTime(int completionTime) {
 		this.completionTime = completionTime;
+	}
+
+	public long getCompetedOn() {
+		return competedOn;
+	}
+
+	public void setCompetedOn(long competedOn) {
+		this.competedOn = competedOn;
+	}
+
+	@Override
+	public String toString() {
+		return id + " " + Constants.dateFormatter.format(new Date(competedOn)) + " done " + doneReps + " " + exercise.getType().getUnit() + " of " + exercise.getType().getName();
 	}
 }

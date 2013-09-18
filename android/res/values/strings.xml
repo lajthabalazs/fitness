@@ -25,5 +25,13 @@
     <string name="showExercises">Show exercises</string>
     <string name="showMuscles">Show Muscles</string>
     <string name="showPrograms">Show Programs</string>
+    <string name="addNewProgram">Start program</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="programListTitle">Select a program</string>
+
+    <string name="startApp">To real app</string>
+
+    <string name="createDatabase">Create database</string>
     
 </resources>

@@ -14,6 +14,8 @@ public class WorkoutProgress {
 	@DatabaseField(id=true)
 	private long id;
 	@DatabaseField(foreign=true)
+	private ProgramProgress programProgress;
+	@DatabaseField(foreign=true)
 	private Workout workout;
 	@DatabaseField
 	private int actualBlock;
@@ -21,8 +23,6 @@ public class WorkoutProgress {
 	private int actualExercise;
 	@ForeignCollectionField
 	private ForeignCollection<ExerciseProgress> doneExercises;
-	@DatabaseField(foreign=true)
-	private ProgramProgress programProgress;
 
 	@DatabaseField(defaultValue="-1")
 	private long finishDate;
@@ -91,4 +91,8 @@ public class WorkoutProgress {
 		// TODO
 	}
 
+	@Override
+	public String toString() {
+		return id + " " + workout.getName();
+	}
 }

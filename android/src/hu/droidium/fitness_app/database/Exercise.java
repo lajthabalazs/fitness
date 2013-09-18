@@ -82,8 +82,9 @@ public class Exercise {
 	public void setOrder(int order) {
 		this.order = order;
 	}
-
-		
-
-
+	
+	@Override
+	public String toString() {
+		return id + " " + type.getName() + " " + getReps() + " " + type.getUnit();
+	}
 }

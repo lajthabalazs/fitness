@@ -9,30 +9,46 @@
     tools:context=".TestActivity" >
 
     <Button
+        android:id="@+id/createDatabase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/toRealApp"
+        android:layout_marginRight="17dp"
+        android:text="@string/createDatabase" />
+
+    <Button
         android:id="@+id/showMusclesButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="49dp"
+        android:layout_marginTop="56dp"
         android:text="@string/showMuscles" />
 
     <Button
         android:id="@+id/showExercisesButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_below="@+id/showMusclesButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginLeft="23dp"
         android:text="@string/showExercises" />
 
     <Button
         android:id="@+id/showProgramsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/createDatabase"
         android:layout_below="@+id/showExercisesButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="61dp"
         android:text="@string/showPrograms" />
+
+    <Button
+        android:id="@+id/toRealApp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/showExercisesButton"
+        android:layout_below="@+id/showProgramsButton"
+        android:text="@string/startApp" />
 
 </RelativeLayout>

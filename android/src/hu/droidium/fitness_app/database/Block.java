@@ -73,4 +73,13 @@ public class Block {
 	public void setExercises(ForeignCollection<Exercise> exercises){
 		this.exercises = exercises;
 	}
+	
+	public int getExerciseCount() {
+		return exercises.size();
+	}
+	
+	@Override
+	public String toString() {
+		return id + " " + name + " exercises: " + getExerciseCount();
+	}
 }

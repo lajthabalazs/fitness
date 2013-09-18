@@ -107,4 +107,9 @@ public class Workout{
 		}
 		return total;
 	}
+	
+	@Override
+	public String toString() {
+		return id + " " + name + " blocks: " + getNumberOfBlocks() + " exercises: " + getNumberOfExercises();
+	}
 }

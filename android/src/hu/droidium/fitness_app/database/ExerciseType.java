@@ -1,5 +1,7 @@
 package hu.droidium.fitness_app.database;
 
+import hu.droidium.fitness_app.Constants;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,6 +88,9 @@ public class ExerciseType {
 	}
 
 	public String getUnit() {
+		if ((unit == null) || (unit.equals(""))) {
+			return Constants.REPS_DEFAULT_UNIT;
+		}
 		return unit;
 	}
 

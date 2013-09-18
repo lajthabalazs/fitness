@@ -12,12 +12,15 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class TestActivity extends Activity implements OnClickListener {
 
 	private Button showExercises;
 	private Button showMuscles;
 	private Button showPrograms;
+	private Button toRealApp;
+	private Button createDb;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,18 +32,15 @@ public class TestActivity extends Activity implements OnClickListener {
 		showExercises.setOnClickListener(this);
 		showPrograms = (Button)findViewById(R.id.showProgramsButton);
 		showPrograms.setOnClickListener(this);
+		toRealApp = (Button)findViewById(R.id.toRealApp);
+		toRealApp.setOnClickListener(this);
+		createDb = (Button)findViewById(R.id.createDatabase);
+		createDb.setOnClickListener(this);
 	}
 	
 	@Override
 	protected void onResume() {
 		super.onResume();
-		new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				loadFromAssets();
-			}
-		}).start();
 	}
 
 	protected void loadFromAssets() {
@@ -74,6 +74,28 @@ public class TestActivity extends Activity implements OnClickListener {
 		case R.id.showProgramsButton: {
 			Intent intent = new Intent(this,ProgramListActivity.class);
 			startActivity(intent);
+			break;
+		}
+		case R.id.toRealApp: {
+			Intent intent = new Intent(this,ProgramsOverviewActivity.class);
+			startActivity(intent);
+			break;
+		}
+		case R.id.createDatabase: {
+			new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					loadFromAssets();
+					runOnUiThread(new Runnable() {
+						
+						@Override
+						public void run() {
+							Toast.makeText(TestActivity.this, "Database created", Toast.LENGTH_LONG).show();
+						}
+					});
+				}
+			}).start();
 			break;
 		}
 		}

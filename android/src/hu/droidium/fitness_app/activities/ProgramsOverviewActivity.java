@@ -1,5 +1,7 @@
 package hu.droidium.fitness_app.activities;
 
+import java.util.List;
+
 import hu.droidium.fitness_app.ActiveProgramListAdapter;
 import hu.droidium.fitness_app.Constants;
 import hu.droidium.fitness_app.R;
@@ -15,10 +17,12 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class ProgramsOverviewActivity extends Activity implements OnClickListener, OnItemClickListener, OnItemLongClickListener {
 	private Button startNewProgram;
 	private ListView programList;
+	
 	private ActiveProgramListAdapter programAdapter;
 	private DatabaseManager databaseManager;
 
@@ -39,14 +43,20 @@ public class ProgramsOverviewActivity extends Activity implements OnClickListene
 	@Override
 	protected void onResume() {
 		super.onResume();
-		programAdapter.updatePrograms(databaseManager.getProgressList());
+		List<ProgramProgress> programs = databaseManager.getProgressList();
+		if (programs != null && programs.size() > 0) {
+			programAdapter.updatePrograms(programs);
+		} else {
+			Toast.makeText(this, "No programs added yet.", Toast.LENGTH_LONG).show();
+		}
 	}
 
 	@Override
 	public void onClick(View v) {
-		// TODO start a new program
+		Intent intent = new Intent(this, ProgramListActivity.class);
+		startActivity(intent);
 	}
-
+	
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		// Program selected
