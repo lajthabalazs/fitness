@@ -12,5 +12,6 @@ public class Constants {
 	public static final String PROGRAM_ID_KEY = "program_id";
 	public static final String REPS_DEFAULT_UNIT = "reps";
 	
-	public static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()); 
+	public static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+	public static final long DAY_MILLIS = 24l * 3600 * 1000; 
 }

@@ -23,6 +23,8 @@ public class Workout{
 	private String description;
 	@ForeignCollectionField(orderColumnName="order")
 	private ForeignCollection<Block> blocks;
+	@DatabaseField(defaultValue="false")
+	private boolean skipped;
 
 	public Workout(){
 	}
@@ -86,6 +88,15 @@ public class Workout{
 		}
 		return ret;
 	}
+
+	public boolean isSkipped() {
+		return skipped;
+	}
+
+	public void setSkipped(boolean skipped) {
+		this.skipped = skipped;
+	}
+
 	public final int getMaxRep(){
 		int maxRep = 0;
 		for(Block block : getBlocks()) {

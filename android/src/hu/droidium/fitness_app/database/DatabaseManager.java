@@ -130,6 +130,7 @@ public class DatabaseManager {
 		return programs;
 		
 	}
+	
 	public boolean addMuscle(Muscle muscle) {
 		try {
 			helper.getMuscleDao().createOrUpdate(muscle);
@@ -148,7 +149,6 @@ public class DatabaseManager {
 			e.printStackTrace();
 		}
 		return muscles;
-		
 	}
 
 	public boolean addExerciseType(ExerciseType ormExercise) {

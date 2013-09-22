@@ -48,6 +48,7 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 	protected void onResume() {
 		super.onResume();
 		ProgramProgress progress = databaseManager.getProgress(programId);
+		progress.setProgram(databaseManager.getProgram(progress.getProgram().getId()));
 		setTitle(progress.getProgram().getName());
 		programProgressBar.setProgress(progress.getProgressPercentage());
 		programDetailsText.setText(progress.getProgram().getDescription());

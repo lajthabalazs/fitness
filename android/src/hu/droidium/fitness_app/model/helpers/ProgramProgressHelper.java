@@ -4,9 +4,7 @@ import hu.droidium.fitness_app.Constants;
 import hu.droidium.fitness_app.R;
 import hu.droidium.fitness_app.database.ProgramProgress;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 import android.content.Context;
 import android.graphics.Color;

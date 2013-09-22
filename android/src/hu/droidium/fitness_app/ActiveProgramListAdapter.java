@@ -3,6 +3,7 @@ package hu.droidium.fitness_app;
 import hu.droidium.fitness_app.activities.ProgramsOverviewActivity;
 import hu.droidium.fitness_app.database.ProgramProgress;
 import hu.droidium.fitness_app.model.helpers.ProgramProgressHelper;
+import hu.droidium.fitness_app.model.helpers.ProgressComparator;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,6 +14,7 @@ import android.database.DataSetObserver;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class ActiveProgramListAdapter implements ListAdapter {
@@ -21,14 +23,13 @@ public class ActiveProgramListAdapter implements ListAdapter {
 	private ProgramsOverviewActivity programsOverviewActivity;
 	private HashSet<DataSetObserver> observers = new HashSet<DataSetObserver>();
 	
-	public ActiveProgramListAdapter(
-			ProgramsOverviewActivity programsOverviewActivity) {
-		programs.clear();
+	public ActiveProgramListAdapter(ProgramsOverviewActivity programsOverviewActivity) {
 		this.programsOverviewActivity = programsOverviewActivity;
 	}
 	
 	public void updatePrograms(List<ProgramProgress> progresses) {
-		TreeSet<ProgramProgress> orderer = new TreeSet<ProgramProgress>(new ProgramProgress.ProgressComparator());
+		programs.clear();
+		TreeSet<ProgramProgress> orderer = new TreeSet<ProgramProgress>(new ProgressComparator());
 		orderer.addAll(progresses);
 		for (ProgramProgress progress : orderer) {
 			programs.add(progress);
@@ -66,6 +67,7 @@ public class ActiveProgramListAdapter implements ListAdapter {
 		}
 		((TextView)convertView.findViewById(R.id.programNameInActiveProgramList)).setText(progress.getProgram().getName());	
 		((TextView)convertView.findViewById(R.id.programStartInActiveProgramList)).setText(ProgramProgressHelper.getDateOfNextWorkoutText(progress, programsOverviewActivity));
+		((ProgressBar)convertView.findViewById(R.id.programProgressBarInList)).setProgress(progress.getProgressPercentage());
 		convertView.setBackgroundColor(ProgramProgressHelper.getBackgroundColor(progress, programsOverviewActivity));
 		return convertView;
 	}

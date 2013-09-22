@@ -20,7 +20,7 @@ public class Program {
 	private String name;
 	@DatabaseField
 	private String description;
-	@ForeignCollectionField
+	@ForeignCollectionField()
 	private ForeignCollection<Workout> workouts;
 	
 	public Program() {}
@@ -50,6 +50,7 @@ public class Program {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
 	public List<Workout> getWorkouts() {
 		ArrayList<Workout> workouts = new ArrayList<Workout>();
 		for (Workout workout : this.workouts){
