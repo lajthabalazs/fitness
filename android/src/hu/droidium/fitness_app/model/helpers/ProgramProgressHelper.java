@@ -2,7 +2,12 @@ package hu.droidium.fitness_app.model.helpers;
 
 import hu.droidium.fitness_app.Constants;
 import hu.droidium.fitness_app.R;
+import hu.droidium.fitness_app.database.Block;
+import hu.droidium.fitness_app.database.DatabaseManager;
+import hu.droidium.fitness_app.database.Exercise;
 import hu.droidium.fitness_app.database.ProgramProgress;
+import hu.droidium.fitness_app.database.Workout;
+import hu.droidium.fitness_app.database.WorkoutProgress;
 
 import java.util.Date;
 
@@ -19,7 +24,7 @@ public class ProgramProgressHelper {
 		} else if (progress.getTerminationDate() != -1) {
 			// Aborted
 			color = Color.DKGRAY;
-		} else if (progress.getFirstMissedWorkout() != -1){
+		} else if (progress.getFirstMissedWorkout() != null){
 			// Missed layout
 			color = Color.RED;
 		} else {
@@ -27,6 +32,10 @@ public class ProgramProgressHelper {
 			color = Color.GREEN;
 		}
 		return color;
+	}
+	
+	public static long getWorkoutDate(ProgramProgress progress, Workout workout) {		
+		return progress.getProgressId() + workout.getDay() * Constants.DAY_MILLIS;
 	}
 	
 	public static String getDateOfNextWorkoutText(ProgramProgress progress, Context context) {
@@ -37,9 +46,9 @@ public class ProgramProgressHelper {
 		} else if (progress.getTerminationDate() != -1) {
 			// Aborted
 			dateMessage = context.getResources().getString(R.string.programAbandonnedLabel, Constants.dateFormatter.format(new Date(progress.getTerminationDate())));
-		} else if (progress.getFirstMissedWorkout() != -1){
+		} else if (progress.getFirstMissedWorkout() != null){
 			// Missed layout
-			long dayDiff = (System.currentTimeMillis() - progress.getFirstMissedWorkout()) / (1000*3600*24);
+			long dayDiff = (System.currentTimeMillis() - getWorkoutDate(progress, progress.getFirstMissedWorkout())) / (1000*3600*24);
 			dateMessage = context.getResources().getString(R.string.programMissedWorkoutLabep, "" + dayDiff, dayDiff > 1?"s":"");
 		} else {
 			// Next workout
@@ -52,6 +61,20 @@ public class ProgramProgressHelper {
 			}
 		}
 		return dateMessage;
+	}
+	
+	public static Exercise getExercise(WorkoutProgress progress, int actualBlockIndex, int actualExerciseIndex, DatabaseManager databaseManager) {
+		progress = databaseManager.getWorkoutProgress(progress.getId());
+		Workout workout = databaseManager.getWorkout(progress.getWorkout().getId());
+		Block block = databaseManager.getBlock(workout.getBlocks().get(actualBlockIndex).getId());		
+		Exercise exercise = databaseManager.getExercise(block.getExercises().get(actualExerciseIndex).getId());
+		return exercise;
+	}
+
+	public static WorkoutProgress getActualWorkoutProgress(long programProgressId, DatabaseManager databaseManager) {
+		ProgramProgress progress = databaseManager.getProgress(programProgressId);
+		WorkoutProgress actualWorkout = databaseManager.getWorkoutProgress(progress.getActualWorkout().getId());
+		return actualWorkout;
 	}
 
 }

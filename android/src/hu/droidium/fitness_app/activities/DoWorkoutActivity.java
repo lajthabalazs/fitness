@@ -7,7 +7,9 @@ import hu.droidium.fitness_app.WorkoutProgressView;
 import hu.droidium.fitness_app.database.DatabaseManager;
 import hu.droidium.fitness_app.database.Exercise;
 import hu.droidium.fitness_app.database.ProgramProgress;
+import hu.droidium.fitness_app.database.Workout;
 import hu.droidium.fitness_app.database.WorkoutProgress;
+import hu.droidium.fitness_app.model.helpers.ProgramProgressHelper;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,8 +17,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.newrelic.agent.android.NewRelic;
 
 public class DoWorkoutActivity extends Activity implements OnClickListener {
 	@SuppressWarnings("unused")
@@ -43,14 +43,10 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		NewRelic.withApplicationToken(
-				"AAf0a0158c59a11bc4f28eabd1cec40e370a37fc4f"
-				).start(this.getApplication());		
 		setContentView(R.layout.do_workout_activity);
 		programProgressId = getIntent().getLongExtra(Constants.PROGRAM_PROGRESS_ID, -1);
-		
-		progressView = (WorkoutProgressView)findViewById(R.id.workoutProgress);
 
+		progressView = (WorkoutProgressView)findViewById(R.id.workoutProgress);
 		breakLayout = findViewById(R.id.breakLayout);
 		breakDuration = (TextView)findViewById(R.id.breakDuration);
 		addFifteenButton = (Button)findViewById(R.id.addFifteen);
@@ -77,16 +73,15 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 	protected void onResume() {
 		super.onResume();
 		if (programProgressId != -1) {
-			ProgramProgress programProgress = databaseManager.getProgress(programProgressId);
-			WorkoutProgress workoutProgress = programProgress.getActualWorkout();
-			if (workoutProgress == null) {
-				// TODO this should not happen
+			progress = ProgramProgressHelper.getActualWorkoutProgress(programProgressId, databaseManager);
+			if (progress == null) {
 				progressView.done();
 				breakLayout.setVisibility(View.GONE);
 				exerciseLayout.setVisibility(View.GONE);
 				endLayout.setVisibility(View.VISIBLE);
 			} else {
-				progressView.setWorkout(workoutProgress.getWorkout());
+				Workout workout = databaseManager.getWorkout(progress.getWorkout().getId());
+				progressView.setWorkout(workout);
 				progressChanged();
 			}
 		}
@@ -97,16 +92,15 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 		if (progress.getFinishDate() == -1) {
 			int actualBlockIndex = progress.getActualBlock();
 			int actualExerciseIndex = progress.getActualExercise();
-			ProgramProgress programProgress = databaseManager.getProgress(programProgressId);
-			WorkoutProgress workoutProgress = programProgress.getActualWorkout();
-			if (workoutProgress == null) {
+			if (progress == null) {
 				// TODO this should not happen
 				progressView.done();
 				breakLayout.setVisibility(View.GONE);
 				exerciseLayout.setVisibility(View.GONE);
 				endLayout.setVisibility(View.VISIBLE);
 			} else {
-				Exercise exercise = workoutProgress.getWorkout().getBlocks().get(actualBlockIndex).getExercises().get(actualExerciseIndex);
+				
+				Exercise exercise = ProgramProgressHelper.getExercise(progress, actualBlockIndex, actualExerciseIndex, databaseManager);
 				if (endOfBreak == -1 || endOfBreak < now) {
 					breakLayout.setVisibility(View.GONE);
 					exerciseLayout.setVisibility(View.VISIBLE);
@@ -147,7 +141,7 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 				ProgramProgress programProgress = databaseManager.getProgress(programProgressId);
 				WorkoutProgress workoutProgress = programProgress.getActualWorkout();
 				if (workoutProgress != null) {
-					Exercise exercise = workoutProgress.getWorkout().getBlocks().get(actualBlockIndex).getExercises().get(actualExerciseIndex);
+					Exercise exercise = ProgramProgressHelper.getExercise(workoutProgress, actualBlockIndex, actualExerciseIndex, databaseManager);
 					progress.exerciseDone(exercise, exercise.getReps(), now - startOfExercise, now, databaseManager);
 					if (progress.getFinishDate() == -1) {
 						endOfBreak = now + 1000 * exercise.getBreakSecs();
@@ -183,7 +177,7 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 		int actualExerciseIndex = progress.getActualExercise();
 		ProgramProgress programProgress = databaseManager.getProgress(programProgressId);
 		WorkoutProgress workoutProgress = programProgress.getActualWorkout();
-		Exercise exercise = workoutProgress.getWorkout().getBlocks().get(actualBlockIndex).getExercises().get(actualExerciseIndex);
+		Exercise exercise = ProgramProgressHelper.getExercise(workoutProgress, actualBlockIndex, actualExerciseIndex, databaseManager);
 		this.exerciseLabel.setText(exercise.getType() + "");
 		this.startOfExercise = now;
 		this.reps.setText("" + exercise.getReps());

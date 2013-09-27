@@ -1,9 +1,11 @@
 package hu.droidium.fitness_app;
 
 import hu.droidium.fitness_app.database.Block;
+import hu.droidium.fitness_app.database.DatabaseManager;
 import hu.droidium.fitness_app.database.Exercise;
 import hu.droidium.fitness_app.database.Workout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -15,6 +17,8 @@ import android.view.View;
 
 public class WorkoutProgressView extends View {
 
+	private DatabaseManager databaseManager;
+	
 	private static final float BLOCK_BREAK_WIDTH = 1f;
 	private static final float EXERCISE_BREAK_WIDTH = 0.2f;
 	private Workout workout;
@@ -31,6 +35,14 @@ public class WorkoutProgressView extends View {
 	private int actualBlock;
 	private int actualExercise;
 	private boolean inExercise;
+
+	private int blockCount;
+
+	private int exerciseCount;
+
+	private int maxRep;
+
+	private ArrayList<Block> deepLoadedBlocks;
 	{
 		nextPaint.setColor(Color.BLUE);
 		actualPaint.setColor(Color.RED);
@@ -40,19 +52,37 @@ public class WorkoutProgressView extends View {
 
 	public WorkoutProgressView(Context context) {
 		super(context);
+		databaseManager = DatabaseManager.getInstance(context);
 	}
 
 	public WorkoutProgressView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		databaseManager = DatabaseManager.getInstance(context);
 	}
 
 	public WorkoutProgressView(Context context, AttributeSet attrs,
 			int defStyle) {
 		super(context, attrs, defStyle);
+		databaseManager = DatabaseManager.getInstance(context);
 	}
 
 	public void setWorkout(Workout workout) {
 		this.workout = workout;
+		if (workout != null) {
+			blockCount = workout.getNumberOfBlocks();
+			// One unit break between blocks, one unit for each exercise, 0.2 unit of break between each exercise
+			exerciseCount = 0;
+			maxRep = 0;
+			deepLoadedBlocks = new ArrayList<Block>();
+			for (Block block : workout.getBlocks()){
+				block = databaseManager.getBlock(block.getId());
+				deepLoadedBlocks.add(block);
+				exerciseCount += block.getExerciseCount();
+				for (Exercise exercise : block.getExercises()) {
+					maxRep = Math.max(maxRep, exercise.getReps());
+				}
+			}
+		}
 	}
 
 	public void setActiveExcercise(int blockIndex, int excerciseIndex) {
@@ -68,18 +98,14 @@ public class WorkoutProgressView extends View {
 		this.inExercise = false;
 		invalidate();
 	}
-
+	
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		//canvas.drawRect(x, y, x + width, y + height, bgPaint);
 		if (workout != null) {
-			int blockCount = workout.getNumberOfBlocks();
-			int exerciseCount = workout.getNumberOfExercises();
-			// One unit break between blocks, one unit for each exercise, 0.2 unit of break between each exercise 
 			float total = (blockCount - 1) * BLOCK_BREAK_WIDTH + exerciseCount + EXERCISE_BREAK_WIDTH * (exerciseCount - blockCount);
 			float unit = this.width / total;
-			int maxRep = workout.getMaxRep();
 			float offset = x;
 			List<Block> blocks = workout.getBlocks();
 			for (int i = 0; i < blocks.size(); i++) {

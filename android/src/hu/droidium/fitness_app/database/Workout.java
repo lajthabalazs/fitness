@@ -97,30 +97,12 @@ public class Workout{
 		this.skipped = skipped;
 	}
 
-	public final int getMaxRep(){
-		int maxRep = 0;
-		for(Block block : getBlocks()) {
-			for (Exercise exercise : block.getExercises()) {
-				maxRep = Math.max(maxRep, exercise.getReps());
-			}
-		}
-		return maxRep;
-	}
-	
 	public final int getNumberOfBlocks(){
 		return getBlocks().size();
 	}
 	
-	public final int getNumberOfExercises() {
-		int total = 0;
-		for(Block block : getBlocks()) {
-			total += block.getExercises().size();
-		}
-		return total;
-	}
-	
 	@Override
 	public String toString() {
-		return id + " " + name + " blocks: " + getNumberOfBlocks() + " exercises: " + getNumberOfExercises();
+		return id + " " + name + " blocks: " + getNumberOfBlocks();
 	}
 }

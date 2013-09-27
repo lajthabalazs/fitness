@@ -213,13 +213,68 @@ public class DatabaseManager {
 		}
 	}
 	
-	public boolean startProgram(long id, Program program, String progressName) {
-		ProgramProgress programProgress = new ProgramProgress(id, progressName, program);
+	public boolean startProgram(ProgramProgress programProgress) {
+		programProgress.setTerminationDate(-1);
 		try {
 			helper.getProgramProgressDao().create(programProgress);
 			return true;
 		} catch (SQLException e) {
 			Log.e(TAG, "Couldn't add program " + e.getMessage());
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean addWorkoutProgress(WorkoutProgress workoutProgress) {
+		workoutProgress.setFinishDate(-1);
+		try {
+			helper.getWorkoutProgressDao().create(workoutProgress);
+			return true;
+		}catch (SQLException e) {
+			Log.e(TAG, "Couldn't add workout progress " + e.getMessage());
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public WorkoutProgress getWorkoutProgress(long id) {
+		try {
+			return helper.getWorkoutProgressDao().queryForId(id);
+		} catch (SQLException e) {
+			Log.e(TAG, "Couldn't load workout progress " + id + e.getMessage());
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public boolean updateProgress(ProgramProgress progress) {
+		try {
+			helper.getProgramProgressDao().update(progress);
+			return true;
+		} catch (SQLException e) {
+			Log.e(TAG, "Couldn't update program " + e.getMessage());
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean addExerciseProgress(ExerciseProgress exerciseProgress) {
+		try {
+			helper.getExerciseProgressDao().create(exerciseProgress);
+			return true;
+		} catch (SQLException e) {
+			Log.e(TAG, "Couldn't add exercise progress " + e.getMessage());
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean updateWorkoutProgress(WorkoutProgress workoutProgress) {
+		try {
+			helper.getWorkoutProgressDao().update(workoutProgress);
+			return true;
+		} catch (SQLException e) {
+			Log.e(TAG, "Couldn't update workout " + e.getMessage());
 			e.printStackTrace();
 			return false;
 		}

@@ -11,7 +11,7 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable
 public class WorkoutProgress {
 	
-	@DatabaseField(id=true)
+	@DatabaseField(generatedId=true)
 	private long id;
 	@DatabaseField(foreign=true)
 	private ProgramProgress programProgress;
@@ -23,9 +23,14 @@ public class WorkoutProgress {
 	private int actualExercise;
 	@ForeignCollectionField
 	private ForeignCollection<ExerciseProgress> doneExercises;
-
 	@DatabaseField(defaultValue="-1")
 	private long finishDate;
+	
+	public WorkoutProgress() {}
+	public WorkoutProgress(ProgramProgress programProgress, Workout workout) {
+		this.programProgress = programProgress;
+		this.workout = workout;
+	}
 	
 	public long getId() {
 		return id;
@@ -87,8 +92,31 @@ public class WorkoutProgress {
 		this.programProgress = programProgress;
 	}
 
-	public void exerciseDone(Exercise exercise, int reps, long l, long now, DatabaseManager databaseManager) {
-		// TODO
+	public void exerciseDone(Exercise exercise, int reps, long workoutTime, long date, DatabaseManager databaseManager) {
+		ExerciseProgress exerciseProgress = new ExerciseProgress(this, exercise, reps, workoutTime, date);
+		Workout workout = databaseManager.getWorkout(this.workout.getId());
+		databaseManager.addExerciseProgress(exerciseProgress);
+		Block block = databaseManager.getBlock(exercise.getBlock().getId());
+		int blockIndex = block.getOrder();
+		int blockCount = workout.getNumberOfBlocks();
+		int exerciseCount = block.getExerciseCount();
+		int exerciseIndex = exercise.getOrder();
+		if (exerciseIndex == exerciseCount - 1) {
+			if (blockIndex == blockCount - 1) {
+				// Last exercise of last block
+				this.finishDate = date;
+				this.actualBlock = -1;
+				this.actualExercise = -1;
+				databaseManager.updateWorkoutProgress(this);
+			} else {
+				this.actualBlock += 1;
+				this.actualExercise = 0;
+				databaseManager.updateWorkoutProgress(this);
+			}
+		} else {
+			this.actualExercise += 1;
+			databaseManager.updateWorkoutProgress(this);
+		}
 	}
 
 	@Override

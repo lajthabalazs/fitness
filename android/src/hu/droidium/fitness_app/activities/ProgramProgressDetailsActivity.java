@@ -4,6 +4,8 @@ import hu.droidium.fitness_app.Constants;
 import hu.droidium.fitness_app.R;
 import hu.droidium.fitness_app.database.DatabaseManager;
 import hu.droidium.fitness_app.database.ProgramProgress;
+import hu.droidium.fitness_app.database.Workout;
+import hu.droidium.fitness_app.database.WorkoutProgress;
 import hu.droidium.fitness_app.model.helpers.ProgramProgressHelper;
 import android.app.Activity;
 import android.content.Intent;
@@ -68,8 +70,27 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 	public void onClick(View v) {
 		Intent intent = new Intent(this, DoWorkoutActivity.class);
 		ProgramProgress progress = databaseManager.getProgress(programId);
-		progress.getNextWorkoutId();
-		intent.putExtra(Constants.WORKOUT_ID, progress.getNextWorkoutId());
-		startActivity(intent);
+		progress.setProgram(databaseManager.getProgram(progress.getProgram().getId()));
+		Workout nextWorkout = progress.getNextWorkout();
+		if (nextWorkout != null) {
+			WorkoutProgress actualWorkout = progress.getActualWorkout(); 
+			if (actualWorkout == null) {
+				actualWorkout = new WorkoutProgress(progress, nextWorkout);
+				if (!databaseManager.addWorkoutProgress(actualWorkout)){
+					actualWorkout = null;
+				}
+			}
+			if (actualWorkout != null) {
+				progress.setActualWorkout(actualWorkout);
+				databaseManager.updateProgress(progress);
+				intent.putExtra(Constants.PROGRAM_PROGRESS_ID, progress.getProgressId());
+				intent.putExtra(Constants.WORKOUT_PROGRESS_ID, actualWorkout.getId());
+				startActivity(intent);
+			} else {
+				Toast.makeText(this, "Workout progress couldn't be created", Toast.LENGTH_LONG).show();
+			}
+		} else {
+			Toast.makeText(this, "No next workout", Toast.LENGTH_LONG).show();
+		}
 	}
 }

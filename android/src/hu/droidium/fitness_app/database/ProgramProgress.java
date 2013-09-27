@@ -108,49 +108,26 @@ public class ProgramProgress {
 		return true;
 	}
 
-	public long getFirstMissedWorkout() {
-		HashSet<String> doneWorkoutIds = new HashSet<String>();
-		for (WorkoutProgress workoutProgress : doneWorkouts) {
-			doneWorkoutIds.add(workoutProgress.getWorkout().getId());
-		}
-		Workout firstMissedWorkout = null;
-		for (Workout workout : program.getWorkouts()) {
-			if (!doneWorkoutIds.contains(workout.getId())){
-				if (firstMissedWorkout == null){
-					firstMissedWorkout = workout;
-					continue;
-				} else if (firstMissedWorkout.getDay() > workout.getDay()) {
-					if (progressId + Constants.DAY_MILLIS * workout.getDay() < System.currentTimeMillis()) {
-						firstMissedWorkout = workout;
-						continue;
-					}
-				}
-			}
-		}
-		if (firstMissedWorkout == null) {
-			return -1;
+	/**
+	 * Searches for a workout the user missed. A workout counts as missed if a day has passed since it's due date.
+	 * @return Null if no workout was missed. The workout otherwise.
+	 */
+	public Workout getFirstMissedWorkout() {
+		Workout nextWorkout = getNextWorkout();
+		if (nextWorkout == null) {
+			return null;
 		} else {
-			return progressId + Constants.DAY_MILLIS * firstMissedWorkout.getDay();
+			// Compares due date to current date
+			if ((nextWorkout.getDay() + 1) * Constants.DAY_MILLIS + progressId < System.currentTimeMillis()){
+				return nextWorkout;
+			} else {
+				return null;
+			}
 		}
 	}
 	
 	public long getNextWorkoutDay() {
-		HashSet<String> doneWorkoutIds = new HashSet<String>();
-		for (WorkoutProgress workoutProgress : doneWorkouts) {
-			doneWorkoutIds.add(workoutProgress.getWorkout().getId());
-		}
-		Workout nextWorkout = null;
-		for (Workout workout : program.getWorkouts()) {
-			if (!doneWorkoutIds.contains(workout.getId())){
-				if (nextWorkout == null){
-					nextWorkout = workout;
-					continue;
-				} else if (nextWorkout.getDay() > workout.getDay()) {
-					nextWorkout = workout;
-					continue;
-				}
-			}
-		}
+		Workout nextWorkout = getNextWorkout();
 		if (nextWorkout == null) {
 			return -1;
 		} else {
@@ -159,26 +136,11 @@ public class ProgramProgress {
 	}
 	
 	public int getDaysTilNextWorkout() {
-		HashSet<String> doneWorkoutIds = new HashSet<String>();
-		for (WorkoutProgress workoutProgress : doneWorkouts) {
-			doneWorkoutIds.add(workoutProgress.getWorkout().getId());
-		}
-		Workout nextWorkout = null;
-		for (Workout workout : program.getWorkouts()) {
-			if (!doneWorkoutIds.contains(workout.getId())){
-				if (nextWorkout == null){
-					nextWorkout = workout;
-					continue;
-				} else if (nextWorkout.getDay() > workout.getDay()) {
-					nextWorkout = workout;
-					continue;
-				}
-			}
-		}
-		if (nextWorkout == null) {
+		long nextWorkoutDay = getNextWorkoutDay();
+		if (nextWorkoutDay == -1) {
 			return -1;
 		} else {
-			return  nextWorkout.getDay() - ((int)((System.currentTimeMillis() - progressId) / Constants.DAY_MILLIS));
+			return  (int)((nextWorkoutDay - System.currentTimeMillis()) / Constants.DAY_MILLIS);
 		}
 	}
 	
@@ -186,7 +148,7 @@ public class ProgramProgress {
 		return progressId;
 	}
 	
-	public String getNextWorkoutId() {
+	public Workout getNextWorkout() {
 		HashSet<String> doneWorkoutIds = new HashSet<String>();
 		for (WorkoutProgress workoutProgress : doneWorkouts) {
 			doneWorkoutIds.add(workoutProgress.getWorkout().getId());
@@ -206,14 +168,11 @@ public class ProgramProgress {
 		if (nextWorkout == null) {
 			return null;
 		} else {
-			return nextWorkout.getId();
+			return nextWorkout;
 		}
 	}
 	
 	public int getProgressPercentage() {
-		if (terminationDate != -1) {
-			return 100;
-		}
 		HashSet<String> doneWorkoutIds = new HashSet<String>();
 		for (WorkoutProgress workoutProgress : doneWorkouts) {
 			doneWorkoutIds.add(workoutProgress.getWorkout().getId());

@@ -65,10 +65,10 @@ public class ActiveProgramListAdapter implements ListAdapter {
 		if (convertView == null){
 			convertView = programsOverviewActivity.getLayoutInflater().inflate(R.layout.active_program_list_item, null);
 		}
+		((TextView)convertView.findViewById(R.id.processNameInActiveProgramList)).setText(progress.getProgressName());	
 		((TextView)convertView.findViewById(R.id.programNameInActiveProgramList)).setText(progress.getProgram().getName());	
 		((TextView)convertView.findViewById(R.id.programStartInActiveProgramList)).setText(ProgramProgressHelper.getDateOfNextWorkoutText(progress, programsOverviewActivity));
 		((ProgressBar)convertView.findViewById(R.id.programProgressBarInList)).setProgress(progress.getProgressPercentage());
-		convertView.setBackgroundColor(ProgramProgressHelper.getBackgroundColor(progress, programsOverviewActivity));
 		return convertView;
 	}
 

@@ -10,7 +10,7 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable
 public class ExerciseProgress {
 	
-	@DatabaseField(id=true)
+	@DatabaseField(generatedId=true)
 	private long id;
 	@DatabaseField(foreign=true)
 	private WorkoutProgress workoutProgress;
@@ -23,6 +23,15 @@ public class ExerciseProgress {
 	@DatabaseField
 	private long competedOn;
 	
+	public ExerciseProgress() {}
+	public ExerciseProgress(WorkoutProgress workoutProgress, Exercise exercise, int reps, long workoutTime, long date) {
+		this.workoutProgress = workoutProgress;
+		this.exercise = exercise;
+		this.doneReps = reps;
+		this.completionTime = (int)workoutTime;
+		this.competedOn = date;
+	}
+
 	public long getId() {
 		return id;
 	}

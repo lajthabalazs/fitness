@@ -34,6 +34,14 @@ public class Exercise {
 		this.targetSecs = targetSecs;
 		this.breakSecs = breakSecs;
 	}
+
+	public Block getBlock() {
+		return block;
+	}
+
+	public void setBlock(Block block) {
+		this.block = block;
+	}
 	
 	public String getId() {
 		return id;
