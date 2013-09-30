@@ -6,11 +6,11 @@ import hu.droidium.fitness_app.database.Workout;
 import java.util.Comparator;
 
 public class ProgressComparator implements Comparator<ProgramProgress> {
-	static int leftFirst = 1;
-	static int rightFirst = -1;
+	static int leftFirst = -1;
+	static int rightFirst = 1;
 	@Override
 	public int compare(ProgramProgress lhs, ProgramProgress rhs) {
-		if (!lhs.isDone() && !rhs.isDone()){
+		if (!lhs.isDone() && !rhs.isDone()) {
 			Workout lMissedWorkout = lhs.getFirstMissedWorkout();
 			Workout rMissedWorkout = rhs.getFirstMissedWorkout();
 			if ((lMissedWorkout == null) && (rMissedWorkout != null)) {

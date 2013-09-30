@@ -97,12 +97,30 @@ public class Workout{
 		this.skipped = skipped;
 	}
 
-	public final int getNumberOfBlocks(){
+	public final int getNumberOfBlocks(DatabaseManager databaseManager){
+		if (blocks == null) {
+			blocks = databaseManager.getWorkout(id).blocks;
+		}
 		return getBlocks().size();
 	}
 	
 	@Override
 	public String toString() {
-		return id + " " + name + " blocks: " + getNumberOfBlocks();
+		try {
+			return id + " " + name + " blocks: " + getNumberOfBlocks(null);
+		} catch (Exception e) {
+			return id + " " + name + " blocks not loaded.";
+		}
+	}
+
+	public int getTotalNumberOfExercises(DatabaseManager databaseManager) {
+		if (blocks == null) {
+			blocks = databaseManager.getWorkout(id).blocks;
+		}
+		int exerciseCount = 0;
+		for (Block block : blocks) {
+			exerciseCount += block.getExerciseCount(databaseManager);
+		}
+		return exerciseCount;
 	}
 }

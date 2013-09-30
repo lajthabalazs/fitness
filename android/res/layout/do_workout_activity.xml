@@ -99,10 +99,10 @@
 	            android:textAppearance="?android:attr/textAppearanceLarge" />
 
 	        <Button
-	            android:id="@+id/restartWorkout"
+	            android:id="@+id/backToWorkoutList"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
-	            android:text="@string/redoWorkout" />
+	            android:text="@string/backToWorkoutList" />
 
         </LinearLayout>
 

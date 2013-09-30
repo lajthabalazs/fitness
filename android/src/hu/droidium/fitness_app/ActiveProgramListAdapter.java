@@ -1,6 +1,7 @@
 package hu.droidium.fitness_app;
 
 import hu.droidium.fitness_app.activities.ProgramsOverviewActivity;
+import hu.droidium.fitness_app.database.DatabaseManager;
 import hu.droidium.fitness_app.database.ProgramProgress;
 import hu.droidium.fitness_app.model.helpers.ProgramProgressHelper;
 import hu.droidium.fitness_app.model.helpers.ProgressComparator;
@@ -22,9 +23,11 @@ public class ActiveProgramListAdapter implements ListAdapter {
 	List<ProgramProgress> programs = new ArrayList<ProgramProgress>();
 	private ProgramsOverviewActivity programsOverviewActivity;
 	private HashSet<DataSetObserver> observers = new HashSet<DataSetObserver>();
+	private DatabaseManager databaseManager;
 	
-	public ActiveProgramListAdapter(ProgramsOverviewActivity programsOverviewActivity) {
+	public ActiveProgramListAdapter(ProgramsOverviewActivity programsOverviewActivity, DatabaseManager databaseManager) {
 		this.programsOverviewActivity = programsOverviewActivity;
+		this.databaseManager = databaseManager;
 	}
 	
 	public void updatePrograms(List<ProgramProgress> progresses) {
@@ -68,7 +71,7 @@ public class ActiveProgramListAdapter implements ListAdapter {
 		((TextView)convertView.findViewById(R.id.processNameInActiveProgramList)).setText(progress.getProgressName());	
 		((TextView)convertView.findViewById(R.id.programNameInActiveProgramList)).setText(progress.getProgram().getName());	
 		((TextView)convertView.findViewById(R.id.programStartInActiveProgramList)).setText(ProgramProgressHelper.getDateOfNextWorkoutText(progress, programsOverviewActivity));
-		((ProgressBar)convertView.findViewById(R.id.programProgressBarInList)).setProgress(progress.getProgressPercentage());
+		((ProgressBar)convertView.findViewById(R.id.programProgressBarInList)).setProgress(progress.getProgressPercentage(databaseManager));
 		return convertView;
 	}
 

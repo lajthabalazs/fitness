@@ -3,6 +3,8 @@ package hu.droidium.fitness_app.database;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
+
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
@@ -24,12 +26,13 @@ public class WorkoutProgress {
 	@ForeignCollectionField
 	private ForeignCollection<ExerciseProgress> doneExercises;
 	@DatabaseField(defaultValue="-1")
-	private long finishDate;
+	private long finishDate = -1;
 	
 	public WorkoutProgress() {}
 	public WorkoutProgress(ProgramProgress programProgress, Workout workout) {
 		this.programProgress = programProgress;
 		this.workout = workout;
+		this.finishDate = -1;
 	}
 	
 	public long getId() {
@@ -92,14 +95,14 @@ public class WorkoutProgress {
 		this.programProgress = programProgress;
 	}
 
-	public void exerciseDone(Exercise exercise, int reps, long workoutTime, long date, DatabaseManager databaseManager) {
+	public void exerciseDone(ProgramProgress programProgress, Exercise exercise, int reps, long workoutTime, long date, DatabaseManager databaseManager) {
 		ExerciseProgress exerciseProgress = new ExerciseProgress(this, exercise, reps, workoutTime, date);
 		Workout workout = databaseManager.getWorkout(this.workout.getId());
 		databaseManager.addExerciseProgress(exerciseProgress);
 		Block block = databaseManager.getBlock(exercise.getBlock().getId());
 		int blockIndex = block.getOrder();
-		int blockCount = workout.getNumberOfBlocks();
-		int exerciseCount = block.getExerciseCount();
+		int blockCount = workout.getNumberOfBlocks(databaseManager);
+		int exerciseCount = block.getExerciseCount(databaseManager);
 		int exerciseIndex = exercise.getOrder();
 		if (exerciseIndex == exerciseCount - 1) {
 			if (blockIndex == blockCount - 1) {
@@ -108,19 +111,40 @@ public class WorkoutProgress {
 				this.actualBlock = -1;
 				this.actualExercise = -1;
 				databaseManager.updateWorkoutProgress(this);
+				programProgress.setActualWorkout(null);
+				// Check if there are more workouts in the program
+				if (programProgress.getRemainingWorkouts(databaseManager).size() == 0) {
+					programProgress.setTerminationDate(date);
+				}
+				databaseManager.updateProgress(programProgress);
 			} else {
 				this.actualBlock += 1;
 				this.actualExercise = 0;
+				programProgress.setActualWorkout(null);
+				databaseManager.updateProgress(programProgress);
+				setProgramProgress(programProgress);
 				databaseManager.updateWorkoutProgress(this);
 			}
 		} else {
 			this.actualExercise += 1;
 			databaseManager.updateWorkoutProgress(this);
+			
 		}
 	}
 
 	@Override
 	public String toString() {
 		return id + " " + workout.getName();
+	}
+	
+	public String getProgressText(DatabaseManager databaseManager) {
+		if (workout == null) {
+			workout = databaseManager.getWorkout(databaseManager.getWorkoutProgress(id).workout.getId());
+		}
+		if (doneExercises == null) {
+			doneExercises = databaseManager.getWorkoutProgress(id).doneExercises;
+		}
+		String ret = workout.getName() + " (day " + workout.getDay() + ") " + doneExercises.size() + "/" +  workout.getTotalNumberOfExercises(databaseManager) + " done.";
+		return ret;
 	}
 }

@@ -30,11 +30,11 @@ public class ProgramsOverviewActivity extends Activity implements OnClickListene
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.programs_overview_activity);
+		databaseManager = DatabaseManager.getInstance(this);
 		programList = (ListView)findViewById(R.id.programList);
 		programList.setOnItemClickListener(this);
 		programList.setOnItemLongClickListener(this);
-		databaseManager = DatabaseManager.getInstance(this);
-		programAdapter = new ActiveProgramListAdapter(this);
+		programAdapter = new ActiveProgramListAdapter(this, databaseManager);
 		programList.setAdapter(programAdapter);
 		startNewProgram = (Button)findViewById(R.id.startNewProgram);
 		startNewProgram.setOnClickListener(this);

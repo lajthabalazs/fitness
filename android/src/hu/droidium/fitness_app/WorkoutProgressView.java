@@ -69,7 +69,7 @@ public class WorkoutProgressView extends View {
 	public void setWorkout(Workout workout) {
 		this.workout = workout;
 		if (workout != null) {
-			blockCount = workout.getNumberOfBlocks();
+			blockCount = workout.getNumberOfBlocks(databaseManager);
 			// One unit break between blocks, one unit for each exercise, 0.2 unit of break between each exercise
 			exerciseCount = 0;
 			maxRep = 0;
@@ -77,7 +77,7 @@ public class WorkoutProgressView extends View {
 			for (Block block : workout.getBlocks()){
 				block = databaseManager.getBlock(block.getId());
 				deepLoadedBlocks.add(block);
-				exerciseCount += block.getExerciseCount();
+				exerciseCount += block.getExerciseCount(databaseManager);
 				for (Exercise exercise : block.getExercises()) {
 					maxRep = Math.max(maxRep, exercise.getReps());
 				}
@@ -149,7 +149,7 @@ public class WorkoutProgressView extends View {
 	}
 
 	public void done() {
-		this.actualBlock = workout.getNumberOfBlocks() - 1;
+		this.actualBlock = workout.getNumberOfBlocks(databaseManager) - 1;
 		this.actualExercise = workout.getBlocks().get(actualBlock).getExercises().size() - 1;
 		this.inExercise = false;
 		invalidate();

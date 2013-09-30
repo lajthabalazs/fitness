@@ -74,12 +74,19 @@ public class Block {
 		this.exercises = exercises;
 	}
 	
-	public int getExerciseCount() {
+	public int getExerciseCount(DatabaseManager databaseManager) {
+		if (exercises == null) {
+			exercises = databaseManager.getBlock(id).exercises;
+		}
 		return exercises.size();
 	}
 	
 	@Override
 	public String toString() {
-		return id + " " + name + " exercises: " + getExerciseCount();
+		try {
+			return id + " " + name + " exercises: " + getExerciseCount(null);
+		} catch (Exception e) {
+			return id + " " + name + " exercises not loaded ";
+		}
 	}
 }

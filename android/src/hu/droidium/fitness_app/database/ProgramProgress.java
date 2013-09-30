@@ -1,10 +1,12 @@
 package hu.droidium.fitness_app.database;
 
 import hu.droidium.fitness_app.Constants;
+import hu.droidium.fitness_app.model.helpers.WorkoutComparator;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.TreeSet;
 
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
@@ -172,9 +174,11 @@ public class ProgramProgress {
 		}
 	}
 	
-	public int getProgressPercentage() {
+	public int getProgressPercentage(DatabaseManager databaseManager) {
 		HashSet<String> doneWorkoutIds = new HashSet<String>();
+		program = databaseManager.getProgram(program.getId());
 		for (WorkoutProgress workoutProgress : doneWorkouts) {
+			workoutProgress = databaseManager.getWorkoutProgress(workoutProgress.getId());
 			doneWorkoutIds.add(workoutProgress.getWorkout().getId());
 		}
 		return (100 * doneWorkoutIds.size()) / program.getWorkouts().size();
@@ -183,5 +187,21 @@ public class ProgramProgress {
 	@Override
 	public String toString() {
 		return progressId + " " + progressName + " (" + program.getName() + ")";
+	}
+
+	public List<Workout> getRemainingWorkouts(DatabaseManager databaseManager) {
+		HashSet<String> doneWorkoutIds = new HashSet<String>();
+		program = databaseManager.getProgram(program.getId());
+		for (WorkoutProgress workoutProgress : doneWorkouts) {
+			workoutProgress = databaseManager.getWorkoutProgress(workoutProgress.getId());
+			doneWorkoutIds.add(workoutProgress.getWorkout().getId());
+		}
+		TreeSet<Workout> workoutOrderer = new TreeSet<Workout>(new WorkoutComparator());
+		for (Workout workout : program.getWorkouts()) {
+			if (!doneWorkoutIds.contains(workout.getId())) {
+				workoutOrderer.add(workout);
+			}
+		}
+		return new ArrayList<Workout>(workoutOrderer);
 	}
 }

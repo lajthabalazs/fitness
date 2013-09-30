@@ -11,7 +11,7 @@
     <string name="edit">Edit done reps</string>
     <string name="workoutCompleted">Well done, you completed this workout!</string>
     <string name="secs">s</string>
-    <string name="redoWorkout">Redo workout</string>
+    <string name="backToWorkoutList">Back to workouts</string>
     <string name="startNewProgram">Start a new program</string>
     <string name="programStartedLabel">Started on %1$s</string>
     <string name="programDoneLabel">Finished on %1$s</string>
@@ -37,5 +37,9 @@
     <string name="progressLabel">Name your workout program</string>
 
     <string name="workoutList">Workouts</string>
+
+    <string name="upcommingWorkouts">Upcomming workouts</string>
+
+    <string name="currentWorkoutLabel">Current workout</string>
     
 </resources>

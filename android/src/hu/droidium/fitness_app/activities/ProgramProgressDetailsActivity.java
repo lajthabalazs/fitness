@@ -6,25 +6,35 @@ import hu.droidium.fitness_app.database.DatabaseManager;
 import hu.droidium.fitness_app.database.ProgramProgress;
 import hu.droidium.fitness_app.database.Workout;
 import hu.droidium.fitness_app.database.WorkoutProgress;
-import hu.droidium.fitness_app.model.helpers.ProgramProgressHelper;
+
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class ProgramProgressDetailsActivity extends Activity implements OnClickListener {
 	
+	private static final String TAG = "ProgramProgressDetailsActivity";
 	private ProgressBar programProgressBar;
 	private TextView programDetailsText;
-	private TextView nextWorkoutText;
 	private Button doWorkout;
 	private long programId;
 	private DatabaseManager databaseManager;
+	private View upcommingWorkoutsLabel;
+	private ListView upcommingWorkoutsList;
+	private ArrayAdapter<Workout> upcommingWorkoutsAdapter;
+	private TextView currentWorkoutLabel;
+	private TextView currentWorkoutText;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +50,12 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 		}
 		programProgressBar = (ProgressBar)findViewById(R.id.programProgressBarOnProgressDetails);
 		programDetailsText = (TextView)findViewById(R.id.programDescription);
-		nextWorkoutText = (TextView)findViewById(R.id.nextWorkoutOnProgressDetails);
+		currentWorkoutLabel = (TextView)findViewById(R.id.currentWorkoutLabel);
+		currentWorkoutText = (TextView)findViewById(R.id.currentWorkoutText);
+		upcommingWorkoutsLabel = findViewById(R.id.upcommingWorkoutsLabel);
+		upcommingWorkoutsList = (ListView)findViewById(R.id.upcommingWorkoutsList);
+		upcommingWorkoutsAdapter = new ArrayAdapter<Workout>(this, android.R.layout.simple_list_item_1);
+		upcommingWorkoutsList.setAdapter(upcommingWorkoutsAdapter);
 		doWorkout = (Button)findViewById(R.id.doTodaysWorkoutOnProgressDetails);
 		doWorkout.setOnClickListener(this);
 		databaseManager = DatabaseManager.getInstance(this);
@@ -52,11 +67,28 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 		ProgramProgress progress = databaseManager.getProgress(programId);
 		progress.setProgram(databaseManager.getProgram(progress.getProgram().getId()));
 		setTitle(progress.getProgram().getName());
-		programProgressBar.setProgress(progress.getProgressPercentage());
+		programProgressBar.setProgress(progress.getProgressPercentage(databaseManager));
 		programDetailsText.setText(progress.getProgram().getDescription());
-		nextWorkoutText.setText(ProgramProgressHelper.getDateOfNextWorkoutText(progress, this));
+		
 		if (progress.getTerminationDate() != -1) {
 			doWorkout.setVisibility(View.GONE);
+			upcommingWorkoutsLabel.setVisibility(View.GONE);
+			upcommingWorkoutsList.setVisibility(View.INVISIBLE); // This pushes button to the bottom, has to keep it's place
+		} else {
+			// We have workouts
+			List<Workout> remainingWorkouts = progress.getRemainingWorkouts(databaseManager);
+			upcommingWorkoutsAdapter.clear();
+			for (Workout workout : remainingWorkouts) {
+				upcommingWorkoutsAdapter.add(workout);
+			}
+		}
+		if (progress.getActualWorkout() != null) {
+			currentWorkoutLabel.setVisibility(View.VISIBLE);
+			currentWorkoutText.setVisibility(View.VISIBLE);
+			currentWorkoutText.setText(progress.getActualWorkout().getProgressText(databaseManager));
+		} else {
+			currentWorkoutLabel.setVisibility(View.GONE);
+			currentWorkoutText.setVisibility(View.GONE);
 		}
 		int days = progress.getDaysTilNextWorkout();
 		if (days == 0) {
@@ -72,8 +104,15 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 		ProgramProgress progress = databaseManager.getProgress(programId);
 		progress.setProgram(databaseManager.getProgram(progress.getProgram().getId()));
 		Workout nextWorkout = progress.getNextWorkout();
-		if (nextWorkout != null) {
-			WorkoutProgress actualWorkout = progress.getActualWorkout(); 
+		WorkoutProgress actualWorkout = progress.getActualWorkout(); 
+		if (nextWorkout != null || actualWorkout != null) {
+			if (actualWorkout != null && (actualWorkout.getFinishDate() != -1)) {
+				// Actual workout is done
+				Log.e(TAG, "Actual workout was set but done. Should not happen " + actualWorkout.getFinishDate());
+				actualWorkout = null;
+				progress.setActualWorkout(null);
+				databaseManager.updateProgress(progress);
+			}
 			if (actualWorkout == null) {
 				actualWorkout = new WorkoutProgress(progress, nextWorkout);
 				if (!databaseManager.addWorkoutProgress(actualWorkout)){

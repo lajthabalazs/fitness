@@ -31,7 +31,7 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 	private Button continueWorkout;
 	private Button editReps;
 	private Button doneButton;
-	private Button redoButton;
+	private Button backToWorkouts;
 	private TextView exerciseLabel;
 	private WorkoutProgress progress;
 	private long endOfBreak = -1;
@@ -62,9 +62,10 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 		doneButton = (Button)findViewById(R.id.exerciseDone);
 		doneButton.setOnClickListener(this);
 		
+		backToWorkouts = (Button)findViewById(R.id.backToWorkoutList);
+		backToWorkouts.setOnClickListener(this);
+		
 		endLayout = findViewById(R.id.endOfExerciseLayout);
-		redoButton = (Button)findViewById(R.id.restartWorkout);
-		redoButton.setOnClickListener(this);
 		
 		databaseManager = DatabaseManager.getInstance(this);
 	}
@@ -130,6 +131,14 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 			endLayout.setVisibility(View.VISIBLE);
 		}
 	}
+	
+	@Override
+	protected void onPause() {
+		if (task != null) {
+			task.cancel(true);
+		}
+		super.onPause();
+	}
 
 	@Override
 	public void onClick(View v) {
@@ -142,7 +151,7 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 				WorkoutProgress workoutProgress = programProgress.getActualWorkout();
 				if (workoutProgress != null) {
 					Exercise exercise = ProgramProgressHelper.getExercise(workoutProgress, actualBlockIndex, actualExerciseIndex, databaseManager);
-					progress.exerciseDone(exercise, exercise.getReps(), now - startOfExercise, now, databaseManager);
+					progress.exerciseDone(programProgress, exercise, exercise.getReps(), now - startOfExercise, now, databaseManager);
 					if (progress.getFinishDate() == -1) {
 						endOfBreak = now + 1000 * exercise.getBreakSecs();
 					}
@@ -155,9 +164,8 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 				progressChanged();
 				break;
 			}
-			case R.id.restartWorkout : {
-				// TODO new progress
-				progressChanged();
+			case R.id.backToWorkoutList : {
+				finish();
 				break;
 			}
 			default : {
