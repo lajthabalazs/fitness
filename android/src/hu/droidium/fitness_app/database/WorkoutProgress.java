@@ -3,8 +3,6 @@ package hu.droidium.fitness_app.database;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.util.Log;
-
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
@@ -116,12 +114,11 @@ public class WorkoutProgress {
 				if (programProgress.getRemainingWorkouts(databaseManager).size() == 0) {
 					programProgress.setTerminationDate(date);
 				}
+				programProgress.setActualWorkout(null);
 				databaseManager.updateProgress(programProgress);
 			} else {
 				this.actualBlock += 1;
 				this.actualExercise = 0;
-				programProgress.setActualWorkout(null);
-				databaseManager.updateProgress(programProgress);
 				setProgramProgress(programProgress);
 				databaseManager.updateWorkoutProgress(this);
 			}
@@ -131,6 +128,15 @@ public class WorkoutProgress {
 			
 		}
 	}
+
+	public Exercise getExercise(int actualBlockIndex, int actualExerciseIndex, DatabaseManager databaseManager) {
+		workout = databaseManager.getWorkoutProgress(getId()).getWorkout();
+		workout = databaseManager.getWorkout(workout.getId());
+		Block block = databaseManager.getBlock(workout.getBlocks().get(actualBlockIndex).getId());		
+		Exercise exercise = databaseManager.getExercise(block.getExercises().get(actualExerciseIndex).getId());
+		return exercise;
+	}
+
 
 	@Override
 	public String toString() {

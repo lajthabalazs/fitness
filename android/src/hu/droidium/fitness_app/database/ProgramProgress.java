@@ -204,4 +204,12 @@ public class ProgramProgress {
 		}
 		return new ArrayList<Workout>(workoutOrderer);
 	}
+	
+	public WorkoutProgress getActualWorkoutProgress(DatabaseManager databaseManager) {
+		actualWorkout = databaseManager.getProgress(progressId).actualWorkout;
+		actualWorkout = databaseManager.getWorkoutProgress(actualWorkout.getId());
+		return actualWorkout;
+	}
+
+
 }

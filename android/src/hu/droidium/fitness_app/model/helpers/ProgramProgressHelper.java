@@ -2,12 +2,8 @@ package hu.droidium.fitness_app.model.helpers;
 
 import hu.droidium.fitness_app.Constants;
 import hu.droidium.fitness_app.R;
-import hu.droidium.fitness_app.database.Block;
-import hu.droidium.fitness_app.database.DatabaseManager;
-import hu.droidium.fitness_app.database.Exercise;
 import hu.droidium.fitness_app.database.ProgramProgress;
 import hu.droidium.fitness_app.database.Workout;
-import hu.droidium.fitness_app.database.WorkoutProgress;
 
 import java.util.Date;
 
@@ -62,19 +58,4 @@ public class ProgramProgressHelper {
 		}
 		return dateMessage;
 	}
-	
-	public static Exercise getExercise(WorkoutProgress progress, int actualBlockIndex, int actualExerciseIndex, DatabaseManager databaseManager) {
-		progress = databaseManager.getWorkoutProgress(progress.getId());
-		Workout workout = databaseManager.getWorkout(progress.getWorkout().getId());
-		Block block = databaseManager.getBlock(workout.getBlocks().get(actualBlockIndex).getId());		
-		Exercise exercise = databaseManager.getExercise(block.getExercises().get(actualExerciseIndex).getId());
-		return exercise;
-	}
-
-	public static WorkoutProgress getActualWorkoutProgress(long programProgressId, DatabaseManager databaseManager) {
-		ProgramProgress progress = databaseManager.getProgress(programProgressId);
-		WorkoutProgress actualWorkout = databaseManager.getWorkoutProgress(progress.getActualWorkout().getId());
-		return actualWorkout;
-	}
-
 }

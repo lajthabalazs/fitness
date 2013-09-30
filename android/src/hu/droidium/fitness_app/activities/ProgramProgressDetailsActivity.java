@@ -75,11 +75,17 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 			upcommingWorkoutsLabel.setVisibility(View.GONE);
 			upcommingWorkoutsList.setVisibility(View.INVISIBLE); // This pushes button to the bottom, has to keep it's place
 		} else {
-			// We have workouts
 			List<Workout> remainingWorkouts = progress.getRemainingWorkouts(databaseManager);
-			upcommingWorkoutsAdapter.clear();
-			for (Workout workout : remainingWorkouts) {
-				upcommingWorkoutsAdapter.add(workout);
+			if (remainingWorkouts.size() == 0) {
+				upcommingWorkoutsLabel.setVisibility(View.GONE);
+				upcommingWorkoutsList.setVisibility(View.INVISIBLE); // This pushes button to the bottom, has to keep it's place
+			} else {
+				upcommingWorkoutsLabel.setVisibility(View.VISIBLE);
+				upcommingWorkoutsList.setVisibility(View.VISIBLE);
+				upcommingWorkoutsAdapter.clear();
+				for (Workout workout : remainingWorkouts) {
+					upcommingWorkoutsAdapter.add(workout);
+				}
 			}
 		}
 		if (progress.getActualWorkout() != null) {
