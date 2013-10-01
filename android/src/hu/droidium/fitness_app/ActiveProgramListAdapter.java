@@ -31,7 +31,7 @@ public class ActiveProgramListAdapter implements ListAdapter {
 	
 	public void updatePrograms(List<ProgramProgress> progresses) {
 		programs.clear();
-		TreeSet<ProgramProgress> orderer = new TreeSet<ProgramProgress>(new ProgressComparator());
+		TreeSet<ProgramProgress> orderer = new TreeSet<ProgramProgress>(new ProgressComparator(databaseManager));
 		orderer.addAll(progresses);
 		for (ProgramProgress progress : orderer) {
 			programs.add(progress);
@@ -69,7 +69,7 @@ public class ActiveProgramListAdapter implements ListAdapter {
 		}
 		((TextView)convertView.findViewById(R.id.processNameInActiveProgramList)).setText(progress.getProgressName());	
 		((TextView)convertView.findViewById(R.id.programNameInActiveProgramList)).setText(progress.getProgram().getName());	
-		((TextView)convertView.findViewById(R.id.programStartInActiveProgramList)).setText(progress.getDateOfNextWorkoutText(programsOverviewActivity));
+		((TextView)convertView.findViewById(R.id.programStartInActiveProgramList)).setText(progress.getDateOfNextWorkoutText(databaseManager, programsOverviewActivity));
 		((ProgressBar)convertView.findViewById(R.id.programProgressBarInList)).setProgress(progress.getProgressPercentage(databaseManager));
 		return convertView;
 	}

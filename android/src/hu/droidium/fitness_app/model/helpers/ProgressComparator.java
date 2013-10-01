@@ -1,10 +1,17 @@
 package hu.droidium.fitness_app.model.helpers;
 
+import hu.droidium.fitness_app.database.DatabaseManager;
 import hu.droidium.fitness_app.database.ProgramProgress;
 
 import java.util.Comparator;
 
 public class ProgressComparator implements Comparator<ProgramProgress> {
+	
+	private DatabaseManager databaseManager;
+	
+	public ProgressComparator(DatabaseManager databaseManager) {
+		this.databaseManager = databaseManager;
+	}
 	static int leftFirst = -1;
 	static int rightFirst = 1;
 	@Override
@@ -26,7 +33,7 @@ public class ProgressComparator implements Comparator<ProgramProgress> {
 			} else {
 				// Both running
 				// First is the one with a due exercise
-				if (lhs.getNextWorkoutDay() < rhs.getNextWorkoutDay()){
+				if (lhs.getNextWorkoutDay(databaseManager) < rhs.getNextWorkoutDay(databaseManager)){
 					return leftFirst;
 				} else {
 					return rightFirst;

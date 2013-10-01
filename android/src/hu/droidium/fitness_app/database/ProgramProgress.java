@@ -5,7 +5,6 @@ import hu.droidium.fitness_app.R;
 import hu.droidium.fitness_app.model.helpers.WorkoutComparator;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -119,13 +118,15 @@ public class ProgramProgress {
 	 * Searches for a workout the user missed. A workout counts as missed if a day has passed since it's due date.
 	 * @return Null if no workout was missed. The workout otherwise.
 	 */
-	public Workout getFirstMissedWorkout() {
-		Workout nextWorkout = getNextWorkout();
+	public Workout getFirstMissedWorkout(DatabaseManager databaseManager) {
+		Workout nextWorkout = getNextWorkout(databaseManager);
 		if (nextWorkout == null) {
 			return null;
 		} else {
 			// Compares due date to current date
-			if ((nextWorkout.getDay() + 1) * Constants.DAY_MILLIS + progressId < System.currentTimeMillis()){
+			long nextDate = Constants.stripDate((nextWorkout.getDay() + 1) * Constants.DAY_MILLIS + progressId);
+			long now = Constants.stripDate(System.currentTimeMillis());
+			if (nextDate < now){
 				return nextWorkout;
 			} else {
 				return null;
@@ -133,8 +134,8 @@ public class ProgramProgress {
 		}
 	}
 	
-	public long getNextWorkoutDay() {
-		Workout nextWorkout = getNextWorkout();
+	public long getNextWorkoutDay(DatabaseManager databaseManager) {
+		Workout nextWorkout = getNextWorkout(databaseManager);
 		if (nextWorkout == null) {
 			return -1;
 		} else {
@@ -142,8 +143,8 @@ public class ProgramProgress {
 		}
 	}
 	
-	public int getDaysTilNextWorkout() {
-		long nextWorkoutDay = getNextWorkoutDay();
+	public int getDaysTilNextWorkout(DatabaseManager databaseManager) {
+		long nextWorkoutDay = getNextWorkoutDay(databaseManager);
 		if (nextWorkoutDay == -1) {
 			return -1;
 		} else {
@@ -154,8 +155,23 @@ public class ProgramProgress {
 	public long getStartDate() {
 		return progressId;
 	}
+
+	public void loadFields(DatabaseManager databaseManager) {
+		if (program == null || doneWorkouts == null) {
+			ProgramProgress loadedProgress = databaseManager.getProgress(progressId);
+			actualWorkout = loadedProgress.actualWorkout;
+			program = loadedProgress.program;
+			doneWorkouts = loadedProgress.doneWorkouts;
+			
+		}
+	}
 	
-	public Workout getNextWorkout() {
+	public Workout getNextWorkout(DatabaseManager databaseManager) {
+		loadFields(databaseManager);
+		if (actualWorkout != null) {
+			actualWorkout = databaseManager.getWorkoutProgress(actualWorkout.getId());
+			return actualWorkout.getWorkout();
+		}
 		HashSet<String> doneWorkoutIds = new HashSet<String>();
 		for (WorkoutProgress workoutProgress : doneWorkouts) {
 			doneWorkoutIds.add(workoutProgress.getWorkout().getId());
@@ -180,13 +196,27 @@ public class ProgramProgress {
 	}
 	
 	public int getProgressPercentage(DatabaseManager databaseManager) {
+		loadFields(databaseManager);
 		HashSet<String> doneWorkoutIds = new HashSet<String>();
 		program = databaseManager.getProgram(program.getId());
+		// Add actual workout as "done"
+		if (actualWorkout != null) {
+			actualWorkout = databaseManager.getWorkoutProgress(actualWorkout.getId());
+			doneWorkoutIds.add(actualWorkout.getWorkout().getId());
+		}
+		boolean hasActualBeenDone = false;
 		for (WorkoutProgress workoutProgress : doneWorkouts) {
 			workoutProgress = databaseManager.getWorkoutProgress(workoutProgress.getId());
 			doneWorkoutIds.add(workoutProgress.getWorkout().getId());
+			if (workoutProgress.getWorkout().getId().equals(actualWorkout.getId())) {
+				hasActualBeenDone = true;
+			}
 		}
-		return (100 * doneWorkoutIds.size()) / program.getWorkouts().size();
+		float doneWorkouts = doneWorkoutIds.size();
+		if (actualWorkout!=null && !hasActualBeenDone) {
+			doneWorkouts -= 0.5f;
+		}
+		return (int) ((100 * doneWorkouts) / program.getWorkouts().size());
 	}
 	
 	@Override
@@ -195,6 +225,7 @@ public class ProgramProgress {
 	}
 
 	public List<Workout> getRemainingWorkouts(DatabaseManager databaseManager) {
+		loadFields(databaseManager);
 		HashSet<String> doneWorkoutIds = new HashSet<String>();
 		program = databaseManager.getProgram(program.getId());
 		for (WorkoutProgress workoutProgress : doneWorkouts) {
@@ -210,23 +241,12 @@ public class ProgramProgress {
 		return new ArrayList<Workout>(workoutOrderer);
 	}
 	
-	public WorkoutProgress getActualWorkoutProgress(DatabaseManager databaseManager) {
-		actualWorkout = databaseManager.getProgress(progressId).actualWorkout;
-		actualWorkout = databaseManager.getWorkoutProgress(actualWorkout.getId());
-		return actualWorkout;
-	}
-
 	public long getWorkoutDate(Workout workout) {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(getProgressId() + workout.getDay() * Constants.DAY_MILLIS);
-		calendar.set(Calendar.MILLISECOND, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		return calendar.getTimeInMillis();
+		return Constants.stripDate(getProgressId() + workout.getDay() * Constants.DAY_MILLIS);
 	}
 	
-	public String getDateOfNextWorkoutText(Context context) {
+	public String getDateOfNextWorkoutText(DatabaseManager databaseManager, Context context) {
+		loadFields(databaseManager);
 		String dateMessage = null;
 		if (isDone()) {
 			// Done
@@ -234,14 +254,14 @@ public class ProgramProgress {
 		} else if (getTerminationDate() != -1) {
 			// Aborted
 			dateMessage = context.getResources().getString(R.string.programAbandonnedLabel, Constants.dateFormatter.format(new Date(getTerminationDate())));
-		} else if (getFirstMissedWorkout() != null){
+		} else if (getFirstMissedWorkout(databaseManager) != null){
 			// Missed layout
-			long dayDiff = (System.currentTimeMillis() - getWorkoutDate(getFirstMissedWorkout())) / (1000*3600*24);
+			long dayDiff = (System.currentTimeMillis() - getWorkoutDate(getFirstMissedWorkout(databaseManager))) / (1000*3600*24);
 			dateMessage = context.getResources().getString(R.string.programMissedWorkoutLabep, "" + dayDiff, dayDiff > 1?"s":"");
 		} else {
 			// Next workout
 			//long dayDiff = (progress.getNextWorkoutDay() - System.currentTimeMillis()) / (1000*3600*24);
-			int dayDiff = getDaysTilNextWorkout();
+			int dayDiff = getDaysTilNextWorkout(databaseManager);
 			if (dayDiff == 0) {
 				dateMessage = context.getResources().getString(R.string.hasWorkoutToday);
 			} else {
@@ -250,5 +270,4 @@ public class ProgramProgress {
 		}
 		return dateMessage;
 	}
-	
 }

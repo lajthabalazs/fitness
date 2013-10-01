@@ -45,9 +45,6 @@ public class ProgramsOverviewActivity extends Activity implements OnClickListene
 		super.onResume();
 		List<ProgramProgress> programs = databaseManager.getProgressList();
 		if (programs != null && programs.size() > 0) {
-			for (ProgramProgress progress : programs) {
-				progress.setProgram(databaseManager.getProgram(progress.getProgram().getId()));
-			}
 			programAdapter.updatePrograms(programs);
 		} else {
 			Toast.makeText(this, "No programs added yet.", Toast.LENGTH_LONG).show();

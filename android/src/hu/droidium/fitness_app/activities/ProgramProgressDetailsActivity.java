@@ -65,7 +65,6 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 	protected void onResume() {
 		super.onResume();
 		ProgramProgress progress = databaseManager.getProgress(programId);
-		progress.setProgram(databaseManager.getProgram(progress.getProgram().getId()));
 		setTitle(progress.getProgram().getName());
 		programProgressBar.setProgress(progress.getProgressPercentage(databaseManager));
 		programDetailsText.setText(progress.getProgram().getDescription());
@@ -96,7 +95,7 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 			currentWorkoutLabel.setVisibility(View.GONE);
 			currentWorkoutText.setVisibility(View.GONE);
 		}
-		int days = progress.getDaysTilNextWorkout();
+		int days = progress.getDaysTilNextWorkout(databaseManager);
 		if (days == 0) {
 			doWorkout.setText(R.string.doTodaysWorkout);
 		} else {
@@ -108,8 +107,7 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 	public void onClick(View v) {
 		Intent intent = new Intent(this, DoWorkoutActivity.class);
 		ProgramProgress progress = databaseManager.getProgress(programId);
-		progress.setProgram(databaseManager.getProgram(progress.getProgram().getId()));
-		Workout nextWorkout = progress.getNextWorkout();
+		Workout nextWorkout = progress.getNextWorkout(databaseManager);
 		WorkoutProgress actualWorkout = progress.getActualWorkout(); 
 		if (nextWorkout != null || actualWorkout != null) {
 			if (actualWorkout != null && (actualWorkout.getFinishDate() != -1)) {
