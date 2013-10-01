@@ -1,12 +1,17 @@
 package hu.droidium.fitness_app.database;
 
 import hu.droidium.fitness_app.Constants;
+import hu.droidium.fitness_app.R;
 import hu.droidium.fitness_app.model.helpers.WorkoutComparator;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.TreeSet;
+
+import android.content.Context;
 
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
@@ -211,5 +216,39 @@ public class ProgramProgress {
 		return actualWorkout;
 	}
 
-
+	public long getWorkoutDate(Workout workout) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(getProgressId() + workout.getDay() * Constants.DAY_MILLIS);
+		calendar.set(Calendar.MILLISECOND, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		return calendar.getTimeInMillis();
+	}
+	
+	public String getDateOfNextWorkoutText(Context context) {
+		String dateMessage = null;
+		if (isDone()) {
+			// Done
+			dateMessage = context.getResources().getString(R.string.programDoneLabel, Constants.dateFormatter.format(new Date(getTerminationDate())));
+		} else if (getTerminationDate() != -1) {
+			// Aborted
+			dateMessage = context.getResources().getString(R.string.programAbandonnedLabel, Constants.dateFormatter.format(new Date(getTerminationDate())));
+		} else if (getFirstMissedWorkout() != null){
+			// Missed layout
+			long dayDiff = (System.currentTimeMillis() - getWorkoutDate(getFirstMissedWorkout())) / (1000*3600*24);
+			dateMessage = context.getResources().getString(R.string.programMissedWorkoutLabep, "" + dayDiff, dayDiff > 1?"s":"");
+		} else {
+			// Next workout
+			//long dayDiff = (progress.getNextWorkoutDay() - System.currentTimeMillis()) / (1000*3600*24);
+			int dayDiff = getDaysTilNextWorkout();
+			if (dayDiff == 0) {
+				dateMessage = context.getResources().getString(R.string.hasWorkoutToday);
+			} else {
+				dateMessage = context.getResources().getString(R.string.programNextWorkoutLabel, "" + dayDiff, dayDiff > 1?"s":"");
+			}
+		}
+		return dateMessage;
+	}
+	
 }

@@ -3,7 +3,6 @@ package hu.droidium.fitness_app;
 import hu.droidium.fitness_app.activities.ProgramsOverviewActivity;
 import hu.droidium.fitness_app.database.DatabaseManager;
 import hu.droidium.fitness_app.database.ProgramProgress;
-import hu.droidium.fitness_app.model.helpers.ProgramProgressHelper;
 import hu.droidium.fitness_app.model.helpers.ProgressComparator;
 
 import java.util.ArrayList;
@@ -70,7 +69,7 @@ public class ActiveProgramListAdapter implements ListAdapter {
 		}
 		((TextView)convertView.findViewById(R.id.processNameInActiveProgramList)).setText(progress.getProgressName());	
 		((TextView)convertView.findViewById(R.id.programNameInActiveProgramList)).setText(progress.getProgram().getName());	
-		((TextView)convertView.findViewById(R.id.programStartInActiveProgramList)).setText(ProgramProgressHelper.getDateOfNextWorkoutText(progress, programsOverviewActivity));
+		((TextView)convertView.findViewById(R.id.programStartInActiveProgramList)).setText(progress.getDateOfNextWorkoutText(programsOverviewActivity));
 		((ProgressBar)convertView.findViewById(R.id.programProgressBarInList)).setProgress(progress.getProgressPercentage(databaseManager));
 		return convertView;
 	}

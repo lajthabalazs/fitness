@@ -11,7 +11,12 @@ public class ProgressComparator implements Comparator<ProgramProgress> {
 	public int compare(ProgramProgress lhs, ProgramProgress rhs) {
 		if (lhs.isDone()) {
 			if (rhs.isDone()) {
-				return lhs.getProgressName().compareTo(rhs.getProgressName());
+				// Both done
+				if (lhs.getTerminationDate() > rhs.getTerminationDate()) {
+					return leftFirst;
+				} else {
+					return rightFirst;
+				}
 			} else {
 				return rightFirst;
 			}
@@ -19,7 +24,13 @@ public class ProgressComparator implements Comparator<ProgramProgress> {
 			if (rhs.isDone()) {
 				return leftFirst;
 			} else {
-				return lhs.getProgressName().compareTo(rhs.getProgressName());
+				// Both running
+				// First is the one with a due exercise
+				if (lhs.getNextWorkoutDay() < rhs.getNextWorkoutDay()){
+					return leftFirst;
+				} else {
+					return rightFirst;
+				}
 			}
 		}
 	}
