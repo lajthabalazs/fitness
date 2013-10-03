@@ -272,7 +272,14 @@ public class ProgramProgress {
 		return getWorkoutDate(workout) == Constants.stripDate(System.currentTimeMillis());
 	}
 	
-	public WorkoutProgress startWorkout(long now, Workout workout, DatabaseManager databaseManager){
+	public WorkoutProgress startWorkout(long now, Workout workout, DatabaseManager databaseManager) {
+		// Check if workouts have to be skipped
+		if (actualWorkout != null) {
+			actualWorkout.setFinishDate(now);
+			actualWorkout.setProgramProgress(this);
+			databaseManager.updateWorkoutProgress(actualWorkout);
+		}
+		// TODO check if there are any workouts that need to be skipped
 		WorkoutProgress actualWorkout = new WorkoutProgress(now, this, workout);
 		if (!databaseManager.addWorkoutProgress(actualWorkout)){
 			actualWorkout = null;

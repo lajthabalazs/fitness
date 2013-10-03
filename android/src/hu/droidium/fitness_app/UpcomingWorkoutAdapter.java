@@ -1,5 +1,6 @@
 package hu.droidium.fitness_app;
 
+import hu.droidium.fitness_app.activities.ProgramProgressDetailsActivity;
 import hu.droidium.fitness_app.database.Workout;
 
 import java.util.ArrayList;
@@ -7,14 +8,35 @@ import java.util.HashSet;
 import java.util.List;
 
 import android.database.DataSetObserver;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListAdapter;
+import android.widget.TextView;
 
-public class UpcomingWorkoutAdapter implements ListAdapter {
+public class UpcomingWorkoutAdapter implements ListAdapter, OnClickListener {
 
 	private List<Workout> workouts = new ArrayList<Workout>();
 	private HashSet<DataSetObserver> observers = new HashSet<DataSetObserver>();
+	private LayoutInflater inflater;
+	private ProgramProgressDetailsActivity activity;
+	private boolean hasActual = false;
+	
+	public UpcomingWorkoutAdapter(ProgramProgressDetailsActivity activity, LayoutInflater inflater){
+		this.activity = activity;
+		this.inflater = inflater;
+	}
+	
+	public void setWorkouts(List<Workout> workouts, boolean hasActual) {
+		this.workouts.clear();
+		this.hasActual = hasActual;
+		this.workouts.addAll(workouts);
+		for (DataSetObserver observer : observers){
+			observer.onChanged();
+		}
+	}
 	
 	@Override
 	public int getCount() {
@@ -38,8 +60,23 @@ public class UpcomingWorkoutAdapter implements ListAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
-		return null;
+		if (convertView == null) {
+			convertView = inflater.inflate(R.layout.upcoming_workout_list_item, null);
+		}
+		Workout workout = workouts.get(position);
+		((TextView)convertView.findViewById(R.id.workoutNameInUpcomingList)).setText(workout.getName());
+		if (workout.getDescription() != null) {
+			((TextView)convertView.findViewById(R.id.workoutDetailsInUpcomingList)).setText(workout.getDescription());
+		}
+		Button jumpButton = (Button)convertView.findViewById(R.id.workoutSkipToThisInUpcomingList);
+		jumpButton.setOnClickListener(this);
+		jumpButton.setTag(workout);
+		if (position == 0 && !hasActual) {
+			jumpButton.setText(R.string.upcomingWorkoutStartNext);
+		} else {
+			jumpButton.setText(R.string.upcomingWorkoutJump);
+		}
+		return convertView;
 	}
 
 	@Override
@@ -75,6 +112,14 @@ public class UpcomingWorkoutAdapter implements ListAdapter {
 	@Override
 	public boolean isEnabled(int position) {
 		return false;
+	}
+
+	@Override
+	public void onClick(View v) {
+		if (v.getId() == R.id.workoutSkipToThisInUpcomingList) {
+			Workout workout = (Workout)v.getTag();
+			activity.skipToWorkout(workouts.indexOf(workout), workout);
+		}
 	}
 
 }

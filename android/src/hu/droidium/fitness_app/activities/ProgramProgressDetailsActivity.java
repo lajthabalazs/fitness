@@ -3,6 +3,7 @@ package hu.droidium.fitness_app.activities;
 import hu.droidium.fitness_app.Constants;
 import hu.droidium.fitness_app.DataHelper;
 import hu.droidium.fitness_app.R;
+import hu.droidium.fitness_app.UpcomingWorkoutAdapter;
 import hu.droidium.fitness_app.database.DatabaseManager;
 import hu.droidium.fitness_app.database.Program;
 import hu.droidium.fitness_app.database.ProgramProgress;
@@ -12,13 +13,15 @@ import hu.droidium.fitness_app.database.WorkoutProgress;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -35,7 +38,7 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 	private DatabaseManager databaseManager;
 	private View upcommingWorkoutsLabel;
 	private ListView upcommingWorkoutsList;
-	private ArrayAdapter<Workout> upcommingWorkoutsAdapter;
+	private UpcomingWorkoutAdapter upcommingWorkoutsAdapter;
 	private TextView currentWorkoutLabel;
 	private TextView currentWorkoutText;
 	private TextView programNameLabel;
@@ -44,6 +47,7 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 	private TextView workoutStartDateLabel;
 	private TextView workoutProgressLabel;
 	private TextView currentWorkoutDescription;
+	private ProgramProgress programProgress;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +73,7 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 		workoutProgressLabel = (TextView)findViewById(R.id.workoutProgressLabel);
 		upcommingWorkoutsLabel = findViewById(R.id.upcommingWorkoutsLabel);
 		upcommingWorkoutsList = (ListView)findViewById(R.id.upcommingWorkoutsList);
-		upcommingWorkoutsAdapter = new ArrayAdapter<Workout>(this, android.R.layout.simple_list_item_1);
+		upcommingWorkoutsAdapter = new UpcomingWorkoutAdapter(this, getLayoutInflater());
 		upcommingWorkoutsList.setAdapter(upcommingWorkoutsAdapter);
 		doWorkout = (Button)findViewById(R.id.doTodaysWorkoutOnProgressDetails);
 		doWorkout.setOnClickListener(this);
@@ -79,29 +83,33 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 	@Override
 	protected void onResume() {
 		super.onResume();
-		ProgramProgress progress = databaseManager.getProgress(programId);
-		Program program  = databaseManager.getProgram(progress.getProgram().getId());
-		String programStartDate = Constants.format(progress.getProgressId());
+		updateUI();
+	}
+	
+	private void updateUI() {
+		programProgress = databaseManager.getProgress(programId);
+		Program program  = databaseManager.getProgram(programProgress.getProgram().getId());
+		String programStartDate = Constants.format(programProgress.getProgressId());
 		programStartDateLabel.setText(String.format(getResources().getString(R.string.programStartedLabel), programStartDate));
 		programNameLabel.setText(program.getName());
-		programProgressBar.setProgress(progress.getProgressPercentage(databaseManager));
+		programProgressBar.setProgress(programProgress.getProgressPercentage(databaseManager));
 		programDetailsText.setText(program.getDescription());
 		
-		if (progress.getTerminationDate() != -1) {
+		if (programProgress.getTerminationDate() != -1) {
 			doWorkout.setVisibility(View.GONE);
 			upcommingWorkoutsLabel.setVisibility(View.GONE);
 			upcommingWorkoutsList.setVisibility(View.INVISIBLE); // This pushes button to the bottom, has to keep it's place
 		} else {
-			List<Workout> remainingWorkouts = progress.getRemainingWorkouts(databaseManager);
+			List<Workout> remainingWorkouts = programProgress.getRemainingWorkouts(databaseManager);
 			if ((remainingWorkouts.size() > 0) &&
-					(progress.getActualWorkout() == null) &&
-					progress.isTodaysWorkout(remainingWorkouts.get(0))) {
+					(programProgress.getActualWorkout() == null) &&
+					programProgress.isTodaysWorkout(remainingWorkouts.get(0))) {
 				Workout todaysWorkout = remainingWorkouts.remove(0);
-				progress.startWorkout(System.currentTimeMillis(), todaysWorkout, databaseManager);
+				programProgress.startWorkout(System.currentTimeMillis(), todaysWorkout, databaseManager);
 			}
 			// Actual workout box
-			if (progress.getActualWorkout() != null) {
-				WorkoutProgress workoutProgress = databaseManager.getWorkoutProgress(progress.getActualWorkout().getId());
+			if (programProgress.getActualWorkout() != null) {
+				WorkoutProgress workoutProgress = databaseManager.getWorkoutProgress(programProgress.getActualWorkout().getId());
 				Workout workout = databaseManager.getWorkout(workoutProgress.getWorkout().getId());
 				currentWorkoutLabel.setVisibility(View.VISIBLE);
 				currentWorkoutText.setVisibility(View.VISIBLE);
@@ -131,7 +139,7 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 				long today = Constants.stripDate(System.currentTimeMillis());
 				// Workout has not been started
 				if (workoutProgress.getWorkoutProgressExercisePercentage(databaseManager) == 0) {
-					long workoutDate = progress.getWorkoutDate(workout);
+					long workoutDate = programProgress.getWorkoutDate(workout);
 					if (workoutDate < today) {
 						// Already due
 						int overdue = (int) ((today - workoutDate) / Constants.DAY_MILLIS);
@@ -192,11 +200,50 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 			} else {
 				upcommingWorkoutsLabel.setVisibility(View.VISIBLE);
 				upcommingWorkoutsList.setVisibility(View.VISIBLE);
-				upcommingWorkoutsAdapter.clear();
-				for (Workout workout : remainingWorkouts) {
-					upcommingWorkoutsAdapter.add(workout);
-				}
+				upcommingWorkoutsAdapter.setWorkouts(remainingWorkouts, programProgress.getActualWorkout() != null);
 			}
+		}
+	}
+
+	public void skipToWorkout(int index, final Workout workout) {
+		if (index == 0 && programProgress.getActualWorkout() == null) {
+			// Start next workout, no questions asked
+			programProgress.startWorkout(System.currentTimeMillis(), workout, databaseManager);
+			updateUI();
+		} else if (index == 0 && programProgress.getActualWorkout() != null){
+			Builder builder = new Builder(this);
+			builder.setTitle("Skip current workout?");
+			builder.setMessage("Are you sure you want to skip current workout?");
+			builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					programProgress.startWorkout(System.currentTimeMillis(), workout, databaseManager);
+					updateUI();
+				}
+			});
+			builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+				}
+			});
+			builder.create().show();
+		} else {
+			Builder builder = new Builder(this);
+			builder.setTitle("Skip workouts?");
+			builder.setMessage("Are you sure you want to skip all those workouts?");
+			builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					programProgress.startWorkout(System.currentTimeMillis(), workout, databaseManager);
+					updateUI();
+				}
+			});
+			builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+				}
+			});
+			builder.create().show();
 		}
 	}
 

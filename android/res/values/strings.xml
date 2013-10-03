@@ -50,6 +50,7 @@
     
     <string name="exerciseListLabel">Exercises: %1$s</string>
     <string name="workoutProgressLabel">Progress: %1$s exercises done</string>
+    <string name="upcomingWorkoutStartNext">Start today</string>
     <string name="upcomingWorkoutJump">Jump here</string>
     <string name="workoutNamePlaceholder">Workout name</string>
     <string name="workoutDescriptionPalceholder">Workout description comes here, if any is available. Should be a multiline text box to support a lot and lot and lots of text.</string>
