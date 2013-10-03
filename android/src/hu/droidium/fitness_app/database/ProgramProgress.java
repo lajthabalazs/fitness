@@ -21,8 +21,6 @@ public class ProgramProgress {
 
 	@DatabaseField(id = true)
 	private long progressId;
-	@DatabaseField
-	private String progressName;
 	@DatabaseField (foreign = true)
 	private Program program;
 	@DatabaseField (defaultValue="-1")
@@ -35,9 +33,8 @@ public class ProgramProgress {
 	
 	public ProgramProgress() {}
 	
-	public ProgramProgress(long id, String progressName, Program program) {
+	public ProgramProgress(long id, Program program) {
 		this.progressId = id;
-		this.progressName = progressName;
 		this.program = program;		
 	}
 
@@ -47,14 +44,6 @@ public class ProgramProgress {
 	
 	public void setProgressId(long progressId) {
 		this.progressId = progressId;
-	}
-	
-	public String getProgressName() {
-		return progressName;
-	}
-	
-	public void setProgressName(String progressName) {
-		this.progressName = progressName;
 	}
 	
 	public Program getProgram() {
@@ -229,7 +218,7 @@ public class ProgramProgress {
 	
 	@Override
 	public String toString() {
-		return progressId + " " + progressName + " (" + program.getName() + ")";
+		return progressId + " (" + program.getName() + ")";
 	}
 
 	public List<Workout> getRemainingWorkouts(DatabaseManager databaseManager) {

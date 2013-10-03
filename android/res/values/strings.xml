@@ -4,7 +4,6 @@
     <string name="app_name">RealFitness</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="placeholder">DEFAULT</string>
     <string name="addFifteen">Add 15 secs</string>
     <string name="continueWithWorkout">Continue</string>
     <string name="done">Done</string>
@@ -27,30 +26,18 @@
     <string name="showPrograms">Show Programs</string>
     <string name="addNewProgram">Start program</string>
     <string name="cancel">Cancel</string>
-
     <string name="programListTitle">Select a program</string>
-
     <string name="startApp">To real app</string>
-
     <string name="createDatabase">Create database</string>
-
     <string name="progressLabel">Name your workout program</string>
-
     <string name="workoutList">Workouts</string>
-
     <string name="upcommingWorkouts">Upcoming workouts</string>
-
     <string name="currentWorkoutLabel">Current workout</string>
     <string name="todaysWorkoutLabel">Today\'s workout</string>
-    
     <string name="programNamePlaceholder">Program name placeholder</string>
-
     <string name="programProgressStartDate">Started on %1$s</string>
-
     <string name="programDescriptionPlaceholder">Program\'s description. A text spanning over several lines, with instructions, tips and tricks, and some motivational text.</string>
-
     <string name="currentWorkoutDescription">Workout\'s description, if any was given.</string>
-    
     
     <string name="workoutStartToday">Workout started today.</string>
     <string name="workoutStartYesterday">Workout started yesterday.</string>
@@ -63,5 +50,12 @@
     
     <string name="exerciseListLabel">Exercises: %1$s</string>
     <string name="workoutProgressLabel">Progress: %1$s exercises done</string>
+    <string name="upcomingWorkoutJump">Jump here</string>
+    <string name="workoutNamePlaceholder">Workout name</string>
+    <string name="workoutDescriptionPalceholder">Workout description comes here, if any is available. Should be a multiline text box to support a lot and lot and lots of text.</string>
+    <string name="currentWorkoutNamePlaceholder">Current workout\\\'s name</string>
+    <string name="breakDurationPlaceholder">37</string>
+    <string name="exerciseNamePlaceholder">Exercise Name</string>
+    <string name="repCountText">%1$d %2$s</string>
     
 </resources>
