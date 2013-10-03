@@ -71,7 +71,6 @@ public class ProgramListActivity extends Activity implements OnClickListener, On
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		String programId = programAdapter.getItem(arg2).getId();
-		Log.e(TAG, "Selected program " + programId);
 		Intent intent = new Intent(this,ProgramDetailsActivity.class);
 		intent.putExtra(Constants.PROGRAM_ID_KEY, programId);
 		startActivityForResult(intent, ADD_DETAILS);

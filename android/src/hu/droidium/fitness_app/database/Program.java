@@ -52,6 +52,9 @@ public class Program {
 	}
 	
 	public List<Workout> getWorkouts() {
+		if (this.workouts == null) {
+			return null;
+		}
 		ArrayList<Workout> workouts = new ArrayList<Workout>();
 		for (Workout workout : this.workouts){
 			workouts.add(workout);

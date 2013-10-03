@@ -1,6 +1,7 @@
 package hu.droidium.fitness_app.database;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.j256.ormlite.dao.ForeignCollection;
@@ -11,6 +12,8 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable
 public class Workout{
 	
+	@SuppressWarnings("unused")
+	private static final String TAG = "Workout";
 	@DatabaseField(id=true)
 	private String id;
 	@DatabaseField(foreign=true)
@@ -82,7 +85,11 @@ public class Workout{
 	}
 
 	public List<Block> getBlocks() {
+		if (this.blocks == null) {
+			return null;
+		}
 		ArrayList<Block> ret = new ArrayList<Block>();
+		
 		for (Block block : blocks) {
 			ret.add(block);
 		}
@@ -123,4 +130,41 @@ public class Workout{
 		}
 		return exerciseCount;
 	}
+	
+	/**
+	 * Database intensive task. Counts the number of reps in a workout for each exercise type
+	 * @param databaseManager Database manager used to update database entities.
+	 * @return A hashmap indexed with the exercise type id, containing total reps of each type.
+	 */
+	public HashMap<String, Integer> getTotalReps(DatabaseManager databaseManager) {
+		HashMap<String, Integer> reps = new HashMap<String, Integer>();
+		if (blocks == null) {
+			blocks = databaseManager.getWorkout(id).blocks;
+		}
+		for (Block block : blocks) {
+			block = databaseManager.getBlock(block.getId());
+			for (Exercise exercise : block.getExercises()){
+				exercise = databaseManager.getExercise(exercise.getId());
+				String exerciseTypeId = exercise.getType().getId();
+				Integer savedReps = reps.get(exerciseTypeId);
+				if (savedReps == null) {
+					reps.put(exerciseTypeId, exercise.getReps());
+				} else {
+					reps.put(exerciseTypeId, savedReps + exercise.getReps());
+				}
+			}
+		}
+		return reps;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+

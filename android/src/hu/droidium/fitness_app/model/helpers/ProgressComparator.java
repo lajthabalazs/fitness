@@ -16,8 +16,8 @@ public class ProgressComparator implements Comparator<ProgramProgress> {
 	static int rightFirst = 1;
 	@Override
 	public int compare(ProgramProgress lhs, ProgramProgress rhs) {
-		if (lhs.isDone()) {
-			if (rhs.isDone()) {
+		if (lhs.isDone(databaseManager)) {
+			if (rhs.isDone(databaseManager)) {
 				// Both done
 				if (lhs.getTerminationDate() > rhs.getTerminationDate()) {
 					return leftFirst;
@@ -28,7 +28,7 @@ public class ProgressComparator implements Comparator<ProgramProgress> {
 				return rightFirst;
 			}
 		} else {
-			if (rhs.isDone()) {
+			if (rhs.isDone(databaseManager)) {
 				return leftFirst;
 			} else {
 				// Both running

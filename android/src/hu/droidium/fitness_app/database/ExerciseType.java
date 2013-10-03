@@ -139,6 +139,9 @@ public class ExerciseType {
 	}
 	
 	public List<Muscle> getMuscles() {
+		if (this.muscles == null) {
+			return null;
+		}
 		ArrayList<Muscle> ret = new ArrayList<Muscle>();
 		if (muscles != null) {
 			for (ExerciseTypeMuscle muscle : muscles) {

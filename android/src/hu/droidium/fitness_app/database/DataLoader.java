@@ -266,7 +266,7 @@ public class DataLoader {
 						} catch (JSONException e) {
 							Log.w(TAG, "No block name " + e.getMessage());
 						}
-						Block ormBlock = new Block(blockId, ormWorkout, blockName);
+						Block ormBlock = new Block(blockId, ormWorkout, blockName, blockIndex);
 						databaseManager.addBlock(ormBlock);
 						JSONArray exercises = block.getJSONArray(EXERCISES_KEY);
 						for (int exerciseIndex = 0; exerciseIndex < exercises.length(); exerciseIndex++) {

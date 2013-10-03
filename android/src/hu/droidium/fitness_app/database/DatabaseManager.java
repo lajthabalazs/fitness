@@ -279,4 +279,14 @@ public class DatabaseManager {
 			return false;
 		}
 	}
+
+	public ExerciseProgress getExerciseProgress(long id) {
+		try {
+			return helper.getExerciseProgressDao().queryForId(id);
+		} catch (SQLException e) {
+			Log.e(TAG, "Couldn't load exercise progress " + id + e.getMessage());
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

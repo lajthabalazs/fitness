@@ -2,6 +2,7 @@ package hu.droidium.fitness_app;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class Constants {
@@ -13,7 +14,8 @@ public class Constants {
 	public static final String PROGRAM_ID_KEY = "program_id";
 	public static final String REPS_DEFAULT_UNIT = "reps";
 	
-	public static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+	private static final Date date = new Date();
+	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 	public static final long DAY_MILLIS = 24l * 3600 * 1000; 
 	private static final Calendar calendar = Calendar.getInstance();
 	
@@ -24,5 +26,10 @@ public class Constants {
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		return calendar.getTimeInMillis();
+	}
+	
+	public static String format(long millis){
+		date.setTime(millis);
+		return dateFormatter.format(date);
 	}
 }

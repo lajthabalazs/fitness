@@ -5,7 +5,6 @@ import hu.droidium.fitness_app.R;
 import hu.droidium.fitness_app.model.helpers.WorkoutComparator;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.TreeSet;
@@ -83,6 +82,9 @@ public class ProgramProgress {
 	}
 		
 	public List<WorkoutProgress> getDoneWorkouts() {
+		if (this.doneWorkouts == null) {
+			return null;
+		}
 		ArrayList<WorkoutProgress> workouts = new ArrayList<WorkoutProgress>();
 		for (WorkoutProgress workout : doneWorkouts) {
 			workouts.add(workout);
@@ -98,7 +100,8 @@ public class ProgramProgress {
 	/* ***********************    CONVINIENCE METHODS  ******************** */
 	/* ******************************************************************** */
 	
-	public boolean isDone() {
+	public boolean isDone(DatabaseManager databaseManager) {
+		loadFields(databaseManager);
 		if (terminationDate == -1) {
 			return false;
 		}
@@ -148,7 +151,8 @@ public class ProgramProgress {
 		if (nextWorkoutDay == -1) {
 			return -1;
 		} else {
-			return  (int)((nextWorkoutDay - System.currentTimeMillis()) / Constants.DAY_MILLIS);
+			long now = Constants.stripDate(System.currentTimeMillis());
+			return  (int)((nextWorkoutDay - now) / Constants.DAY_MILLIS);
 		}
 	}
 	
@@ -162,7 +166,9 @@ public class ProgramProgress {
 			actualWorkout = loadedProgress.actualWorkout;
 			program = loadedProgress.program;
 			doneWorkouts = loadedProgress.doneWorkouts;
-			
+		}
+		if (program.getWorkouts() == null) {
+			program = databaseManager.getProgram(this.program.getId());
 		}
 	}
 	
@@ -208,8 +214,10 @@ public class ProgramProgress {
 		for (WorkoutProgress workoutProgress : doneWorkouts) {
 			workoutProgress = databaseManager.getWorkoutProgress(workoutProgress.getId());
 			doneWorkoutIds.add(workoutProgress.getWorkout().getId());
-			if (workoutProgress.getWorkout().getId().equals(actualWorkout.getId())) {
-				hasActualBeenDone = true;
+			if (actualWorkout != null) {
+				if (workoutProgress.getWorkout().getId().equals(actualWorkout.getId())) {
+					hasActualBeenDone = true;
+				}
 			}
 		}
 		float doneWorkouts = doneWorkoutIds.size();
@@ -248,19 +256,19 @@ public class ProgramProgress {
 	public String getDateOfNextWorkoutText(DatabaseManager databaseManager, Context context) {
 		loadFields(databaseManager);
 		String dateMessage = null;
-		if (isDone()) {
+		if (isDone(databaseManager)) {
 			// Done
-			dateMessage = context.getResources().getString(R.string.programDoneLabel, Constants.dateFormatter.format(new Date(getTerminationDate())));
+			dateMessage = context.getResources().getString(R.string.programDoneLabel, Constants.format(getTerminationDate()));
 		} else if (getTerminationDate() != -1) {
 			// Aborted
-			dateMessage = context.getResources().getString(R.string.programAbandonnedLabel, Constants.dateFormatter.format(new Date(getTerminationDate())));
+			dateMessage = context.getResources().getString(R.string.programAbandonnedLabel, Constants.format(getTerminationDate()));
 		} else if (getFirstMissedWorkout(databaseManager) != null){
 			// Missed layout
-			long dayDiff = (System.currentTimeMillis() - getWorkoutDate(getFirstMissedWorkout(databaseManager))) / (1000*3600*24);
+			long now = Constants.stripDate(System.currentTimeMillis());
+			long missedWorkout = Constants.stripDate(getWorkoutDate(getFirstMissedWorkout(databaseManager)));
+			long dayDiff = (now - missedWorkout) / Constants.DAY_MILLIS;
 			dateMessage = context.getResources().getString(R.string.programMissedWorkoutLabep, "" + dayDiff, dayDiff > 1?"s":"");
 		} else {
-			// Next workout
-			//long dayDiff = (progress.getNextWorkoutDay() - System.currentTimeMillis()) / (1000*3600*24);
 			int dayDiff = getDaysTilNextWorkout(databaseManager);
 			if (dayDiff == 0) {
 				dateMessage = context.getResources().getString(R.string.hasWorkoutToday);
@@ -270,4 +278,30 @@ public class ProgramProgress {
 		}
 		return dateMessage;
 	}
+
+	public boolean isTodaysWorkout(Workout workout) {
+		return getWorkoutDate(workout) == Constants.stripDate(System.currentTimeMillis());
+	}
+	
+	public WorkoutProgress startWorkout(long now, Workout workout, DatabaseManager databaseManager){
+		WorkoutProgress actualWorkout = new WorkoutProgress(now, this, workout);
+		if (!databaseManager.addWorkoutProgress(actualWorkout)){
+			actualWorkout = null;
+		}
+		setActualWorkout(actualWorkout);
+		databaseManager.updateProgress(this);
+		return actualWorkout;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+

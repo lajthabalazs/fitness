@@ -1,5 +1,7 @@
 package hu.droidium.fitness_app.activities;
 
+import java.security.InvalidParameterException;
+
 import hu.droidium.fitness_app.BreakCountdown;
 import hu.droidium.fitness_app.Constants;
 import hu.droidium.fitness_app.R;
@@ -11,6 +13,7 @@ import hu.droidium.fitness_app.database.Workout;
 import hu.droidium.fitness_app.database.WorkoutProgress;
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -18,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class DoWorkoutActivity extends Activity implements OnClickListener {
-	@SuppressWarnings("unused")
 	private static final String TAG = "ExerciseActivity";
 	private WorkoutProgressView progressView;
 	private long programProgressId;
@@ -75,6 +77,8 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 		if (programProgressId != -1) {
 			ProgramProgress programProgress = databaseManager.getProgress(programProgressId);
 			progress = programProgress.getActualWorkout();
+			// Needs deep loading
+			progress = databaseManager.getWorkoutProgress(progress.getId());
 			if (progress == null) {
 				progressView.done();
 				breakLayout.setVisibility(View.GONE);
@@ -100,7 +104,6 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 				exerciseLayout.setVisibility(View.GONE);
 				endLayout.setVisibility(View.VISIBLE);
 			} else {
-				
 				Exercise exercise = progress.getExercise(actualBlockIndex, actualExerciseIndex, databaseManager);
 				if (endOfBreak == -1 || endOfBreak < now) {
 					breakLayout.setVisibility(View.GONE);
@@ -150,11 +153,14 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 				ProgramProgress programProgress = databaseManager.getProgress(programProgressId);
 				WorkoutProgress workoutProgress = programProgress.getActualWorkout();
 				if (workoutProgress != null) {
+					Log.i(TAG, "Done exercise " + actualExerciseIndex + " of block " + actualBlockIndex);
 					Exercise exercise = workoutProgress.getExercise(actualBlockIndex, actualExerciseIndex, databaseManager);
 					progress.exerciseDone(programProgress, exercise, exercise.getReps(), now - startOfExercise, now, databaseManager);
 					if (progress.getFinishDate() == -1) {
 						endOfBreak = now + 1000 * exercise.getBreakSecs();
 					}
+				} else {
+					throw new InvalidParameterException("There should be an actual workout!");
 				}
 				progressChanged();
 				break;

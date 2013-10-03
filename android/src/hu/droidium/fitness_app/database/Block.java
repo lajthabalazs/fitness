@@ -24,10 +24,11 @@ public class Block {
 	
 	public Block() {}
 	
-	public Block(String id, Workout workout, String name) {
+	public Block(String id, Workout workout, String name, int order) {
 		this.id = id;
 		this.workout = workout;
 		this.name = name;
+		this.order = order;
 	}
 
 	public String getId() {
@@ -63,6 +64,9 @@ public class Block {
 	}
 
 	public List<Exercise> getExercises() {
+		if (this.exercises == null) {
+			return null;
+		}
 		ArrayList<Exercise> exercises = new ArrayList<Exercise>();
 		for (Exercise exercise : this.exercises){
 			exercises.add(exercise);

@@ -19,7 +19,7 @@
     <string name="programMissedWorkoutLabep">You missed a workout %1$s day%2$s ago.</string>
     <string name="programAbandonnedLabel">Aborted on %1$s</string>
     <string name="doTodaysWorkout">Do today\'s workout</string>
-    <string name="doNextWorkoutToday">Do today\'s workout</string>
+    <string name="resumeWorkout">Resume workout</string>
     <string name="hasWorkoutToday">Workout scheduled for today</string>
     <string name="toMuscles">Show muscles</string>
     <string name="showExercises">Show exercises</string>
@@ -38,8 +38,30 @@
 
     <string name="workoutList">Workouts</string>
 
-    <string name="upcommingWorkouts">Upcomming workouts</string>
+    <string name="upcommingWorkouts">Upcoming workouts</string>
 
     <string name="currentWorkoutLabel">Current workout</string>
+    <string name="todaysWorkoutLabel">Today\'s workout</string>
+    
+    <string name="programNamePlaceholder">Program name placeholder</string>
+
+    <string name="programProgressStartDate">Started on %1$s</string>
+
+    <string name="programDescriptionPlaceholder">Program\'s description. A text spanning over several lines, with instructions, tips and tricks, and some motivational text.</string>
+
+    <string name="currentWorkoutDescription">Workout\'s description, if any was given.</string>
+    
+    
+    <string name="workoutStartToday">Workout started today.</string>
+    <string name="workoutStartYesterday">Workout started yesterday.</string>
+    <string name="workoutStartDate">Workout started %1$d days ago.</string>
+    <string name="workoutDueTomorroDate">Workout is due tomorrow.</string>
+    <string name="workoutDueFutureDate">Workout due in %1$d days.</string>
+    <string name="workoutDueYesterdayDate">Workout was due yesterday.</string>
+    <string name="workoutDuePastDate">Workout was due %1$d days ago.</string>
+    <string name="workoutDueToday">You have a workout for today.</string>
+    
+    <string name="exerciseListLabel">Exercises: %1$s</string>
+    <string name="workoutProgressLabel">Progress: %1$s exercises done</string>
     
 </resources>

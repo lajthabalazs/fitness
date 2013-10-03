@@ -26,7 +26,6 @@ public class BreakCountdown extends AsyncTask<Integer, Integer, Void> {
 				break;
 			}
 			secs --;
-			
 		}
 		return null;
 	}
