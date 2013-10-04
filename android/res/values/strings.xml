@@ -18,6 +18,7 @@
     <string name="programMissedWorkoutLabep">You missed a workout %1$s day%2$s ago.</string>
     <string name="programAbandonnedLabel">Aborted on %1$s</string>
     <string name="doTodaysWorkout">Do today\'s workout</string>
+    <string name="doThisWorkout">Do this workout</string>
     <string name="resumeWorkout">Resume workout</string>
     <string name="hasWorkoutToday">Workout scheduled for today</string>
     <string name="toMuscles">Show muscles</string>

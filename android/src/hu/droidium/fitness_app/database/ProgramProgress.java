@@ -278,14 +278,12 @@ public class ProgramProgress {
 	}
 	
 	public WorkoutProgress startWorkout(long now, Workout workout, DatabaseManager databaseManager) {
-		ProgramProgress programProgress = databaseManager.getProgress(progressId);
-		Log.e(TAG, "Done workouts " + programProgress.getDoneWorkouts().size());
+		Log.i(TAG, "Start workout " + workout.getId());
 		// Check if there are any workouts that need to be skipped
 		HashSet<String> doneWorkoutIds = new HashSet<String>();
 		doneWorkouts = databaseManager.getProgress(progressId).doneWorkouts;
 		if (actualWorkout != null) {
 			actualWorkout = databaseManager.getWorkoutProgress(actualWorkout.getId());
-			Log.e(TAG, actualWorkout.getWorkout().getId() + " done (actual)");
 			doneWorkoutIds.add(actualWorkout.getWorkout().getId());
 		}
 		for (WorkoutProgress doneWorkout : doneWorkouts) {
@@ -297,17 +295,11 @@ public class ProgramProgress {
 		// Add skipped workouts
 		Log.e(TAG, "Done workouts " + doneWorkoutIds.size());
 		for (Workout programWorkout : program.getWorkouts()) {
-			Log.e(TAG, "Checking workout " + programWorkout.getId() + " day " + programWorkout.getDay());
 			if (!doneWorkoutIds.contains(programWorkout.getId()) && (workout.getDay() > programWorkout.getDay())) {
 				WorkoutProgress skippedProgress = new WorkoutProgress(now, programWorkout);
 				skippedProgress.setFinishDate(now);
 				skippedProgress.setProgramProgress(this);
 				databaseManager.addWorkoutProgress(skippedProgress);
-				Log.e(TAG, "Workout has to be skipped");
-			} else if (doneWorkoutIds.contains(programWorkout.getId())) {
-				Log.e(TAG, "Already done");
-			} else if (!(workout.getDay() > programWorkout.getDay())) {
-				Log.e(TAG, "Stil in the future");
 			}
 		}
 		if (actualWorkout != null) {
@@ -324,8 +316,6 @@ public class ProgramProgress {
 		}
 		setActualWorkout(actualWorkout);
 		databaseManager.updateProgress(this);
-		ProgramProgress programProgress2 = databaseManager.getProgress(progressId);
-		Log.e(TAG, "Done workouts " + programProgress2.getDoneWorkouts().size());
 		return actualWorkout;
 	}
 }

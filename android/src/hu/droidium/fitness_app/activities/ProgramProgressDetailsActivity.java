@@ -145,33 +145,33 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 				long today = Constants.stripDate(System.currentTimeMillis());
 				// Workout has not been started
 				if (workoutProgress.getWorkoutProgressExercisePercentage(databaseManager) == 0) {
+					workoutProgressLabel.setVisibility(View.GONE);
 					long workoutDate = programProgress.getWorkoutDate(workout);
 					if (workoutDate < today) {
+						currentWorkoutLabel.setText(R.string.currentWorkoutLabel);
+						doWorkout.setText(R.string.doTodaysWorkout);
 						// Already due
 						int overdue = (int) ((today - workoutDate) / Constants.DAY_MILLIS);
 						if (overdue == 1) {
-							currentWorkoutLabel.setText(R.string.currentWorkoutLabel);
 							workoutStartDateLabel.setText(R.string.workoutDueYesterdayDate);
 						} else {
-							currentWorkoutLabel.setText(R.string.currentWorkoutLabel);
 							workoutStartDateLabel.setText(String.format(getResources().getString(R.string.workoutDuePastDate),overdue));
 						}
 					} else if (workoutDate > today) {
 						// Due in future
+						currentWorkoutLabel.setText(R.string.currentWorkoutLabel);
+						doWorkout.setText(R.string.doThisWorkout);
 						int timeLeft = (int) ((workoutDate - today) / Constants.DAY_MILLIS);
 						if (timeLeft == 1) {
-							currentWorkoutLabel.setText(R.string.currentWorkoutLabel);
 							workoutStartDateLabel.setText(R.string.workoutDueTomorroDate);
 						} else {
-							currentWorkoutLabel.setText(R.string.currentWorkoutLabel);
 							workoutStartDateLabel.setText(String.format(getResources().getString(R.string.workoutDueFutureDate),timeLeft));
 						}	
 					} else {
 						currentWorkoutLabel.setText(R.string.todaysWorkoutLabel);
+						doWorkout.setText(R.string.doTodaysWorkout);
 						workoutStartDateLabel.setVisibility(View.GONE);
 					}
-					workoutProgressLabel.setVisibility(View.GONE);
-					doWorkout.setText(R.string.doTodaysWorkout);
 				} else { // Workout already started
 					long workoutStartDate = workoutProgress.getStartTime();
 					int delay = (int) ((today - Constants.stripDate(workoutStartDate)) / Constants.DAY_MILLIS);
