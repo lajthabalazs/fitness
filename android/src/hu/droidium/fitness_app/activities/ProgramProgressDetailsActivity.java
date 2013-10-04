@@ -13,7 +13,6 @@ import hu.droidium.fitness_app.database.WorkoutProgress;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -36,9 +35,9 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 	private Button doWorkout;
 	private long programId;
 	private DatabaseManager databaseManager;
-	private View upcommingWorkoutsLabel;
-	private ListView upcommingWorkoutsList;
-	private UpcomingWorkoutAdapter upcommingWorkoutsAdapter;
+	private View upcomingWorkoutsLabel;
+	private ListView upcomingWorkoutsList;
+	private UpcomingWorkoutAdapter upcomingWorkoutsAdapter;
 	private TextView currentWorkoutLabel;
 	private TextView currentWorkoutText;
 	private TextView programNameLabel;
@@ -71,10 +70,10 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 		exerciseListLabel = (TextView)findViewById(R.id.exerciseListLabel);
 		workoutStartDateLabel = (TextView)findViewById(R.id.workoutStartDateLabel);
 		workoutProgressLabel = (TextView)findViewById(R.id.workoutProgressLabel);
-		upcommingWorkoutsLabel = findViewById(R.id.upcommingWorkoutsLabel);
-		upcommingWorkoutsList = (ListView)findViewById(R.id.upcommingWorkoutsList);
-		upcommingWorkoutsAdapter = new UpcomingWorkoutAdapter(this, getLayoutInflater());
-		upcommingWorkoutsList.setAdapter(upcommingWorkoutsAdapter);
+		upcomingWorkoutsLabel = findViewById(R.id.upcommingWorkoutsLabel);
+		upcomingWorkoutsList = (ListView)findViewById(R.id.upcommingWorkoutsList);
+		upcomingWorkoutsAdapter = new UpcomingWorkoutAdapter(this, getLayoutInflater());
+		upcomingWorkoutsList.setAdapter(upcomingWorkoutsAdapter);
 		doWorkout = (Button)findViewById(R.id.doTodaysWorkoutOnProgressDetails);
 		doWorkout.setOnClickListener(this);
 		databaseManager = DatabaseManager.getInstance(this);
@@ -97,8 +96,15 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 		
 		if (programProgress.getTerminationDate() != -1) {
 			doWorkout.setVisibility(View.GONE);
-			upcommingWorkoutsLabel.setVisibility(View.GONE);
-			upcommingWorkoutsList.setVisibility(View.INVISIBLE); // This pushes button to the bottom, has to keep it's place
+			upcomingWorkoutsLabel.setVisibility(View.GONE);
+			upcomingWorkoutsList.setVisibility(View.GONE);
+			currentWorkoutLabel.setVisibility(View.GONE);
+			currentWorkoutText.setVisibility(View.GONE);
+			exerciseListLabel.setVisibility(View.GONE);
+			workoutStartDateLabel.setVisibility(View.GONE);
+			workoutProgressLabel.setVisibility(View.GONE);
+			doWorkout.setVisibility(View.GONE);
+			
 		} else {
 			List<Workout> remainingWorkouts = programProgress.getRemainingWorkouts(databaseManager);
 			if ((remainingWorkouts.size() > 0) &&
@@ -195,17 +201,18 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 			}
 			// Upcomming workout box
 			if (remainingWorkouts.size() == 0) {
-				upcommingWorkoutsLabel.setVisibility(View.GONE);
-				upcommingWorkoutsList.setVisibility(View.INVISIBLE); // This pushes button to the bottom, has to keep it's place
+				upcomingWorkoutsLabel.setVisibility(View.GONE);
+				upcomingWorkoutsList.setVisibility(View.INVISIBLE); // This pushes button to the bottom, has to keep it's place
 			} else {
-				upcommingWorkoutsLabel.setVisibility(View.VISIBLE);
-				upcommingWorkoutsList.setVisibility(View.VISIBLE);
-				upcommingWorkoutsAdapter.setWorkouts(remainingWorkouts, programProgress.getActualWorkout() != null);
+				upcomingWorkoutsLabel.setVisibility(View.VISIBLE);
+				upcomingWorkoutsList.setVisibility(View.VISIBLE);
+				upcomingWorkoutsAdapter.setWorkouts(remainingWorkouts, programProgress.getActualWorkout() != null);
 			}
 		}
 	}
 
 	public void skipToWorkout(int index, final Workout workout) {
+		Log.e(TAG, "Skipping to workout " + workout.getId() + " day " + workout.getDay());
 		if (index == 0 && programProgress.getActualWorkout() == null) {
 			// Start next workout, no questions asked
 			programProgress.startWorkout(System.currentTimeMillis(), workout, databaseManager);

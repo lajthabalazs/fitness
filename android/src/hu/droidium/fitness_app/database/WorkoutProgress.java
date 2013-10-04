@@ -33,9 +33,8 @@ public class WorkoutProgress {
 	private long finishDate = -1;
 	
 	public WorkoutProgress() {}
-	public WorkoutProgress(long startTime, ProgramProgress programProgress, Workout workout) {
+	public WorkoutProgress(long startTime, Workout workout) {
 		this.startTime = startTime;
-		this.programProgress = programProgress;
 		this.workout = workout;
 		this.finishDate = -1;
 	}
@@ -123,10 +122,12 @@ public class WorkoutProgress {
 		if (exerciseIndex == exerciseCount - 1) {
 			if (blockIndex == blockCount - 1) {
 				// Last exercise of last block
-				this.finishDate = date;
-				this.actualBlock = -1;
-				this.actualExercise = -1;
+				setFinishDate(date);
+				setActualBlock(-1);
+				setActualExercise(-1);
+				setProgramProgress(programProgress);
 				databaseManager.updateWorkoutProgress(this);
+				// Remove workout as actual workout
 				programProgress.setActualWorkout(null);
 				// Check if there are more workouts in the program
 				if (programProgress.getRemainingWorkouts(databaseManager).size() == 0) {
@@ -137,7 +138,6 @@ public class WorkoutProgress {
 			} else {
 				this.actualBlock += 1;
 				this.actualExercise = 0;
-				setProgramProgress(programProgress);
 				databaseManager.updateWorkoutProgress(this);
 			}
 		} else {

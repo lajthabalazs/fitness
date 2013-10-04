@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.TreeSet;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
@@ -19,6 +20,7 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable
 public class ProgramProgress {
 
+	private static final String TAG = "ProgramProgress";
 	@DatabaseField(id = true)
 	private long progressId;
 	@DatabaseField (foreign = true)
@@ -223,8 +225,11 @@ public class ProgramProgress {
 
 	public List<Workout> getRemainingWorkouts(DatabaseManager databaseManager) {
 		loadFields(databaseManager);
-		HashSet<String> doneWorkoutIds = new HashSet<String>();
 		program = databaseManager.getProgram(program.getId());
+		HashSet<String> doneWorkoutIds = new HashSet<String>();
+		if (actualWorkout != null) {
+			doneWorkoutIds.add(actualWorkout.getWorkout().getId());
+		}
 		for (WorkoutProgress workoutProgress : doneWorkouts) {
 			workoutProgress = databaseManager.getWorkoutProgress(workoutProgress.getId());
 			doneWorkoutIds.add(workoutProgress.getWorkout().getId());
@@ -273,19 +278,54 @@ public class ProgramProgress {
 	}
 	
 	public WorkoutProgress startWorkout(long now, Workout workout, DatabaseManager databaseManager) {
-		// Check if workouts have to be skipped
+		ProgramProgress programProgress = databaseManager.getProgress(progressId);
+		Log.e(TAG, "Done workouts " + programProgress.getDoneWorkouts().size());
+		// Check if there are any workouts that need to be skipped
+		HashSet<String> doneWorkoutIds = new HashSet<String>();
+		doneWorkouts = databaseManager.getProgress(progressId).doneWorkouts;
 		if (actualWorkout != null) {
+			actualWorkout = databaseManager.getWorkoutProgress(actualWorkout.getId());
+			Log.e(TAG, actualWorkout.getWorkout().getId() + " done (actual)");
+			doneWorkoutIds.add(actualWorkout.getWorkout().getId());
+		}
+		for (WorkoutProgress doneWorkout : doneWorkouts) {
+			doneWorkout = databaseManager.getWorkoutProgress(doneWorkout.getId());
+			Log.e(TAG, doneWorkout.getWorkout().getId() + " done");
+			doneWorkoutIds.add(doneWorkout.getWorkout().getId());
+		}
+		program = databaseManager.getProgram(program.getId());
+		// Add skipped workouts
+		Log.e(TAG, "Done workouts " + doneWorkoutIds.size());
+		for (Workout programWorkout : program.getWorkouts()) {
+			Log.e(TAG, "Checking workout " + programWorkout.getId() + " day " + programWorkout.getDay());
+			if (!doneWorkoutIds.contains(programWorkout.getId()) && (workout.getDay() > programWorkout.getDay())) {
+				WorkoutProgress skippedProgress = new WorkoutProgress(now, programWorkout);
+				skippedProgress.setFinishDate(now);
+				skippedProgress.setProgramProgress(this);
+				databaseManager.addWorkoutProgress(skippedProgress);
+				Log.e(TAG, "Workout has to be skipped");
+			} else if (doneWorkoutIds.contains(programWorkout.getId())) {
+				Log.e(TAG, "Already done");
+			} else if (!(workout.getDay() > programWorkout.getDay())) {
+				Log.e(TAG, "Stil in the future");
+			}
+		}
+		if (actualWorkout != null) {
+			actualWorkout = databaseManager.getWorkoutProgress(actualWorkout.getId());
+			doneWorkoutIds.add(actualWorkout.getWorkout().getId());
 			actualWorkout.setFinishDate(now);
 			actualWorkout.setProgramProgress(this);
 			databaseManager.updateWorkoutProgress(actualWorkout);
 		}
-		// TODO check if there are any workouts that need to be skipped
-		WorkoutProgress actualWorkout = new WorkoutProgress(now, this, workout);
+		program = databaseManager.getProgram(program.getId());
+		WorkoutProgress actualWorkout = new WorkoutProgress(now, workout);
 		if (!databaseManager.addWorkoutProgress(actualWorkout)){
 			actualWorkout = null;
 		}
 		setActualWorkout(actualWorkout);
 		databaseManager.updateProgress(this);
+		ProgramProgress programProgress2 = databaseManager.getProgress(progressId);
+		Log.e(TAG, "Done workouts " + programProgress2.getDoneWorkouts().size());
 		return actualWorkout;
 	}
 }
