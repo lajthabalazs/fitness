@@ -9,6 +9,9 @@ public class BreakCountdown extends AsyncTask<Integer, Integer, Void> {
 	private static final String TAG = "BreakCountdown";
 	private DoWorkoutActivity activity;
 	private boolean canceled;
+	private Integer secs = 0;
+	private long addedAt = -1;
+	private long lastRun = 0;
 	
 	public BreakCountdown(DoWorkoutActivity activity) {
 		this.activity = activity;
@@ -16,14 +19,26 @@ public class BreakCountdown extends AsyncTask<Integer, Integer, Void> {
 
 	@Override
 	protected Void doInBackground(Integer... params) {
-		int secs = params[0];
+		secs  = params[0];
 		while (secs > 0) {
 			publishProgress(secs);
+			lastRun = System.currentTimeMillis();
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 				break;
+			}
+			// Time has been added, add a little to avoid flickering
+			if (addedAt > lastRun) {
+				long delay = addedAt - lastRun;
+				addedAt = -1;
+				try {
+					Thread.sleep(delay);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					break;
+				}
 			}
 			secs --;
 		}
@@ -52,5 +67,15 @@ public class BreakCountdown extends AsyncTask<Integer, Integer, Void> {
 		} else {
 			Log.e(TAG, "Already canceled.");
 		}
+	}
+
+	public int getRemainingTimeInSecs() {
+		return secs;
+	}
+
+	public void addSecs(int secs) {
+		addedAt = System.currentTimeMillis();
+		this.secs += secs;
+		publishProgress(this.secs);
 	}	
 }

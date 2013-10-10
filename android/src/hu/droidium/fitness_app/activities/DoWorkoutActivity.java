@@ -38,7 +38,7 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 	private WorkoutProgress progress;
 	private long endOfBreak = -1;
 	private long startOfExercise = -1;
-	private BreakCountdown task;
+	private BreakCountdown breakCountdown;
 	private View endLayout;
 	private DatabaseManager databaseManager;
 	private TextView repsLabel;
@@ -125,16 +125,16 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 					endLayout.setVisibility(View.GONE);
 					progressView.setActiveExcercise(actualBlockIndex, actualExerciseIndex);
 				} else {
-					if (task != null) {
-						task.cancel(true);
+					if (breakCountdown != null) {
+						breakCountdown.cancel(true);
 					}
-					task = new BreakCountdown(this);
+					breakCountdown = new BreakCountdown(this);
 					int remainingSecs = (int) ((endOfBreak - now) / 1000);
-					breakDuration.setText(remainingSecs + " " + getResources().getString(R.string.secs));
+					breakDuration.setText("" + remainingSecs);
 					breakLayout.setVisibility(View.VISIBLE);
 					exerciseLayout.setVisibility(View.GONE);
 					endLayout.setVisibility(View.GONE);
-					task.execute(remainingSecs);
+					breakCountdown.execute(remainingSecs);
 					progressView.setActiveBreak(actualBlockIndex, actualExerciseIndex);
 				}
 			}
@@ -148,8 +148,8 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 	
 	@Override
 	protected void onPause() {
-		if (task != null) {
-			task.cancel(true);
+		if (breakCountdown != null) {
+			breakCountdown.cancel(true);
 		}
 		super.onPause();
 	}
@@ -183,6 +183,12 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 			}
 			case R.id.backToWorkoutList : {
 				finish();
+				break;
+			} case R.id.addFifteen : {
+				if (breakCountdown != null && breakCountdown.getRemainingTimeInSecs() > 0) {
+					endOfBreak += 15000;
+					breakCountdown.addSecs(15);
+				} 
 				break;
 			}
 			default : {
