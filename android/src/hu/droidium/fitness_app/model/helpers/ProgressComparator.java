@@ -5,9 +5,13 @@ import hu.droidium.fitness_app.database.ProgramProgress;
 
 import java.util.Comparator;
 
+import android.util.Log;
+
 public class ProgressComparator implements Comparator<ProgramProgress> {
 	
+	private static final String TAG = "ProgressComparator";
 	private DatabaseManager databaseManager;
+	
 	
 	public ProgressComparator(DatabaseManager databaseManager) {
 		this.databaseManager = databaseManager;
@@ -35,8 +39,16 @@ public class ProgressComparator implements Comparator<ProgramProgress> {
 				// First is the one with a due exercise
 				if (lhs.getNextWorkoutDay(databaseManager) < rhs.getNextWorkoutDay(databaseManager)){
 					return leftFirst;
-				} else {
+				} else if (lhs.getNextWorkoutDay(databaseManager) > rhs.getNextWorkoutDay(databaseManager)){
 					return rightFirst;
+				} else {
+					Log.e(TAG,"Both have an exercise on the same day");
+					// Start with the freshest
+					if (lhs.getProgressId() < rhs.getProgressId()) {
+						return rightFirst;
+					} else {
+						return leftFirst;
+					}
 				}
 			}
 		}

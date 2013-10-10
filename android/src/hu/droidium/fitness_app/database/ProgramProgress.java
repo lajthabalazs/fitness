@@ -133,7 +133,7 @@ public class ProgramProgress {
 		if (nextWorkout == null) {
 			return -1;
 		} else {
-			return progressId + Constants.DAY_MILLIS * nextWorkout.getDay();
+			return Constants.stripDate(progressId) + Constants.DAY_MILLIS * nextWorkout.getDay();
 		}
 	}
 	
