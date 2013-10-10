@@ -8,6 +8,7 @@ import hu.droidium.fitness_app.R;
 import hu.droidium.fitness_app.WorkoutProgressView;
 import hu.droidium.fitness_app.database.DatabaseManager;
 import hu.droidium.fitness_app.database.Exercise;
+import hu.droidium.fitness_app.database.ExerciseType;
 import hu.droidium.fitness_app.database.ProgramProgress;
 import hu.droidium.fitness_app.database.Workout;
 import hu.droidium.fitness_app.database.WorkoutProgress;
@@ -40,6 +41,7 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 	private BreakCountdown task;
 	private View endLayout;
 	private DatabaseManager databaseManager;
+	private TextView repsLabel;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,7 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 		exerciseLayout = findViewById(R.id.exerciseLayout);
 		exerciseLabel = (TextView)findViewById(R.id.exerciseLabel);
 		reps = (TextView)findViewById(R.id.reps);
+		repsLabel = (TextView)findViewById(R.id.repsLabel);
 		editReps = (Button)findViewById(R.id.editExercise);
 		editReps.setOnClickListener(this);
 		doneButton = (Button)findViewById(R.id.exerciseDone);
@@ -105,12 +108,20 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 				endLayout.setVisibility(View.VISIBLE);
 			} else {
 				Exercise exercise = progress.getExercise(actualBlockIndex, actualExerciseIndex, databaseManager);
+				ExerciseType exerciseType = databaseManager.getExerciseType(exercise.getType().getId());
 				if (endOfBreak == -1 || endOfBreak < now) {
 					breakLayout.setVisibility(View.GONE);
 					exerciseLayout.setVisibility(View.VISIBLE);
-					exerciseLabel.setText(exercise.getType().getName());
-					String unit = exercise.getType().getName();
-					reps.setText(exercise.getReps() + (unit == null?"":" " + unit));
+					exerciseLabel.setText(exerciseType.getName());
+					Log.e(TAG, "Exercise label " + exerciseType.getName());
+					String unit = exerciseType.getUnit();
+					reps.setText("" + exercise.getReps());
+					if (unit == null) {
+						repsLabel.setVisibility(View.GONE);
+					} else {
+						repsLabel.setVisibility(View.VISIBLE);
+						repsLabel.setText(unit);
+					}
 					endLayout.setVisibility(View.GONE);
 					progressView.setActiveExcercise(actualBlockIndex, actualExerciseIndex);
 				} else {

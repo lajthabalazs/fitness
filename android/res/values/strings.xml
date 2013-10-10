@@ -58,6 +58,9 @@
     <string name="currentWorkoutNamePlaceholder">Current workout\\\'s name</string>
     <string name="breakDurationPlaceholder">37</string>
     <string name="exerciseNamePlaceholder">Exercise Name</string>
-    <string name="repCountText">%1$d %2$s</string>
+    <string name="breakTitle">Rest for</string>
+    <string name="repCountText">15</string>
+    <string name="repLabelText">reps</string>
+    <string name="breakUnit">secs</string>
     
 </resources>

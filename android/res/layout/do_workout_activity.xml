@@ -7,106 +7,29 @@
     <hu.droidium.fitness_app.WorkoutProgressView
         android:id="@+id/workoutProgress"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="120dp"
         android:layout_weight="0"
-        android:padding="5dp"/>
+        android:padding="5dp" />
 
-    <LinearLayout
+    <include
+        android:id="@+id/breakLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="1" >
+        android:layout_weight="1"
+        layout="@layout/break_view" />
 
-        <LinearLayout
-            android:id="@+id/breakLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+    <include
+        android:id="@+id/exerciseLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        layout="@layout/exercise_view" />
 
-            <TextView
-                android:id="@+id/breakDuration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/breakDurationPlaceholder"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+    <include
+        android:id="@+id/endOfExerciseLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        layout="@layout/end_of_workout_view" />
 
-			<LinearLayout
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content">
-            <Button
-                android:id="@+id/addFifteen"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:text="@string/addFifteen" />
-
-            <Button
-                android:id="@+id/continueWorkout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/continueWithWorkout" />
-
-			</LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/exerciseLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/exerciseLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/exerciseNamePlaceholder"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            <TextView
-                android:id="@+id/reps"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/repCountText"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-			<LinearLayout
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content">
-	            <Button
-	                android:id="@+id/editExercise"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
-	                android:text="@string/edit" />
-	
-	            <Button
-	                android:id="@+id/exerciseDone"
-	                android:layout_width="0dp"
-	                android:layout_height="wrap_content"
-	                android:layout_weight="1"
-	                android:text="@string/done" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/endOfExerciseLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-	        <TextView
-	            android:id="@+id/wellDoneText"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="@string/workoutCompleted"
-	            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-	        <Button
-	            android:id="@+id/backToWorkoutList"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:text="@string/backToWorkoutList" />
-
-        </LinearLayout>
-
-    </LinearLayout>
 </LinearLayout>

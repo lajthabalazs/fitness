@@ -8,7 +8,8 @@
         android:id="@+id/programNameInActiveProgramList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/programNamePlaceholder" />
+        android:text="@string/programNamePlaceholder"
+        style="@android:style/TextAppearance.Medium"/>
 
     <ProgressBar
         android:id="@+id/programProgressBarInList"
@@ -23,6 +24,7 @@
         android:id="@+id/programStartInActiveProgramList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/programStartedLabel"/>
+        android:layout_marginBottom="10dp"
+        android:text="@string/programStartedLabel" />
 
 </LinearLayout>

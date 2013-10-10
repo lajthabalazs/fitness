@@ -95,6 +95,9 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 		programDetailsText.setText(program.getDescription());
 		
 		if (programProgress.getTerminationDate() != -1) {
+			String programEndDate = Constants.format(programProgress.getTerminationDate());
+			programStartDateLabel.setText(String.format(getResources().getString(R.string.programDoneLabel), programEndDate));
+			programStartDateLabel.setVisibility(View.VISIBLE);
 			doWorkout.setVisibility(View.GONE);
 			upcomingWorkoutsLabel.setVisibility(View.GONE);
 			upcomingWorkoutsList.setVisibility(View.GONE);
@@ -146,6 +149,7 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 				// Workout has not been started
 				if (workoutProgress.getWorkoutProgressExercisePercentage(databaseManager) == 0) {
 					workoutProgressLabel.setVisibility(View.GONE);
+					
 					long workoutDate = programProgress.getWorkoutDate(workout);
 					if (workoutDate < today) {
 						currentWorkoutLabel.setText(R.string.currentWorkoutLabel);
@@ -210,52 +214,8 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 			}
 		}
 	}
-
-	public void skipToWorkout(int index, final Workout workout) {
-		Log.e(TAG, "Skipping to workout " + workout.getId() + " day " + workout.getDay());
-		if (index == 0 && programProgress.getActualWorkout() == null) {
-			// Start next workout, no questions asked
-			programProgress.startWorkout(System.currentTimeMillis(), workout, databaseManager);
-			updateUI();
-		} else if (index == 0 && programProgress.getActualWorkout() != null){
-			Builder builder = new Builder(this);
-			builder.setTitle("Skip current workout?");
-			builder.setMessage("Are you sure you want to skip current workout?");
-			builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					programProgress.startWorkout(System.currentTimeMillis(), workout, databaseManager);
-					updateUI();
-				}
-			});
-			builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-				}
-			});
-			builder.create().show();
-		} else {
-			Builder builder = new Builder(this);
-			builder.setTitle("Skip workouts?");
-			builder.setMessage("Are you sure you want to skip all those workouts?");
-			builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					programProgress.startWorkout(System.currentTimeMillis(), workout, databaseManager);
-					updateUI();
-				}
-			});
-			builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-				}
-			});
-			builder.create().show();
-		}
-	}
-
-	@Override
-	public void onClick(View v) {
+	
+	public void startWorkout() {
 		Intent intent = new Intent(this, DoWorkoutActivity.class);
 		ProgramProgress progress = databaseManager.getProgress(programId);
 		Workout nextWorkout = progress.getNextWorkout(databaseManager);
@@ -281,5 +241,53 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 		} else {
 			Toast.makeText(this, "No next workout", Toast.LENGTH_LONG).show();
 		}
+	}
+
+	public void skipToWorkout(int index, final Workout workout) {
+		Log.e(TAG, "Skipping to workout " + workout.getId() + " day " + workout.getDay());
+		if (index == 0 && programProgress.getActualWorkout() == null) {
+			// Start next workout, no questions asked
+			programProgress.startWorkout(System.currentTimeMillis(), workout, databaseManager);
+			startWorkout();
+		} else if (index == 0 && programProgress.getActualWorkout() != null){
+			Builder builder = new Builder(this);
+			builder.setTitle("Skip current workout?");
+			builder.setMessage("Are you sure you want to skip current workout?");
+			builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					programProgress.startWorkout(System.currentTimeMillis(), workout, databaseManager);
+					startWorkout();
+				}
+			});
+			builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+				}
+			});
+			builder.create().show();
+		} else {
+			Builder builder = new Builder(this);
+			builder.setTitle("Skip workouts?");
+			builder.setMessage("Are you sure you want to skip all those workouts?");
+			builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					programProgress.startWorkout(System.currentTimeMillis(), workout, databaseManager);
+					startWorkout();
+				}
+			});
+			builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+				}
+			});
+			builder.create().show();
+		}
+	}
+
+	@Override
+	public void onClick(View v) {
+		startWorkout();
 	}
 }

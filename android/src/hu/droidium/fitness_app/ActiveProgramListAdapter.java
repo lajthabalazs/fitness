@@ -2,6 +2,7 @@ package hu.droidium.fitness_app;
 
 import hu.droidium.fitness_app.activities.ProgramsOverviewActivity;
 import hu.droidium.fitness_app.database.DatabaseManager;
+import hu.droidium.fitness_app.database.Program;
 import hu.droidium.fitness_app.database.ProgramProgress;
 import hu.droidium.fitness_app.model.helpers.ProgressComparator;
 
@@ -64,10 +65,12 @@ public class ActiveProgramListAdapter implements ListAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ProgramProgress progress = (ProgramProgress)getItem(position);
+		progress = databaseManager.getProgress(progress.getProgressId());
+		Program program = databaseManager.getProgram(progress.getProgram().getId());
 		if (convertView == null){
 			convertView = programsOverviewActivity.getLayoutInflater().inflate(R.layout.active_program_list_item, null);
 		}
-		((TextView)convertView.findViewById(R.id.programNameInActiveProgramList)).setText(progress.getProgram().getName());	
+		((TextView)convertView.findViewById(R.id.programNameInActiveProgramList)).setText(program.getName());	
 		((TextView)convertView.findViewById(R.id.programStartInActiveProgramList)).setText(progress.getDateOfNextWorkoutText(databaseManager, programsOverviewActivity));
 		((ProgressBar)convertView.findViewById(R.id.programProgressBarInList)).setProgress(progress.getProgressPercentage(databaseManager));
 		return convertView;
