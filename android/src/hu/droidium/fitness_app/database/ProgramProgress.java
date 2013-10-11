@@ -133,7 +133,9 @@ public class ProgramProgress {
 		if (nextWorkout == null) {
 			return -1;
 		} else {
-			return Constants.stripDate(progressId) + Constants.DAY_MILLIS * nextWorkout.getDay();
+			nextWorkout = databaseManager.getWorkout(nextWorkout.getId());
+			int nextWorkoutDay = nextWorkout.getDay();
+			return Constants.stripDate(progressId) + Constants.DAY_MILLIS * nextWorkoutDay;
 		}
 	}
 	
@@ -143,7 +145,8 @@ public class ProgramProgress {
 			return -1;
 		} else {
 			long now = Constants.stripDate(System.currentTimeMillis());
-			return  (int)((nextWorkoutDay - now) / Constants.DAY_MILLIS);
+			int dayDiff = (int)((nextWorkoutDay - now) / Constants.DAY_MILLIS);
+			return dayDiff;
 		}
 	}
 	
@@ -185,11 +188,7 @@ public class ProgramProgress {
 				}
 			}
 		}
-		if (nextWorkout == null) {
-			return null;
-		} else {
-			return nextWorkout;
-		}
+		return nextWorkout;
 	}
 	
 	public int getProgressPercentage(DatabaseManager databaseManager) {
@@ -264,11 +263,7 @@ public class ProgramProgress {
 			dateMessage = context.getResources().getString(R.string.programMissedWorkoutLabep, "" + dayDiff, dayDiff > 1?"s":"");
 		} else {
 			int dayDiff = getDaysTilNextWorkout(databaseManager);
-			if (dayDiff == 0) {
-				dateMessage = context.getResources().getString(R.string.hasWorkoutToday);
-			} else {
-				dateMessage = context.getResources().getString(R.string.programNextWorkoutLabel, "" + dayDiff, dayDiff > 1?"s":"");
-			}
+			dateMessage = context.getResources().getString(R.string.programNextWorkoutLabel, "" + dayDiff, dayDiff > 1?"s":"");
 		}
 		return dateMessage;
 	}
@@ -288,12 +283,10 @@ public class ProgramProgress {
 		}
 		for (WorkoutProgress doneWorkout : doneWorkouts) {
 			doneWorkout = databaseManager.getWorkoutProgress(doneWorkout.getId());
-			Log.e(TAG, doneWorkout.getWorkout().getId() + " done");
 			doneWorkoutIds.add(doneWorkout.getWorkout().getId());
 		}
 		program = databaseManager.getProgram(program.getId());
 		// Add skipped workouts
-		Log.e(TAG, "Done workouts " + doneWorkoutIds.size());
 		for (Workout programWorkout : program.getWorkouts()) {
 			if (!doneWorkoutIds.contains(programWorkout.getId()) && (workout.getDay() > programWorkout.getDay())) {
 				WorkoutProgress skippedProgress = new WorkoutProgress(now, programWorkout);

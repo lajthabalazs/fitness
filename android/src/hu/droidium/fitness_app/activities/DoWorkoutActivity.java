@@ -1,7 +1,5 @@
 package hu.droidium.fitness_app.activities;
 
-import java.security.InvalidParameterException;
-
 import hu.droidium.fitness_app.BreakCountdown;
 import hu.droidium.fitness_app.Constants;
 import hu.droidium.fitness_app.R;
@@ -12,12 +10,21 @@ import hu.droidium.fitness_app.database.ExerciseType;
 import hu.droidium.fitness_app.database.ProgramProgress;
 import hu.droidium.fitness_app.database.Workout;
 import hu.droidium.fitness_app.database.WorkoutProgress;
+
+import java.security.InvalidParameterException;
+
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -113,7 +120,6 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 					breakLayout.setVisibility(View.GONE);
 					exerciseLayout.setVisibility(View.VISIBLE);
 					exerciseLabel.setText(exerciseType.getName());
-					Log.e(TAG, "Exercise label " + exerciseType.getName());
 					String unit = exerciseType.getUnit();
 					reps.setText("" + exercise.getReps());
 					if (unit == null) {
@@ -158,22 +164,7 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		switch(v.getId()) {
 			case R.id.exerciseDone : {
-				long now = System.currentTimeMillis();
-				int actualBlockIndex = progress.getActualBlock();
-				int actualExerciseIndex = progress.getActualExercise();
-				ProgramProgress programProgress = databaseManager.getProgress(programProgressId);
-				WorkoutProgress workoutProgress = programProgress.getActualWorkout();
-				if (workoutProgress != null) {
-					Log.i(TAG, "Done exercise " + actualExerciseIndex + " of block " + actualBlockIndex);
-					Exercise exercise = workoutProgress.getExercise(actualBlockIndex, actualExerciseIndex, databaseManager);
-					progress.exerciseDone(programProgress, exercise, exercise.getReps(), now - startOfExercise, now, databaseManager);
-					if (progress.getFinishDate() == -1) {
-						endOfBreak = now + 1000 * exercise.getBreakSecs();
-					}
-				} else {
-					throw new InvalidParameterException("There should be an actual workout!");
-				}
-				progressChanged();
+				exerciseDone();
 				break;
 			}
 			case R.id.continueWorkout : {
@@ -191,16 +182,62 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 				} 
 				break;
 			} case R.id.editExercise : {
-				//
+				AlertDialog.Builder builder = new Builder(this);
+				builder.setTitle(R.string.editRepsDialogTitle);
+				final EditText input = new EditText(this);
+				input.setInputType(InputType.TYPE_CLASS_NUMBER);
+				input.setGravity(Gravity.CENTER);
+				builder.setView(input);
+				builder.setPositiveButton(R.string.cancel, null);
+				builder.setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						try {
+							int reps = Integer.parseInt(input.getText().toString());
+							exerciseDone(reps);
+						} catch (Exception e) {
+							exerciseDone();
+						}
+					}
+				});
+				builder.create();
+				builder.show();
+				break;
 			}
 			default : {
 				Toast.makeText(this, "Feature not yet implemented", Toast.LENGTH_LONG).show();
 			}
 		}
 	}
+	
+	private void exerciseDone(){
+		exerciseDone(-1);
+	}
+
+	private void exerciseDone(int reps) {
+		long now = System.currentTimeMillis();
+		int actualBlockIndex = progress.getActualBlock();
+		int actualExerciseIndex = progress.getActualExercise();
+		ProgramProgress programProgress = databaseManager.getProgress(programProgressId);
+		WorkoutProgress workoutProgress = programProgress.getActualWorkout();
+		if (workoutProgress != null) {
+			Log.i(TAG, "Done exercise " + actualExerciseIndex + " of block " + actualBlockIndex);
+			Exercise exercise = workoutProgress.getExercise(actualBlockIndex, actualExerciseIndex, databaseManager);
+			if (reps == -1) {
+				reps = exercise.getReps();
+			}
+			progress.exerciseDone(programProgress, exercise, reps, now - startOfExercise, now, databaseManager);
+			if (progress.getFinishDate() == -1) {
+				endOfBreak = now + 1000 * exercise.getBreakSecs();
+			}
+		} else {
+			throw new InvalidParameterException("There should be an actual workout!");
+		}
+		progressChanged();
+	}
 
 	public void displayBreakTime(int remaining) {
-		breakDuration.setText(remaining);
+		breakDuration.setText("" + remaining);
 	}
 	
 	public void endOfBreak() {

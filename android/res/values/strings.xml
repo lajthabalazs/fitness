@@ -68,4 +68,6 @@
     <string name="workoutExerciseListInAvailableWorkoutList">Exercises: %1$s</string>
     <string name="andMore">, and more&#8230;</string>
     <string name="noExercises">no exercises</string>
+    <string name="editRepsDialogTitle">How many did you do?</string>
+    
 </resources>

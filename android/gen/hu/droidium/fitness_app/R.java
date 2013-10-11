@@ -115,6 +115,7 @@ public final class R {
         public static final int doTodaysWorkout=0x7f050010;
         public static final int done=0x7f050005;
         public static final int edit=0x7f050006;
+        public static final int editRepsDialogTitle=0x7f050041;
         public static final int exerciseListLabel=0x7f05002e;
         public static final int exerciseNamePlaceholder=0x7f050037;
         public static final int hasWorkoutToday=0x7f050013;

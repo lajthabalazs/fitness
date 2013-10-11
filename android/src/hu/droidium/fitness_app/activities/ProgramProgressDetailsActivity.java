@@ -213,7 +213,6 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 		if (nextWorkout != null || actualWorkout != null) {
 			if (actualWorkout != null && (actualWorkout.getFinishDate() != -1)) {
 				// Actual workout is done, this should not happen
-				Log.e(TAG, "Actual workout was set but done. Should not happen " + actualWorkout.getFinishDate());
 				actualWorkout = null;
 				progress.setActualWorkout(null);
 				databaseManager.updateProgress(progress);
@@ -234,7 +233,6 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 	}
 
 	public void skipToWorkout(int index, final Workout workout) {
-		Log.e(TAG, "Skipping to workout " + workout.getId() + " day " + workout.getDay());
 		if (index == 0 && programProgress.getActualWorkout() == null) {
 			// Start next workout, no questions asked
 			programProgress.startWorkout(System.currentTimeMillis(), workout, databaseManager);
