@@ -8,7 +8,22 @@
         android:id="@+id/programNameLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/workoutList" />
+        android:layout_marginBottom="5dp"
+        android:text="@string/programNamePlaceholder"
+        android:textAppearance="@android:style/TextAppearance.Large" />
+
+    <TextView
+        android:id="@+id/programDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:text="@string/programDescriptionPlaceholder" />
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/workoutList"
+        android:textAppearance="@android:style/TextAppearance.Large"/>
 
     <ListView
         android:id="@+id/workoutList"

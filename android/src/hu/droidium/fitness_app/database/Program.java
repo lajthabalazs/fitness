@@ -23,6 +23,9 @@ public class Program {
 	@ForeignCollectionField()
 	private ForeignCollection<Workout> workouts;
 	
+	// Cache
+	private int totalLength = -1;
+	
 	public Program() {}
 	
 	public Program(String id, String name, String description) {
@@ -78,5 +81,18 @@ public class Program {
 			Log.w(TAG, "No workouts");
 		}
 		return id + " " + name + " " + description + " " + workoutSize + " workouts in " + (length + 1) + " days";
+	}
+
+	public int getTotalLength(DatabaseManager databaseManager) {
+		if (totalLength != -1) {
+			return totalLength;
+		}
+		workouts = databaseManager.getProgram(id).workouts;
+		for (Workout workout : workouts) {
+			totalLength = Math.max(totalLength, workout.getDay());
+		}
+		// First exercise is on day 0, add one to compensate.
+		totalLength = totalLength + 1;
+		return totalLength;
 	}
 }

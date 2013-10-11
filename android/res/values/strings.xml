@@ -54,6 +54,7 @@
     <string name="upcomingWorkoutStartNext">Start today</string>
     <string name="upcomingWorkoutJump">Jump here</string>
     <string name="workoutNamePlaceholder">Workout name</string>
+    <string name="workoutDay">Day %1$d</string>
     <string name="workoutDescriptionPalceholder">Workout description comes here, if any is available. Should be a multiline text box to support a lot and lot and lots of text.</string>
     <string name="currentWorkoutNamePlaceholder">Current workout\\\'s name</string>
     <string name="breakDurationPlaceholder">37</string>
@@ -62,5 +63,9 @@
     <string name="repCountText">15</string>
     <string name="repLabelText">reps</string>
     <string name="breakUnit">secs</string>
-    
+    <string name="programWorkoutCount">%1$s workouts in %2$s days.</string>
+    <string name="repsForListingExercises">(%2$d %1$s)</string>
+    <string name="workoutExerciseListInAvailableWorkoutList">Exercises: %1$s</string>
+    <string name="andMore">, and more&#8230;</string>
+    <string name="noExercises">no exercises</string>
 </resources>

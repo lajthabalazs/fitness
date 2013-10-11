@@ -1,7 +1,6 @@
 package hu.droidium.fitness_app.activities;
 
 import hu.droidium.fitness_app.Constants;
-import hu.droidium.fitness_app.DataHelper;
 import hu.droidium.fitness_app.R;
 import hu.droidium.fitness_app.UpcomingWorkoutAdapter;
 import hu.droidium.fitness_app.database.DatabaseManager;
@@ -18,7 +17,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Pair;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -133,15 +131,7 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 				} else {
 					currentWorkoutDescription.setVisibility(View.GONE);
 				}
-				// Aggregated exercise types
-				List<Pair<String, Integer>> sortedExercises = DataHelper.getSortedExercises(workout.getTotalReps(databaseManager));
-				String exerciseList = "";
-				for (int i = 0; i < 3 && i < sortedExercises.size(); i++) {
-					if (i > 0) {
-						exerciseList = exerciseList + ", ";
-					}
-					exerciseList = exerciseList + databaseManager.getExerciseType(sortedExercises.get(i).first).getName();
-				}
+				String exerciseList = workout.getExercisesList(3, false, this, databaseManager);
 				exerciseListLabel.setText(String.format(getResources().getString(R.string.exerciseListLabel), exerciseList));
 				// Exercise due date
 				doWorkout.setVisibility(View.VISIBLE);

@@ -190,6 +190,8 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 					breakCountdown.addSecs(15);
 				} 
 				break;
+			} case R.id.editExercise : {
+				//
 			}
 			default : {
 				Toast.makeText(this, "Feature not yet implemented", Toast.LENGTH_LONG).show();
@@ -198,7 +200,7 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 	}
 
 	public void displayBreakTime(int remaining) {
-		breakDuration.setText(remaining + " " + getResources().getString(R.string.secs));
+		breakDuration.setText(remaining);
 	}
 	
 	public void endOfBreak() {

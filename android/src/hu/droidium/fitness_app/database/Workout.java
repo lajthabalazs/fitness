@@ -1,8 +1,14 @@
 package hu.droidium.fitness_app.database;
 
+import hu.droidium.fitness_app.DataHelper;
+import hu.droidium.fitness_app.R;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import android.content.Context;
+import android.util.Pair;
 
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
@@ -155,6 +161,39 @@ public class Workout{
 			}
 		}
 		return reps;
+	}
+
+	/**
+	 * Convenience method for representing aggregated number of exercises.
+	 * @param count The number of items to list, if 0, all items will be listed
+	 * @param withReps Weather to include the number of reps
+	 * @param context
+	 * @param databaseManager
+	 * @return A String containing a comma separated list of the exercises in descending order
+	 */
+	public String getExercisesList(int count, boolean withReps, Context context, DatabaseManager databaseManager) {
+		// Aggregated exercise types
+		List<Pair<String, Integer>> sortedExercises = DataHelper.getSortedExercises(getTotalReps(databaseManager));
+		String exerciseList = "";
+		for (int i = 0; (count == 0 || i < count) && i < sortedExercises.size(); i++) {
+			if (i > 0) {
+				exerciseList = exerciseList + ", ";
+			}
+			exerciseList = exerciseList + databaseManager.getExerciseType(sortedExercises.get(i).first).getName();
+			if (withReps) {
+				String reps = databaseManager.getExerciseType(sortedExercises.get(i).first).getUnit();
+				int repsCount = sortedExercises.get(i).second;
+				exerciseList = exerciseList + String.format(context.getString(R.string.repsForListingExercises), reps, repsCount);
+			}
+		}
+		if (count != 0 && count < sortedExercises.size()) {
+			exerciseList = exerciseList + context.getResources().getString(R.string.andMore);
+		}
+		if (sortedExercises.size() == 0) {
+			return context.getResources().getString(R.string.noExercises);
+		} else {
+			return exerciseList;
+		}
 	}
 }
 
