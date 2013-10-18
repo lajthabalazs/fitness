@@ -1,6 +1,7 @@
 package hu.droidium.fitness_app.database;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.j256.ormlite.dao.ForeignCollection;
@@ -83,6 +84,76 @@ public class Block {
 			exercises = databaseManager.getBlock(id).exercises;
 		}
 		return exercises.size();
+	}
+	
+	/**
+	 * Calculate the total load of this program based on the weighted sum of the exercises reps
+	 * @param databaseManager
+	 * @return
+	 */
+	public double getTotalLoad(DatabaseManager databaseManager) {
+		// TODO
+		return 0;
+	}
+	
+	/**
+	 * Get number of exercises by type
+	 * @param databaseManager
+	 * @return
+	 */
+	public HashMap<String, Integer> getExercises(DatabaseManager databaseManager){
+		// TODO
+		return null;
+	}
+	
+	public double getTotalStamina(DatabaseManager databaseManager) {
+		// TODO
+		return 0;
+	}
+
+	public double getTotalStrength(DatabaseManager databaseManager) {
+		// TODO
+		return 0;
+	}
+	
+	/**
+	 * Return the total amount of speed
+	 * @param databaseManager
+	 * @return
+	 */
+	public double getTotalSpeed(DatabaseManager databaseManager) {
+		// TODO
+		return 0;
+	}
+
+	/**
+	 * Return the total amount of flexibility
+	 * @param databaseManager
+	 * @return
+	 */
+	public double getTotalFlexibility(DatabaseManager databaseManager) {
+		// TODO
+		return 0;
+	}
+
+	/**
+	 * Return the total amount of balance
+	 * @param databaseManager
+	 * @return
+	 */
+	public double getTotalBalance(DatabaseManager databaseManager) {
+		// TODO
+		return 0;
+	}
+	
+	/**
+	 * Get the weighted load of the program on each muscle
+	 * @param databaseManager
+	 * @return
+	 */
+	public HashMap<String, Double> getMuscleLoad(DatabaseManager databaseManager) {
+		// TODO
+		return null;
 	}
 	
 	@Override

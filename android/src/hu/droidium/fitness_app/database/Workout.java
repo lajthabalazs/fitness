@@ -136,32 +136,6 @@ public class Workout{
 		}
 		return exerciseCount;
 	}
-	
-	/**
-	 * Database intensive task. Counts the number of reps in a workout for each exercise type
-	 * @param databaseManager Database manager used to update database entities.
-	 * @return A hashmap indexed with the exercise type id, containing total reps of each type.
-	 */
-	public HashMap<String, Integer> getTotalReps(DatabaseManager databaseManager) {
-		HashMap<String, Integer> reps = new HashMap<String, Integer>();
-		if (blocks == null) {
-			blocks = databaseManager.getWorkout(id).blocks;
-		}
-		for (Block block : blocks) {
-			block = databaseManager.getBlock(block.getId());
-			for (Exercise exercise : block.getExercises()){
-				exercise = databaseManager.getExercise(exercise.getId());
-				String exerciseTypeId = exercise.getType().getId();
-				Integer savedReps = reps.get(exerciseTypeId);
-				if (savedReps == null) {
-					reps.put(exerciseTypeId, exercise.getReps());
-				} else {
-					reps.put(exerciseTypeId, savedReps + exercise.getReps());
-				}
-			}
-		}
-		return reps;
-	}
 
 	/**
 	 * Convenience method for representing aggregated number of exercises.
@@ -173,7 +147,7 @@ public class Workout{
 	 */
 	public String getExercisesList(int count, boolean withReps, Context context, DatabaseManager databaseManager) {
 		// Aggregated exercise types
-		List<Pair<String, Integer>> sortedExercises = DataHelper.getSortedExercises(getTotalReps(databaseManager));
+		List<Pair<String, Integer>> sortedExercises = DataHelper.getSortedExercises(getExercises(databaseManager));
 		String exerciseList = "";
 		for (int i = 0; (count == 0 || i < count) && i < sortedExercises.size(); i++) {
 			if (i > 0) {
@@ -195,6 +169,93 @@ public class Workout{
 			return exerciseList;
 		}
 	}
+	
+	/**
+	 * Calculate the total load of this program based on the weighted sum of the exercises reps
+	 * @param databaseManager
+	 * @return
+	 */
+	public double getTotalLoad(DatabaseManager databaseManager) {
+		// TODO
+		return 0;
+	}
+	
+	/**
+	 * Get number of reps by exercise type
+	 * @param databaseManager
+	 * @return
+	 */
+	public HashMap<String, Integer> getExercises(DatabaseManager databaseManager){
+		HashMap<String, Integer> reps = new HashMap<String, Integer>();
+		if (blocks == null) {
+			blocks = databaseManager.getWorkout(id).blocks;
+		}
+		for (Block block : blocks) {
+			block = databaseManager.getBlock(block.getId());
+			for (Exercise exercise : block.getExercises()){
+				exercise = databaseManager.getExercise(exercise.getId());
+				String exerciseTypeId = exercise.getType().getId();
+				Integer savedReps = reps.get(exerciseTypeId);
+				if (savedReps == null) {
+					reps.put(exerciseTypeId, exercise.getReps());
+				} else {
+					reps.put(exerciseTypeId, savedReps + exercise.getReps());
+				}
+			}
+		}
+		return reps;
+	}
+	
+	public double getTotalStamina(DatabaseManager databaseManager) {
+		// TODO
+		return 0;
+	}
+
+	public double getTotalStrength(DatabaseManager databaseManager) {
+		// TODO
+		return 0;
+	}
+	
+	/**
+	 * Return the total amount of speed
+	 * @param databaseManager
+	 * @return
+	 */
+	public double getTotalSpeed(DatabaseManager databaseManager) {
+		// TODO
+		return 0;
+	}
+
+	/**
+	 * Return the total amount of flexibility
+	 * @param databaseManager
+	 * @return
+	 */
+	public double getTotalFlexibility(DatabaseManager databaseManager) {
+		// TODO
+		return 0;
+	}
+
+	/**
+	 * Return the total amount of balance
+	 * @param databaseManager
+	 * @return
+	 */
+	public double getTotalBalance(DatabaseManager databaseManager) {
+		// TODO
+		return 0;
+	}
+	
+	/**
+	 * Get the weighted load of the program on each muscle
+	 * @param databaseManager
+	 * @return
+	 */
+	public HashMap<Muscle, Double> getMuscleLoad(DatabaseManager databaseManager) {
+		// TODO
+		return null;
+	}
+
 }
 
 

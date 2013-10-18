@@ -24,6 +24,8 @@ public class ExerciseType {
 	@DatabaseField
 	private String unit;
 	@DatabaseField
+	private float unitWeight;
+	@DatabaseField
 	private int stamina;
 	@DatabaseField
 	private int strength;
@@ -93,6 +95,16 @@ public class ExerciseType {
 		}
 		return unit;
 	}
+	
+	public float getUnitWeight() {
+		return unitWeight;
+	}
+
+	public void setUnitWeight(float unitWeight) {
+		this.unitWeight = unitWeight;
+	}
+
+
 
 	public int getStamina() {
 		return stamina;
