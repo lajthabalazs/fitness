@@ -4,7 +4,7 @@ import hu.droidium.fitness_app.activities.ProgramsOverviewActivity;
 import hu.droidium.fitness_app.database.DatabaseManager;
 import hu.droidium.fitness_app.database.Program;
 import hu.droidium.fitness_app.database.ProgramProgress;
-import hu.droidium.fitness_app.model.helpers.ProgressComparator;
+import hu.droidium.fitness_app.model.comparators.ProgressComparator;
 
 import java.util.ArrayList;
 import java.util.HashSet;

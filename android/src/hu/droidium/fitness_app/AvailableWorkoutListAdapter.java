@@ -2,7 +2,7 @@ package hu.droidium.fitness_app;
 
 import hu.droidium.fitness_app.database.DatabaseManager;
 import hu.droidium.fitness_app.database.Workout;
-import hu.droidium.fitness_app.model.helpers.WorkoutComparator;
+import hu.droidium.fitness_app.model.comparators.WorkoutComparator;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -65,6 +65,9 @@ public class AvailableWorkoutListAdapter implements ListAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		if (convertView == null){
+			convertView = layoutInflater.inflate(R.layout.available_workout_list_item, null);
+		}
 		Workout workout = (Workout)getItem(position);
 		workout = databaseManager.getWorkout(workout.getId());
 		int day = workout.getDay() + 1;
@@ -74,10 +77,14 @@ public class AvailableWorkoutListAdapter implements ListAdapter {
 			title = title + ": " + workoutName; 
 		}
 			String totalReps = workout.getExercisesList(0, true, context, databaseManager);
-		if (convertView == null){
-			convertView = layoutInflater.inflate(R.layout.available_workout_list_item, null);
-		}
 		((TextView)convertView.findViewById(R.id.workoutNameInAvailableWorkoutList)).setText(title);
+
+		int secs = (int) workout.getTotalTime(databaseManager);
+		String timeText = Constants.getEstimatedTimeString(secs, context);
+		String unitsString = String.format(context.getString(R.string.totalUnits), (int)workout.getTotalUnits(databaseManager));
+		((TextView)convertView.findViewById(R.id.workoutEstimatedTimeInAvailableWorkoutList)).setText(timeText);
+		((TextView)convertView.findViewById(R.id.workoutUnitsInAvailableWorkoutList)).setText(unitsString);
+		
 		if ((workout.getDescription() == null) || (workout.getDescription().equals(""))){
 			convertView.findViewById(R.id.workoutDescriptionInAvailableWorkoutList).setVisibility(View.GONE);
 		} else {

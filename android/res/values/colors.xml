@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="doWorkoutDoneColor">#999999</color>
+    <color name="doWorkoutActualColor">#666666</color>
+    <color name="doWorkoutNextColor">#ff8800</color>
+    <color name="doWorkoutRemainingColor">#dddddd</color>
+    
+</resources>

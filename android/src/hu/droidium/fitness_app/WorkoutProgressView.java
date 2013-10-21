@@ -11,7 +11,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
@@ -44,27 +43,31 @@ public class WorkoutProgressView extends View {
 	private float maxTotalValue;
 
 	private ArrayList<Block> deepLoadedBlocks;
-	{
-		nextPaint.setColor(Color.BLUE);
-		actualPaint.setColor(Color.RED);
-		donePaint.setColor(Color.GRAY);
-		remainingPaint.setColor(Color.LTGRAY);
-	}
 
 	public WorkoutProgressView(Context context) {
 		super(context);
 		databaseManager = DatabaseManager.getInstance(context);
+		initPaint(context);
 	}
 
 	public WorkoutProgressView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		databaseManager = DatabaseManager.getInstance(context);
+		initPaint(context);
 	}
 
 	public WorkoutProgressView(Context context, AttributeSet attrs,
 			int defStyle) {
 		super(context, attrs, defStyle);
 		databaseManager = DatabaseManager.getInstance(context);
+		initPaint(context);
+	}
+
+	private void initPaint(Context context) {
+		nextPaint.setColor(context.getResources().getColor(R.color.doWorkoutNextColor));
+		actualPaint.setColor(context.getResources().getColor(R.color.doWorkoutActualColor));
+		donePaint.setColor(context.getResources().getColor(R.color.doWorkoutDoneColor));
+		remainingPaint.setColor(context.getResources().getColor(R.color.doWorkoutRemainingColor));
 	}
 
 	public void setWorkout(Workout workout) {
@@ -156,9 +159,13 @@ public class WorkoutProgressView extends View {
 	}
 
 	public void done() {
-		this.actualBlock = workout.getNumberOfBlocks(databaseManager) - 1;
-		this.actualExercise = workout.getBlocks().get(actualBlock).getExercises().size() - 1;
-		this.inExercise = false;
+		if (workout == null) {
+			this.inExercise = false;
+		} else {
+			this.actualBlock = workout.getNumberOfBlocks(databaseManager) - 1;
+			this.actualExercise = workout.getBlocks().get(actualBlock).getExercises().size() - 1;
+			this.inExercise = false;
+		}
 		invalidate();
 	}
 }

@@ -53,6 +53,7 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		databaseManager = DatabaseManager.getInstance(this);
 		setContentView(R.layout.do_workout_activity);
 		programProgressId = getIntent().getLongExtra(Constants.PROGRAM_PROGRESS_ID, -1);
 
@@ -77,8 +78,6 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 		backToWorkouts.setOnClickListener(this);
 		
 		endLayout = findViewById(R.id.endOfExerciseLayout);
-		
-		databaseManager = DatabaseManager.getInstance(this);
 	}
 	
 	@Override
@@ -87,14 +86,14 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 		if (programProgressId != -1) {
 			ProgramProgress programProgress = databaseManager.getProgress(programProgressId);
 			progress = programProgress.getActualWorkout();
-			// Needs deep loading
-			progress = databaseManager.getWorkoutProgress(progress.getId());
 			if (progress == null) {
 				progressView.done();
 				breakLayout.setVisibility(View.GONE);
 				exerciseLayout.setVisibility(View.GONE);
 				endLayout.setVisibility(View.VISIBLE);
 			} else {
+				// Needs deep loading
+				progress = databaseManager.getWorkoutProgress(progress.getId());
 				Workout workout = databaseManager.getWorkout(progress.getWorkout().getId());
 				progressView.setWorkout(workout);
 				progressChanged();

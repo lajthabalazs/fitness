@@ -2,7 +2,7 @@ package hu.droidium.fitness_app.database;
 
 import hu.droidium.fitness_app.Constants;
 import hu.droidium.fitness_app.R;
-import hu.droidium.fitness_app.model.helpers.WorkoutComparator;
+import hu.droidium.fitness_app.model.comparators.WorkoutComparator;
 
 import java.util.ArrayList;
 import java.util.HashSet;

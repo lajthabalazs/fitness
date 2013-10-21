@@ -1,4 +1,4 @@
-package hu.droidium.fitness_app.model.helpers;
+package hu.droidium.fitness_app.model.comparators;
 
 import hu.droidium.fitness_app.database.DatabaseManager;
 import hu.droidium.fitness_app.database.ProgramProgress;

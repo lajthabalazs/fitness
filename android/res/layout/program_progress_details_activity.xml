@@ -45,7 +45,19 @@
         android:layout_height="wrap_content"
         android:text="@string/currentWorkoutNamePlaceholder" />
 
+	<TextView
+        android:id="@+id/currentWorkoutTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/estimatedTimeWithHour" />
+    
     <TextView
+        android:id="@+id/currentWorkoutUnits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/totalUnits" />
+
+	<TextView
         android:id="@+id/currentWorkoutDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
