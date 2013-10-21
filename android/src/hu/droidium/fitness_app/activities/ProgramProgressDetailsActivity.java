@@ -28,7 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 @SuppressWarnings("unused")
-public class ProgramProgressDetailsActivity extends Activity implements OnClickListener {
+public class ProgramProgressDetailsActivity extends FitnessBaseActivity implements OnClickListener {
 	
 	private static final String TAG = "ProgramProgressDetailsActivity";
 	private ProgressBar programProgressBar;
@@ -88,20 +88,6 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 	protected void onResume() {
 		super.onResume();
 		updateUI();
-	}
-	
-	@Override
-	protected void onStart()
-	{
-		super.onStart();
-		FlurryAgent.onStartSession(this, getString(R.string.flurryKey));
-	}
-	 
-	@Override
-	protected void onStop()
-	{
-		super.onStop();		
-		FlurryAgent.onEndSession(this);
 	}
 	
 	private void updateUI() {

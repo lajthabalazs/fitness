@@ -28,7 +28,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 @SuppressWarnings("unused")
-public class ProgramListActivity extends Activity implements OnClickListener, OnItemClickListener, OnItemSelectedListener {
+public class ProgramListActivity extends FitnessBaseActivity implements OnClickListener, OnItemClickListener, OnItemSelectedListener {
 	private static final String TAG = "ProgramListActivity";
 	static final int ADD_DETAILS = 12317;
 	private ListView list;
@@ -73,21 +73,6 @@ public class ProgramListActivity extends Activity implements OnClickListener, On
 		refreshUI();
 	}
 	
-	@Override
-	protected void onStart()
-	{
-		super.onStart();
-		FlurryAgent.onStartSession(this, getString(R.string.flurryKey));
-	}
-	 
-	@Override
-	protected void onStop()
-	{
-		super.onStop();		
-		FlurryAgent.onEndSession(this);
-	}
-
-
 	private void refreshUI() {
 		programAdapter.updatePrograms(databaseManager.getPrograms(), selectedComparator);		
 	}

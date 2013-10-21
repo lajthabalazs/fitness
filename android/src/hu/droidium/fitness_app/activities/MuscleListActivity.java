@@ -2,17 +2,14 @@ package hu.droidium.fitness_app.activities;
 
 import java.util.List;
 
-import com.flurry.android.FlurryAgent;
-
 import hu.droidium.fitness_app.R;
 import hu.droidium.fitness_app.database.DatabaseManager;
 import hu.droidium.fitness_app.database.Muscle;
-import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class MuscleListActivity extends Activity {
+public class MuscleListActivity extends FitnessBaseActivity {
 	private ListView list;
 
 	@Override
@@ -28,19 +25,4 @@ public class MuscleListActivity extends Activity {
 		}
 		list.setAdapter(muscleAdapter);
 	}
-	
-	@Override
-	protected void onStart()
-	{
-		super.onStart();
-		FlurryAgent.onStartSession(this, getString(R.string.flurryKey));
-	}
-	 
-	@Override
-	protected void onStop()
-	{
-		super.onStop();		
-		FlurryAgent.onEndSession(this);
-	}
-
 }

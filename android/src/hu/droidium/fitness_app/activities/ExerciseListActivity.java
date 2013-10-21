@@ -6,14 +6,11 @@ import hu.droidium.fitness_app.database.ExerciseType;
 
 import java.util.List;
 
-import com.flurry.android.FlurryAgent;
-
-import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class ExerciseListActivity extends Activity {
+public class ExerciseListActivity extends FitnessBaseActivity {
 	private ListView list;
 
 	@Override
@@ -29,19 +26,4 @@ public class ExerciseListActivity extends Activity {
 		}
 		list.setAdapter(exerciseTypeAdapter);
 	}
-	
-	@Override
-	protected void onStart()
-	{
-		super.onStart();
-		FlurryAgent.onStartSession(this, getString(R.string.flurryKey));
-	}
-	 
-	@Override
-	protected void onStop()
-	{
-		super.onStop();		
-		FlurryAgent.onEndSession(this);
-	}
-
 }

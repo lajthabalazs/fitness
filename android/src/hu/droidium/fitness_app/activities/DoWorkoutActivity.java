@@ -16,7 +16,6 @@ import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
@@ -33,7 +32,7 @@ import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 
-public class DoWorkoutActivity extends Activity implements OnClickListener {
+public class DoWorkoutActivity extends FitnessBaseActivity implements OnClickListener {
 	private static final String TAG = "ExerciseActivity";
 	private WorkoutProgressView progressView;
 	private long programProgressId;
@@ -167,21 +166,6 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 		super.onPause();
 	}
 	
-	@Override
-	protected void onStart()
-	{
-		super.onStart();
-		FlurryAgent.onStartSession(this, getString(R.string.flurryKey));
-	}
-	 
-	@Override
-	protected void onStop()
-	{
-		super.onStop();		
-		FlurryAgent.onEndSession(this);
-	}
-
-
 	@Override
 	public void onClick(View v) {
 		switch(v.getId()) {

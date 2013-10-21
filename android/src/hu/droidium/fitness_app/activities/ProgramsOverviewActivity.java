@@ -23,7 +23,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 @SuppressWarnings("unused")
-public class ProgramsOverviewActivity extends Activity implements OnClickListener, OnItemClickListener, OnItemLongClickListener {
+public class ProgramsOverviewActivity extends FitnessBaseActivity implements OnClickListener, OnItemClickListener, OnItemLongClickListener {
 	private static final String TAG = "ProgramsOverviewActivity";
 	private Button startNewProgram;
 	private ListView programList;
@@ -56,20 +56,6 @@ public class ProgramsOverviewActivity extends Activity implements OnClickListene
 		}
 	}
 	
-	@Override
-	protected void onStart()
-	{
-		super.onStart();
-		FlurryAgent.onStartSession(this, getString(R.string.flurryKey));
-	}
-	 
-	@Override
-	protected void onStop()
-	{
-		super.onStop();		
-		FlurryAgent.onEndSession(this);
-	}
-
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == Constants.RESULT_STARTED_NEW_PROGRAM) {
