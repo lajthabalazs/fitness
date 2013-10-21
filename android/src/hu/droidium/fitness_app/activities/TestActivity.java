@@ -5,6 +5,8 @@ import hu.droidium.fitness_app.database.DataLoader;
 
 import java.io.IOException;
 
+import com.flurry.android.FlurryAgent;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -41,6 +43,20 @@ public class TestActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onResume() {
 		super.onResume();
+	}
+
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		FlurryAgent.onStartSession(this, getString(R.string.flurryKey));
+	}
+	 
+	@Override
+	protected void onStop()
+	{
+		super.onStop();		
+		FlurryAgent.onEndSession(this);
 	}
 
 	protected void loadFromAssets() {

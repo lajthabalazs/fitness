@@ -1,5 +1,7 @@
 package hu.droidium.fitness_app.activities;
 
+import com.flurry.android.FlurryAgent;
+
 import hu.droidium.fitness_app.AvailableProgramListAdapter;
 import hu.droidium.fitness_app.Constants;
 import hu.droidium.fitness_app.R;
@@ -70,6 +72,21 @@ public class ProgramListActivity extends Activity implements OnClickListener, On
 		super.onResume();
 		refreshUI();
 	}
+	
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		FlurryAgent.onStartSession(this, getString(R.string.flurryKey));
+	}
+	 
+	@Override
+	protected void onStop()
+	{
+		super.onStop();		
+		FlurryAgent.onEndSession(this);
+	}
+
 
 	private void refreshUI() {
 		programAdapter.updatePrograms(databaseManager.getPrograms(), selectedComparator);		

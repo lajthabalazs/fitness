@@ -2,6 +2,7 @@ package hu.droidium.fitness_app.activities;
 
 import hu.droidium.fitness_app.BreakCountdown;
 import hu.droidium.fitness_app.Constants;
+import hu.droidium.fitness_app.FlurryLogConstants;
 import hu.droidium.fitness_app.R;
 import hu.droidium.fitness_app.WorkoutProgressView;
 import hu.droidium.fitness_app.database.DatabaseManager;
@@ -12,6 +13,8 @@ import hu.droidium.fitness_app.database.Workout;
 import hu.droidium.fitness_app.database.WorkoutProgress;
 
 import java.security.InvalidParameterException;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -27,6 +30,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.flurry.android.FlurryAgent;
 
 public class DoWorkoutActivity extends Activity implements OnClickListener {
 	private static final String TAG = "ExerciseActivity";
@@ -161,20 +166,65 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 		}
 		super.onPause();
 	}
+	
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		FlurryAgent.onStartSession(this, getString(R.string.flurryKey));
+	}
+	 
+	@Override
+	protected void onStop()
+	{
+		super.onStop();		
+		FlurryAgent.onEndSession(this);
+	}
+
 
 	@Override
 	public void onClick(View v) {
 		switch(v.getId()) {
 			case R.id.exerciseTypeHelp : {
 				// TODO Go to exercise type help page
+				try {
+					int actualBlockIndex = progress.getActualBlock();
+					int actualExerciseIndex = progress.getActualExercise();
+
+					Exercise exercise = progress.getExercise(actualBlockIndex, actualExerciseIndex, databaseManager);
+					ExerciseType exerciseType = databaseManager.getExerciseType(exercise.getType().getId());
+					Map<String, String> helpParams = new HashMap<String, String>();
+					helpParams.put(FlurryLogConstants.EXERCISE_TYPE_ID, exerciseType.getId());
+			 
+			        FlurryAgent.logEvent(FlurryLogConstants.ASKED_FOR_EXERCISE_DETAILS, helpParams);
+				} catch (Exception e) {
+					FlurryAgent.logEvent(FlurryLogConstants.ASKED_FOR_EXERCISE_DETAILS);
+				}
+
 				Toast.makeText(this, "Feature not yet implemented", Toast.LENGTH_LONG).show();
 				break;
 			}
 			case R.id.exerciseDone : {
-				exerciseDone();
+				exerciseDone(-1);
 				break;
 			}
 			case R.id.continueWorkout : {
+				try {
+					int actualBlockIndex = progress.getActualBlock();
+					int actualExerciseIndex = progress.getActualExercise();
+
+					Exercise exercise = progress.getExercise(actualBlockIndex, actualExerciseIndex, databaseManager);
+					ExerciseType exerciseType = databaseManager.getExerciseType(exercise.getType().getId());
+					Map<String, String> continueParams = new HashMap<String, String>();
+					continueParams.put(FlurryLogConstants.EXERCISE_TYPE_ID, exerciseType.getId());
+					continueParams.put(FlurryLogConstants.BLOCK_INDEX, "" + actualBlockIndex);
+					continueParams.put(FlurryLogConstants.EXERCISE_INDEX, "" + actualExerciseIndex);
+					continueParams.put(FlurryLogConstants.WORKOUT_ID, progress.getWorkout().getId());
+			 
+			        FlurryAgent.logEvent(FlurryLogConstants.SKIPPED_BREAK, continueParams);
+				} catch (Exception e) {
+					FlurryAgent.logEvent(FlurryLogConstants.SKIPPED_BREAK);
+				}
 				endOfBreak();
 				progressChanged();
 				break;
@@ -184,6 +234,22 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 				break;
 			} case R.id.addFifteen : {
 				if (breakCountdown != null && breakCountdown.getRemainingTimeInSecs() > 0) {
+					try {
+						int actualBlockIndex = progress.getActualBlock();
+						int actualExerciseIndex = progress.getActualExercise();
+
+						Exercise exercise = progress.getExercise(actualBlockIndex, actualExerciseIndex, databaseManager);
+						ExerciseType exerciseType = databaseManager.getExerciseType(exercise.getType().getId());
+						Map<String, String> continueParams = new HashMap<String, String>();
+						continueParams.put(FlurryLogConstants.EXERCISE_TYPE_ID, exerciseType.getId());
+						continueParams.put(FlurryLogConstants.BLOCK_INDEX, "" + actualBlockIndex);
+						continueParams.put(FlurryLogConstants.EXERCISE_INDEX, "" + actualExerciseIndex);
+						continueParams.put(FlurryLogConstants.WORKOUT_ID, progress.getWorkout().getId());
+				 
+				        FlurryAgent.logEvent(FlurryLogConstants.ADDED_EXTRA_TIME, continueParams);
+					} catch (Exception e) {
+						FlurryAgent.logEvent(FlurryLogConstants.ADDED_EXTRA_TIME);
+					}
 					endOfBreak += 15000;
 					breakCountdown.addSecs(15);
 				} 
@@ -203,7 +269,7 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 							int reps = Integer.parseInt(input.getText().toString());
 							exerciseDone(reps);
 						} catch (Exception e) {
-							exerciseDone();
+							exerciseDone(-1);
 						}
 					}
 				});
@@ -217,10 +283,6 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 		}
 	}
 	
-	private void exerciseDone(){
-		exerciseDone(-1);
-	}
-
 	private void exerciseDone(int reps) {
 		long now = System.currentTimeMillis();
 		int actualBlockIndex = progress.getActualBlock();

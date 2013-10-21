@@ -139,6 +139,7 @@ public final class R {
         public static final int estimatedTimeWithMinutesAndSecs=0x7f060040;
         public static final int exerciseListLabel=0x7f06002e;
         public static final int exerciseNamePlaceholder=0x7f060037;
+        public static final int flurryKey=0x7f06004c;
         public static final int hasWorkoutToday=0x7f060013;
         public static final int hello_world=0x7f060002;
         public static final int noExercises=0x7f060044;

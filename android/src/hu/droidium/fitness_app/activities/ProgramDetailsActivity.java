@@ -1,5 +1,7 @@
 package hu.droidium.fitness_app.activities;
 
+import com.flurry.android.FlurryAgent;
+
 import hu.droidium.fitness_app.AvailableWorkoutListAdapter;
 import hu.droidium.fitness_app.Constants;
 import hu.droidium.fitness_app.R;
@@ -58,6 +60,21 @@ public class ProgramDetailsActivity extends Activity implements OnClickListener 
 			programDescription.setVisibility(View.GONE);
 		}
 	}
+	
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		FlurryAgent.onStartSession(this, getString(R.string.flurryKey));
+	}
+	 
+	@Override
+	protected void onStop()
+	{
+		super.onStop();		
+		FlurryAgent.onEndSession(this);
+	}
+
 	
 	@Override
 	public void onClick(View v) {

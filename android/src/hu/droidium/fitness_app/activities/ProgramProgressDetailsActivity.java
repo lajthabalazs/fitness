@@ -11,6 +11,8 @@ import hu.droidium.fitness_app.database.WorkoutProgress;
 
 import java.util.List;
 
+import com.flurry.android.FlurryAgent;
+
 import android.app.Activity;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
@@ -86,6 +88,20 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 	protected void onResume() {
 		super.onResume();
 		updateUI();
+	}
+	
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		FlurryAgent.onStartSession(this, getString(R.string.flurryKey));
+	}
+	 
+	@Override
+	protected void onStop()
+	{
+		super.onStop();		
+		FlurryAgent.onEndSession(this);
 	}
 	
 	private void updateUI() {
