@@ -171,15 +171,33 @@ public class Workout{
 	}
 	
 	/**
-	 * Calculate the total load of this program based on the weighted sum of the exercises reps
+	 * Calculate the total units for this program based on the weighted sum of the exercises reps
 	 * @param databaseManager
 	 * @return
 	 */
-	public double getTotalLoad(DatabaseManager databaseManager) {
-		// TODO
-		return 0;
+	public float getTotalUnits(DatabaseManager databaseManager) {
+		blocks = databaseManager.getWorkout(id).blocks;
+		float totalUnits = 0;
+		for (Block block : blocks) {
+			totalUnits += block.getTotalUnits(databaseManager);
+		}
+		return totalUnits;
 	}
-	
+
+	/**
+	 * Calculate the total time of this program based on the time of each rep and breaktime
+	 * @param databaseManager
+	 * @return
+	 */
+	public float getTotalTime(DatabaseManager databaseManager) {
+		blocks = databaseManager.getWorkout(id).blocks;
+		float totalTime = 0;
+		for (Block block : blocks) {
+			totalTime += block.getTotalTime(databaseManager);
+		}
+		return totalTime;
+	}
+
 	/**
 	 * Get number of reps by exercise type
 	 * @param databaseManager
@@ -255,7 +273,6 @@ public class Workout{
 		// TODO
 		return null;
 	}
-
 }
 
 

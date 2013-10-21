@@ -2,7 +2,7 @@ package hu.droidium.fitness_app;
 
 import hu.droidium.fitness_app.database.DatabaseManager;
 import hu.droidium.fitness_app.database.Program;
-import hu.droidium.fitness_app.model.helpers.ProgramComparator;
+import hu.droidium.fitness_app.model.comparators.ProgramComparator;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -31,9 +31,9 @@ public class AvailableProgramListAdapter implements ListAdapter {
 		this.databaseManager = databaseManager;
 	}
 	
-	public void updatePrograms(List<Program> programs) {
+	public void updatePrograms(List<Program> programs, ProgramComparator comparator) {
 		this.programs.clear();
-		TreeSet<Program> orderer = new TreeSet<Program>(new ProgramComparator());
+		TreeSet<Program> orderer = new TreeSet<Program>(comparator);
 		orderer.addAll(programs);
 		for (Program progress : orderer) {
 			this.programs.add(progress);
@@ -69,6 +69,7 @@ public class AvailableProgramListAdapter implements ListAdapter {
 		program = databaseManager.getProgram(program.getId());
 		int workoutCount = program.getWorkouts().size();
 		int totalLengthOfProgram = program.getTotalLength(databaseManager);
+		float totalUnits = program.getTotalUnits(databaseManager);
 		if (convertView == null){
 			convertView = layoutInflater.inflate(R.layout.available_program_list_item, null);
 		}
@@ -80,7 +81,7 @@ public class AvailableProgramListAdapter implements ListAdapter {
 			convertView.findViewById(R.id.programDescriptionInAvailableProgramList).setVisibility(View.GONE);
 		}
 		((TextView)convertView.findViewById(R.id.programWorkoutsInAvailableProgramList)).
-			setText(String.format(resources.getString(R.string.programWorkoutCount), workoutCount, totalLengthOfProgram));
+			setText(String.format(resources.getString(R.string.programWorkoutCount), workoutCount, totalLengthOfProgram, totalUnits));
 		return convertView;
 	}
 

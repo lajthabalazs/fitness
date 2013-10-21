@@ -1,6 +1,7 @@
 package hu.droidium.fitness_app;
 
 import hu.droidium.fitness_app.activities.ProgramProgressDetailsActivity;
+import hu.droidium.fitness_app.database.DatabaseManager;
 import hu.droidium.fitness_app.database.Workout;
 
 import java.util.ArrayList;
@@ -23,10 +24,12 @@ public class UpcomingWorkoutAdapter implements ListAdapter, OnClickListener {
 	private LayoutInflater inflater;
 	private ProgramProgressDetailsActivity activity;
 	private boolean hasActual = false;
+	private DatabaseManager databaseManager;
 	
-	public UpcomingWorkoutAdapter(ProgramProgressDetailsActivity activity, LayoutInflater inflater){
+	public UpcomingWorkoutAdapter(ProgramProgressDetailsActivity activity, DatabaseManager databaseManager, LayoutInflater inflater){
 		this.activity = activity;
 		this.inflater = inflater;
+		this.databaseManager = databaseManager;
 	}
 	
 	public void setWorkouts(List<Workout> workouts, boolean hasActual) {
@@ -65,8 +68,16 @@ public class UpcomingWorkoutAdapter implements ListAdapter, OnClickListener {
 		}
 		Workout workout = workouts.get(position);
 		((TextView)convertView.findViewById(R.id.workoutNameInUpcomingList)).setText(workout.getName());
+		int secs = (int) workout.getTotalTime(databaseManager);
+		String timeText = Constants.getEstimatedTimeString(secs, activity);
+		String unitsString = String.format(activity.getString(R.string.totalUnits), (int)workout.getTotalUnits(databaseManager));
+		((TextView)convertView.findViewById(R.id.workoutEstimatedTimeInUpcomingList)).setText(timeText);
+		((TextView)convertView.findViewById(R.id.workoutUnitsInUpcomingList)).setText(unitsString);
 		if (workout.getDescription() != null) {
+			convertView.findViewById(R.id.workoutDetailsInUpcomingList).setVisibility(View.VISIBLE);
 			((TextView)convertView.findViewById(R.id.workoutDetailsInUpcomingList)).setText(workout.getDescription());
+		} else {
+			convertView.findViewById(R.id.workoutDetailsInUpcomingList).setVisibility(View.GONE);
 		}
 		Button jumpButton = (Button)convertView.findViewById(R.id.workoutSkipToThisInUpcomingList);
 		jumpButton.setOnClickListener(this);

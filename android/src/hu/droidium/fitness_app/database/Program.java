@@ -98,13 +98,17 @@ public class Program {
 	}
 	
 	/**
-	 * Calculate the total load of this program based on the weighted sum of the exercises reps
+	 * Calculate the total units for this program based on the weighted sum of the exercises reps
 	 * @param databaseManager
 	 * @return
 	 */
-	public double getTotalLoad(DatabaseManager databaseManager) {
-		// TODO
-		return 0;
+	public float getTotalUnits(DatabaseManager databaseManager) {
+		float totalUnits = 0f;
+		workouts = databaseManager.getProgram(id).workouts;
+		for (Workout workout : workouts) {
+			totalUnits += workout.getTotalUnits(databaseManager);
+		}
+		return totalUnits;
 	}
 	
 	/**

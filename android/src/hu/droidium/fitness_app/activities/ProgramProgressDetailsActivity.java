@@ -25,6 +25,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+@SuppressWarnings("unused")
 public class ProgramProgressDetailsActivity extends Activity implements OnClickListener {
 	
 	private static final String TAG = "ProgramProgressDetailsActivity";
@@ -45,10 +46,13 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 	private TextView workoutProgressLabel;
 	private TextView currentWorkoutDescription;
 	private ProgramProgress programProgress;
+	private TextView currentWorkoutUnits;
+	private TextView currentWorkoutTime;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		databaseManager = DatabaseManager.getInstance(this);
 		setContentView(R.layout.program_progress_details_activity);
 		if (savedInstanceState != null && savedInstanceState.containsKey(Constants.PROGRAM_PROGRESS_ID)) {
 			programId = savedInstanceState.getLong(Constants.PROGRAM_PROGRESS_ID);
@@ -64,17 +68,18 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 		programDetailsText = (TextView)findViewById(R.id.programDescription);
 		currentWorkoutLabel = (TextView)findViewById(R.id.currentWorkoutLabel);
 		currentWorkoutText = (TextView)findViewById(R.id.currentWorkoutText);
+		currentWorkoutUnits = (TextView)findViewById(R.id.currentWorkoutUnits);
+		currentWorkoutTime = (TextView)findViewById(R.id.currentWorkoutTime);
 		currentWorkoutDescription = (TextView)findViewById(R.id.currentWorkoutDescription);
 		exerciseListLabel = (TextView)findViewById(R.id.exerciseListLabel);
 		workoutStartDateLabel = (TextView)findViewById(R.id.workoutStartDateLabel);
 		workoutProgressLabel = (TextView)findViewById(R.id.workoutProgressLabel);
 		upcomingWorkoutsLabel = findViewById(R.id.upcommingWorkoutsLabel);
 		upcomingWorkoutsList = (ListView)findViewById(R.id.upcommingWorkoutsList);
-		upcomingWorkoutsAdapter = new UpcomingWorkoutAdapter(this, getLayoutInflater());
+		upcomingWorkoutsAdapter = new UpcomingWorkoutAdapter(this, databaseManager, getLayoutInflater());
 		upcomingWorkoutsList.setAdapter(upcomingWorkoutsAdapter);
 		doWorkout = (Button)findViewById(R.id.doTodaysWorkoutOnProgressDetails);
 		doWorkout.setOnClickListener(this);
-		databaseManager = DatabaseManager.getInstance(this);
 	}
 	
 	@Override
@@ -101,6 +106,8 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 			upcomingWorkoutsList.setVisibility(View.GONE);
 			currentWorkoutLabel.setVisibility(View.GONE);
 			currentWorkoutText.setVisibility(View.GONE);
+			currentWorkoutTime.setVisibility(View.GONE);
+			currentWorkoutUnits.setVisibility(View.GONE);
 			exerciseListLabel.setVisibility(View.GONE);
 			workoutStartDateLabel.setVisibility(View.GONE);
 			workoutProgressLabel.setVisibility(View.GONE);
@@ -121,6 +128,8 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 				currentWorkoutLabel.setVisibility(View.VISIBLE);
 				currentWorkoutText.setVisibility(View.VISIBLE);
 				exerciseListLabel.setVisibility(View.VISIBLE);
+				currentWorkoutTime.setVisibility(View.VISIBLE);
+				currentWorkoutUnits.setVisibility(View.VISIBLE);
 				workoutStartDateLabel.setVisibility(View.VISIBLE);
 				workoutProgressLabel.setVisibility(View.VISIBLE);
 				currentWorkoutText.setText(workout.getName());
@@ -131,6 +140,21 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 				} else {
 					currentWorkoutDescription.setVisibility(View.GONE);
 				}
+				String timeText = "";
+				int secs = (int) workout.getTotalTime(databaseManager);
+				if (secs > 3600) {
+					int hours = secs / 3600;
+					int minutes = (secs - 3600 * hours) / 60;
+					secs = secs - 3600 * hours - minutes * 60;
+					timeText = String.format(getString(R.string.estimatedTimeWithHour), hours, minutes, secs);
+				} else {
+					int minutes = secs / 60;
+					secs = secs - minutes * 60;
+					timeText = String.format(getString(R.string.estimatedTimeWithMinutes), minutes, secs);
+				}
+				String unitsString = String.format(getString(R.string.totalUnits), (int)workout.getTotalUnits(databaseManager));
+				currentWorkoutTime.setText(timeText);
+				currentWorkoutUnits.setText(unitsString);
 				String exerciseList = workout.getExercisesList(3, false, this, databaseManager);
 				exerciseListLabel.setText(String.format(getResources().getString(R.string.exerciseListLabel), exerciseList));
 				// Exercise due date
@@ -171,7 +195,6 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 					int delay = (int) ((today - Constants.stripDate(workoutStartDate)) / Constants.DAY_MILLIS);
 					int totalExercises = workout.getTotalNumberOfExercises(databaseManager);
 					int doneExercises = workoutProgress.getDoneExercises().size();
-					String workoutProgressText = doneExercises + "/" + totalExercises;
 					if (delay == 0) {
 						workoutStartDateLabel.setText(R.string.workoutStartToday);
 					} else if (delay == 1) {
@@ -179,7 +202,7 @@ public class ProgramProgressDetailsActivity extends Activity implements OnClickL
 					} else {
 						workoutStartDateLabel.setText(String.format(getResources().getString(R.string.workoutStartDate), delay));
 					}
-					workoutProgressLabel.setText(String.format(getResources().getString(R.string.workoutProgressLabel), workoutProgressText));
+					workoutProgressLabel.setText(String.format(getResources().getString(R.string.workoutProgressLabel), doneExercises, totalExercises));
 					currentWorkoutLabel.setText(R.string.todaysWorkoutLabel);
 					workoutStartDateLabel.setVisibility(View.VISIBLE);
 					workoutProgressLabel.setVisibility(View.VISIBLE);

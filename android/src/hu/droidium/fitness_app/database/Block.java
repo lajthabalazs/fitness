@@ -87,13 +87,40 @@ public class Block {
 	}
 	
 	/**
-	 * Calculate the total load of this program based on the weighted sum of the exercises reps
+	 * Calculate the total units for this program based on the weighted sum of the exercises reps
 	 * @param databaseManager
 	 * @return
 	 */
-	public double getTotalLoad(DatabaseManager databaseManager) {
-		// TODO
-		return 0;
+	public float getTotalUnits(DatabaseManager databaseManager) {
+		exercises = databaseManager.getBlock(id).exercises;
+		float totalUnits = 0;
+		for (Exercise exercise : exercises){
+			exercise = databaseManager.getExercise(exercise.getId());
+			ExerciseType type = databaseManager.getExerciseType(exercise.getType().getId());
+			totalUnits += exercise.getReps() * type.getUnitWeight();
+		}
+		return totalUnits;
+	}
+
+	/**
+	 * Calculate the total time of this program based on the time of each rep and breaktime
+	 * @param databaseManager
+	 * @return
+	 */
+	public float getTotalTime(DatabaseManager databaseManager) {
+		exercises = databaseManager.getBlock(id).exercises;
+		float totalTime = 0;
+		for (Exercise exercise : exercises){
+			exercise = databaseManager.getExercise(exercise.getId());
+			ExerciseType type = databaseManager.getExerciseType(exercise.getType().getId());
+			if (exercise.getTargetSecs() > 0) {
+				totalTime += exercise.getTargetSecs();
+			} else {
+				totalTime += exercise.getReps() * type.getUnitTime();
+			}
+			totalTime += exercise.getBreakSecs();
+		}
+		return totalTime;
 	}
 	
 	/**
