@@ -38,12 +38,13 @@ public class ExerciseType {
 	@ForeignCollectionField
 	private ForeignCollection<ExerciseTypeMuscle> muscles;
 	
-	public ExerciseType(String id, String name, String description, String instructions, String unit, int stamina, int strength, int speed, int flexibility, int balance) {
+	public ExerciseType(String id, String name, String description, String instructions, String unit, float unitWeight, int stamina, int strength, int speed, int flexibility, int balance) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.instructions = instructions;
 		this.unit = unit;
+		this.unitWeight = unitWeight;
 		this.stamina = stamina;
 		this.strength = strength;
 		this.speed = speed;

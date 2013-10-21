@@ -61,6 +61,7 @@ public class DataLoader {
 	private static final String MUSCLE_DESCRIPTION_KEY = "muscleDescription";
 
 	private static final String UNIT_KEY = "unit";
+	private static final String UNIT_WEIGHT_KEY = "repWeight";
 
 	public static void loadDataFromAssets(Context context) throws IOException{
 		DatabaseManager databaseManager = DatabaseManager.getInstance(context);
@@ -159,6 +160,7 @@ public class DataLoader {
 				JSONObject exercise = exercises.getJSONObject(i);
 				String exerciseId = exercise.getString(EXERCISE_ID_KEY);
 				String exerciseName = null;
+				float unitWeight = 0f;
 				try {
 					exerciseName = exercise.getString(EXERCISE_NAME_KEY);
 				} catch (JSONException e) {
@@ -182,13 +184,19 @@ public class DataLoader {
 				} catch (JSONException e) {
 					Log.w(TAG, "No exercise instructions " + e.getMessage());
 				}
+				try {
+					unitWeight = (float)exercise.getDouble(UNIT_WEIGHT_KEY);
+				} catch (JSONException e) {
+					unitWeight = 1;
+					Log.w(TAG, "No exercise unit " + e.getMessage());
+				}
 				int stamina = exercise.getInt(STAMINA_KEY);
 				int strength = exercise.getInt(STRENGTH_KEY);
 				int speed = exercise.getInt(SPEED_KEY);
 				int flexibility = exercise.getInt(FLEXIBILITY_KEY);
 				int balance = exercise.getInt(BALANCE_KEY);
 				ExerciseType ormExercise = new ExerciseType(exerciseId,
-						exerciseName, exerciseDescription, exerciseInstructions, unit,
+						exerciseName, exerciseDescription, exerciseInstructions, unit, unitWeight, 
 						stamina, strength, speed, flexibility, balance);
 				databaseManager.addExerciseType(ormExercise);
 				JSONArray musclesArray = exercise.getJSONArray(MUSCLES_KEY);

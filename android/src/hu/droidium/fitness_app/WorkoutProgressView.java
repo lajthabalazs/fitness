@@ -3,6 +3,7 @@ package hu.droidium.fitness_app;
 import hu.droidium.fitness_app.database.Block;
 import hu.droidium.fitness_app.database.DatabaseManager;
 import hu.droidium.fitness_app.database.Exercise;
+import hu.droidium.fitness_app.database.ExerciseType;
 import hu.droidium.fitness_app.database.Workout;
 
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class WorkoutProgressView extends View {
 
 	private int exerciseCount;
 
-	private int maxRep;
+	private float maxTotalValue;
 
 	private ArrayList<Block> deepLoadedBlocks;
 	{
@@ -72,14 +73,16 @@ public class WorkoutProgressView extends View {
 			blockCount = workout.getNumberOfBlocks(databaseManager);
 			// One unit break between blocks, one unit for each exercise, 0.2 unit of break between each exercise
 			exerciseCount = 0;
-			maxRep = 0;
+			maxTotalValue = 0;
 			deepLoadedBlocks = new ArrayList<Block>();
 			for (Block block : workout.getBlocks()){
 				block = databaseManager.getBlock(block.getId());
 				deepLoadedBlocks.add(block);
-				exerciseCount += block.getExerciseCount(databaseManager);
+				exerciseCount += block.getExerciseCount(databaseManager);				
 				for (Exercise exercise : block.getExercises()) {
-					maxRep = Math.max(maxRep, exercise.getReps());
+					exercise = databaseManager.getExercise(exercise.getId());
+					ExerciseType type = databaseManager.getExerciseType(exercise.getType().getId());
+					maxTotalValue = Math.max(maxTotalValue, exercise.getReps() * type.getUnitWeight());
 				}
 			}
 		}
@@ -131,12 +134,16 @@ public class WorkoutProgressView extends View {
 							}
 						}
 					}
-					canvas.drawRect(offset, y + height - (height * exercises.get(j).getReps()) / maxRep, offset + unit, y + height, paint);
+					Exercise exercise = databaseManager.getExercise(exercises.get(j).getId());
+					ExerciseType type = databaseManager.getExerciseType(exercise.getType().getId());
+					float columnHeight = (height * exercise.getReps() * type.getUnitWeight()) / maxTotalValue;
+					canvas.drawRect(offset, y + height - columnHeight, offset + unit, y + height, paint);
 					offset += unit;
 				}
 			}
 		}
 	}
+	
 
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
