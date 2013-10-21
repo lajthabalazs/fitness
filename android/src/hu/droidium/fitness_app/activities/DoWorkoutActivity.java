@@ -49,6 +49,7 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 	private View endLayout;
 	private DatabaseManager databaseManager;
 	private TextView repsLabel;
+	private View exerciseTypeHelp;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,8 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 		continueWorkout.setOnClickListener(this);
 		
 		exerciseLayout = findViewById(R.id.exerciseLayout);
+		exerciseTypeHelp = findViewById(R.id.exerciseTypeHelp);
+		exerciseTypeHelp.setOnClickListener(this);
 		exerciseLabel = (TextView)findViewById(R.id.exerciseLabel);
 		reps = (TextView)findViewById(R.id.reps);
 		repsLabel = (TextView)findViewById(R.id.repsLabel);
@@ -162,6 +165,11 @@ public class DoWorkoutActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch(v.getId()) {
+			case R.id.exerciseTypeHelp : {
+				// TODO Go to exercise type help page
+				Toast.makeText(this, "Feature not yet implemented", Toast.LENGTH_LONG).show();
+				break;
+			}
 			case R.id.exerciseDone : {
 				exerciseDone();
 				break;

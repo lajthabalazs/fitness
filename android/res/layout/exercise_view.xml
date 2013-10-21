@@ -4,14 +4,30 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/exerciseLabel"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/exerciseNamePlaceholder"
-        android:layout_gravity="center_horizontal"
-        android:textSize="40sp"/>
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
+	    <TextView
+	        android:layout_marginLeft="45dp"
+	        android:id="@+id/exerciseLabel"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/exerciseNamePlaceholder"
+	        android:textSize="40sp"/>
 
+	    <ImageView
+	        android:id="@+id/exerciseTypeHelp"
+	        android:layout_marginTop="5dp"
+	        android:layout_marginLeft="5dp"
+	        android:layout_width="40dp"
+	        android:layout_height="40dp"
+	        android:src="@drawable/question_mark"
+	        android:contentDescription="@string/questionMark"
+	        />
+
+	</LinearLayout>
     <TextView
         android:id="@+id/reps"
         android:layout_width="match_parent"
@@ -32,7 +48,7 @@
     
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/editExercise"

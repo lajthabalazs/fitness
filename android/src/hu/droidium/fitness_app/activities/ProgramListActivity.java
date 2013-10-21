@@ -8,11 +8,13 @@ import hu.droidium.fitness_app.database.Program;
 import hu.droidium.fitness_app.model.comparators.ProgramComparator;
 import hu.droidium.fitness_app.model.comparators.ProgramDifficultyComparator;
 import hu.droidium.fitness_app.model.comparators.ProgramLengthComparator;
+import hu.droidium.fitness_app.model.comparators.ProgramLengthDescComparator;
 import hu.droidium.fitness_app.model.comparators.ProgramNameComparator;
 import hu.droidium.fitness_app.model.comparators.ProgramUnitComparator;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -26,7 +28,7 @@ import android.widget.Spinner;
 @SuppressWarnings("unused")
 public class ProgramListActivity extends Activity implements OnClickListener, OnItemClickListener, OnItemSelectedListener {
 	private static final String TAG = "ProgramListActivity";
-	private static final int ADD_DETAILS = 12317;
+	static final int ADD_DETAILS = 12317;
 	private ListView list;
 	private Button cancelButton;
 	private AvailableProgramListAdapter programAdapter;
@@ -50,15 +52,14 @@ public class ProgramListActivity extends Activity implements OnClickListener, On
 		cancelButton.setOnClickListener(this);
 		
 		programListSorter = (Spinner) findViewById(R.id.programListSorter);
-		comparators = new ProgramComparator[2];
+		comparators = new ProgramComparator[3];
 		comparators[0] = new ProgramNameComparator(getString(R.string.sortByName));
 		comparators[1] = new ProgramLengthComparator(getString(R.string.sortByLength), databaseManager);
-		//comparators[2] = new ProgramDifficultyComparator(getString(R.string.sortByDifficulty));
-		//comparators[3] = new ProgramUnitComparator(getString(R.string.sortByUnit));
+		comparators[2] = new ProgramLengthDescComparator(getString(R.string.sortByLengthDesc), databaseManager);
 		// Create an ArrayAdapter using the string array and a default spinner layout
-		programListSorterAdapter = new ArrayAdapter<ProgramComparator>(this, android.R.layout.simple_spinner_dropdown_item, comparators );
+		programListSorterAdapter = new ArrayAdapter<ProgramComparator>(this, R.layout.sorter_chooser, R.id.sorterLabel, comparators );
 		// Specify the layout to use when the list of choices appears
-		programListSorterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		programListSorterAdapter.setDropDownViewResource(R.layout.sorter_chooser_dropdown);
 		// Apply the adapter to the spinner
 		programListSorter.setAdapter(programListSorterAdapter);
 		programListSorter.setOnItemSelectedListener(this);
@@ -85,7 +86,11 @@ public class ProgramListActivity extends Activity implements OnClickListener, On
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == Constants.RESULT_STARTED_NEW_PROGRAM) {
-			// If a program was selected, return immediately
+			Intent output = new Intent();			
+			long progressId = data.getLongExtra(Constants.PROGRAM_PROGRESS_ID, -1);
+			Log.e(TAG, "Progress id " + progressId);
+			output.putExtra(Constants.PROGRAM_PROGRESS_ID, progressId);
+			setResult(Constants.RESULT_STARTED_NEW_PROGRAM, output);
 			finish();
 		} else {
 			// Otherwise let the user browse other programs

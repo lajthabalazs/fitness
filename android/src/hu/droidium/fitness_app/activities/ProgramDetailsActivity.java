@@ -6,8 +6,8 @@ import hu.droidium.fitness_app.R;
 import hu.droidium.fitness_app.database.DatabaseManager;
 import hu.droidium.fitness_app.database.Program;
 import hu.droidium.fitness_app.database.ProgramProgress;
-
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -72,7 +72,9 @@ public class ProgramDetailsActivity extends Activity implements OnClickListener 
 			long now = System.currentTimeMillis();
 			ProgramProgress progress = new  ProgramProgress(now, program);
 			databaseManager.startProgram(progress);
-			setResult(Constants.RESULT_STARTED_NEW_PROGRAM);
+			Intent output = new Intent();
+			output.putExtra(Constants.PROGRAM_PROGRESS_ID, progress.getProgressId());
+			setResult(Constants.RESULT_STARTED_NEW_PROGRAM, output);
 			finish();
 			break;
 		}

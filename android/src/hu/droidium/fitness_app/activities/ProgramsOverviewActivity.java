@@ -10,6 +10,7 @@ import hu.droidium.fitness_app.database.ProgramProgress;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -19,7 +20,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+@SuppressWarnings("unused")
 public class ProgramsOverviewActivity extends Activity implements OnClickListener, OnItemClickListener, OnItemLongClickListener {
+	private static final String TAG = "ProgramsOverviewActivity";
 	private Button startNewProgram;
 	private ListView programList;
 	
@@ -50,11 +53,26 @@ public class ProgramsOverviewActivity extends Activity implements OnClickListene
 			Toast.makeText(this, "No programs added yet.", Toast.LENGTH_LONG).show();
 		}
 	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == Constants.RESULT_STARTED_NEW_PROGRAM) {
+			long progressId = data.getLongExtra(Constants.PROGRAM_PROGRESS_ID, -1);
+			if (progressId != -1) {
+				Intent intent = new Intent(this, ProgramProgressDetailsActivity.class);
+				intent.putExtra(Constants.PROGRAM_PROGRESS_ID, progressId);
+				startActivity(intent);
+			}
+		} else {
+			// Otherwise let the user browse other programs
+			super.onActivityResult(requestCode, resultCode, data);
+		}
+	}
 
 	@Override
 	public void onClick(View v) {
 		Intent intent = new Intent(this, ProgramListActivity.class);
-		startActivity(intent);
+		startActivityForResult(intent, ProgramListActivity.ADD_DETAILS);
 	}
 	
 	@Override

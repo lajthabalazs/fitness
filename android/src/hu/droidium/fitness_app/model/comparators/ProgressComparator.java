@@ -7,6 +7,7 @@ import java.util.Comparator;
 
 import android.util.Log;
 
+@SuppressWarnings("unused")
 public class ProgressComparator implements Comparator<ProgramProgress> {
 	
 	private static final String TAG = "ProgressComparator";
@@ -42,7 +43,6 @@ public class ProgressComparator implements Comparator<ProgramProgress> {
 				} else if (lhs.getNextWorkoutDay(databaseManager) > rhs.getNextWorkoutDay(databaseManager)){
 					return rightFirst;
 				} else {
-					Log.e(TAG,"Both have an exercise on the same day");
 					// Start with the freshest
 					if (lhs.getProgressId() < rhs.getProgressId()) {
 						return rightFirst;

@@ -74,11 +74,12 @@
     <string name="noExercises">no exercises</string>
     <string name="editRepsDialogTitle">How many did you do?</string>
     
-    <string name="sortByLabel">Sort by:</string>
-    <string name="sortByName">Name</string>
-    <string name="sortByLength">Length</string>
-    <string name="sortByUnit">Unit</string>
-    <string name="sortByDifficulty">Difficulty</string>
+    <string name="sortByName">Sort by name</string>
+    <string name="sortByLength">Sort by length, shortest first</string>
+    <string name="sortByLengthDesc">Sort by length, longest first</string>
+    <string name="sortByUnit">Sort by total units</string>
+    <string name="sortByDifficulty">Sort by difficulty</string>
     
+    <string name="questionMark">Help</string>
     
 </resources>
