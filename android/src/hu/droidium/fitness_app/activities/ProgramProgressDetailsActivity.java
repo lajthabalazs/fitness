@@ -2,6 +2,7 @@ package hu.droidium.fitness_app.activities;
 
 import hu.droidium.fitness_app.Constants;
 import hu.droidium.fitness_app.R;
+import hu.droidium.fitness_app.Translator;
 import hu.droidium.fitness_app.UpcomingWorkoutAdapter;
 import hu.droidium.fitness_app.database.DatabaseManager;
 import hu.droidium.fitness_app.database.Program;
@@ -93,9 +94,9 @@ public class ProgramProgressDetailsActivity extends FitnessBaseActivity implemen
 		Program program  = databaseManager.getProgram(programProgress.getProgram().getId());
 		String programStartDate = Constants.format(programProgress.getProgressId());
 		programStartDateLabel.setText(String.format(getResources().getString(R.string.programStartedLabel), programStartDate));
-		programNameLabel.setText(program.getName());
+		programNameLabel.setText(Translator.getTranslation(program.getName()));
 		programProgressBar.setProgress(programProgress.getProgressPercentage(databaseManager));
-		programDetailsText.setText(program.getDescription());
+		programDetailsText.setText(Translator.getTranslation(program.getDescription()));
 		
 		if (programProgress.getTerminationDate() != -1) {
 			String programEndDate = Constants.format(programProgress.getTerminationDate());
@@ -103,10 +104,11 @@ public class ProgramProgressDetailsActivity extends FitnessBaseActivity implemen
 			programStartDateLabel.setVisibility(View.VISIBLE);
 			doWorkout.setVisibility(View.GONE);
 			upcomingWorkoutsLabel.setVisibility(View.GONE);
-			upcomingWorkoutsList.setVisibility(View.GONE);
+			upcomingWorkoutsList.setVisibility(View.INVISIBLE);
 			currentWorkoutLabel.setVisibility(View.GONE);
 			currentWorkoutText.setVisibility(View.GONE);
 			currentWorkoutTime.setVisibility(View.GONE);
+			currentWorkoutDescription.setVisibility(View.GONE);
 			currentWorkoutUnits.setVisibility(View.GONE);
 			exerciseListLabel.setVisibility(View.GONE);
 			workoutStartDateLabel.setVisibility(View.GONE);
@@ -131,11 +133,11 @@ public class ProgramProgressDetailsActivity extends FitnessBaseActivity implemen
 				currentWorkoutUnits.setVisibility(View.VISIBLE);
 				workoutStartDateLabel.setVisibility(View.VISIBLE);
 				workoutProgressLabel.setVisibility(View.VISIBLE);
-				currentWorkoutText.setText(workout.getName());
+				currentWorkoutText.setText(Translator.getTranslation(workout.getName()));
 				String description = workout.getDescription();
 				if (description != null) {
 					currentWorkoutDescription.setVisibility(View.VISIBLE);
-					currentWorkoutDescription.setText(description);
+					currentWorkoutDescription.setText(Translator.getTranslation(description));
 				} else {
 					currentWorkoutDescription.setVisibility(View.GONE);
 				}
@@ -251,16 +253,16 @@ public class ProgramProgressDetailsActivity extends FitnessBaseActivity implemen
 			startWorkout();
 		} else if (index == 0 && programProgress.getActualWorkout() != null){
 			Builder builder = new Builder(this);
-			builder.setTitle("Skip current workout?");
-			builder.setMessage("Are you sure you want to skip current workout?");
-			builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			builder.setTitle(R.string.skipCurrentWorkoutTitle);
+			builder.setMessage(R.string.skipCurrentWorkoutMessage);
+			builder.setPositiveButton(R.string.skipWorkoutYes, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					programProgress.startWorkout(System.currentTimeMillis(), workout, databaseManager);
 					startWorkout();
 				}
 			});
-			builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+			builder.setNegativeButton(R.string.skipWorkoutNo, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 				}
@@ -268,16 +270,16 @@ public class ProgramProgressDetailsActivity extends FitnessBaseActivity implemen
 			builder.create().show();
 		} else {
 			Builder builder = new Builder(this);
-			builder.setTitle("Skip workouts?");
-			builder.setMessage("Are you sure you want to skip all those workouts?");
-			builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			builder.setTitle(R.string.skipWorkoutsTitle);
+			builder.setMessage(R.string.skipWorkoutsMessage);
+			builder.setPositiveButton(R.string.skipWorkoutYes, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					programProgress.startWorkout(System.currentTimeMillis(), workout, databaseManager);
 					startWorkout();
 				}
 			});
-			builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+			builder.setNegativeButton(R.string.skipWorkoutNo, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 				}

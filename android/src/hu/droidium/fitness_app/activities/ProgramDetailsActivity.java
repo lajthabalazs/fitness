@@ -3,6 +3,7 @@ package hu.droidium.fitness_app.activities;
 import hu.droidium.fitness_app.AvailableWorkoutListAdapter;
 import hu.droidium.fitness_app.Constants;
 import hu.droidium.fitness_app.R;
+import hu.droidium.fitness_app.Translator;
 import hu.droidium.fitness_app.database.DatabaseManager;
 import hu.droidium.fitness_app.database.Program;
 import hu.droidium.fitness_app.database.ProgramProgress;
@@ -34,7 +35,6 @@ public class ProgramDetailsActivity extends FitnessBaseActivity implements OnCli
 		databaseManager = DatabaseManager.getInstance(this);
 		workoutAdapter = new AvailableWorkoutListAdapter(this,getLayoutInflater(),databaseManager);
 		list.setAdapter(workoutAdapter);
-		list.setEnabled(false);
 		cancelButton = (Button)findViewById(R.id.cancelButton);
 		cancelButton.setOnClickListener(this);
 		addNewProgram = (Button)findViewById(R.id.startNewProgram);
@@ -49,9 +49,9 @@ public class ProgramDetailsActivity extends FitnessBaseActivity implements OnCli
 		super.onResume();
 		Program program = databaseManager.getProgram(programId);
 		workoutAdapter.updateWorkouts(program.getWorkouts());
-		programName.setText(program.getName());
+		programName.setText(Translator.getTranslation(program.getName()));
 		if (program.getDescription() != null && program.getDescription().length() > 0) {
-			programDescription.setText(program.getDescription());
+			programDescription.setText(Translator.getTranslation(program.getDescription()));
 			programDescription.setVisibility(View.VISIBLE);
 		} else {
 			programDescription.setVisibility(View.GONE);

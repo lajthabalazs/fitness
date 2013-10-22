@@ -10,6 +10,14 @@
         android:text="@string/yourPrograms"
         style="@style/ActivityTitle"/>
 
+	<TextView
+	    android:id="@+id/noActiveProgram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/noActiveProgram"
+        android:layout_gravity="center_horizontal"
+        style="@style/ListItemTitle"/>
+	
 	<ListView
         android:id="@+id/programList"
         android:layout_width="match_parent"
@@ -21,6 +29,7 @@
         android:id="@+id/startNewProgram"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="0"
         android:text="@string/startNewProgram" />
 
 </LinearLayout>

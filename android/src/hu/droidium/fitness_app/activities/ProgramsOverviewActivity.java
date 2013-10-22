@@ -16,7 +16,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class ProgramsOverviewActivity extends FitnessBaseActivity implements OnClickListener, OnItemClickListener, OnItemLongClickListener {
 	private Button startNewProgram;
@@ -24,6 +23,7 @@ public class ProgramsOverviewActivity extends FitnessBaseActivity implements OnC
 	
 	private ActiveProgramListAdapter programAdapter;
 	private DatabaseManager databaseManager;
+	private View noActiveProgram;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +34,8 @@ public class ProgramsOverviewActivity extends FitnessBaseActivity implements OnC
 		programList.setOnItemClickListener(this);
 		programList.setOnItemLongClickListener(this);
 		programAdapter = new ActiveProgramListAdapter(this, databaseManager);
+		noActiveProgram = findViewById(R.id.noActiveProgram);
+		noActiveProgram.setOnClickListener(this);
 		programList.setAdapter(programAdapter);
 		startNewProgram = (Button)findViewById(R.id.startNewProgram);
 		startNewProgram.setOnClickListener(this);
@@ -45,8 +47,9 @@ public class ProgramsOverviewActivity extends FitnessBaseActivity implements OnC
 		List<ProgramProgress> programs = databaseManager.getProgressList();
 		if (programs != null && programs.size() > 0) {
 			programAdapter.updatePrograms(programs);
+			noActiveProgram.setVisibility(View.GONE);
 		} else {
-			Toast.makeText(this, "No programs added yet.", Toast.LENGTH_LONG).show();
+			noActiveProgram.setVisibility(View.VISIBLE);
 		}
 	}
 	

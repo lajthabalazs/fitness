@@ -1,30 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >    
-
-    <TextView
-        android:id="@+id/programNameInActiveProgramList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/programNamePlaceholder"
-        style="@style/ListItemTitle"/>
-
-    <ProgressBar
-        android:id="@+id/programProgressBarInList"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:progress="50"
-        android:layout_height="40dp" />
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
     
-    <TextView
-        android:id="@+id/programStartInActiveProgramList"
-        android:layout_width="wrap_content"
+    <hu.droidium.fitness_app.ProgramProgressView
+        android:id="@+id/programProgress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:text="@string/programStartedLabel" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
+	    <TextView
+	        android:id="@+id/programNameInActiveProgramList"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/programNamePlaceholder"
+	        style="@style/ListItemTitle"/>
+	    
+	    <TextView
+	        android:id="@+id/programStartInActiveProgramList"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginBottom="10dp"
+	        android:text="@string/programStartedLabel" />
 
-</LinearLayout>
+    </LinearLayout>    
+</FrameLayout>

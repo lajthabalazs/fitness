@@ -74,7 +74,7 @@ public class AvailableWorkoutListAdapter implements ListAdapter {
 		String workoutName = workout.getName();
 		String title = String.format(context.getString(R.string.workoutDay), day);
 		if (workoutName!=null && workoutName.length() > 0) {
-			title = title + ": " + workoutName; 
+			title = title + ": " + Translator.getTranslation(workoutName); 
 			
 		}
 		String totalReps = workout.getExercisesList(0, true, context, databaseManager);
@@ -89,7 +89,7 @@ public class AvailableWorkoutListAdapter implements ListAdapter {
 		if ((workout.getDescription() == null) || (workout.getDescription().equals(""))){
 			convertView.findViewById(R.id.workoutDescriptionInAvailableWorkoutList).setVisibility(View.GONE);
 		} else {
-			((TextView)convertView.findViewById(R.id.workoutDescriptionInAvailableWorkoutList)).setText(workout.getDescription());
+			((TextView)convertView.findViewById(R.id.workoutDescriptionInAvailableWorkoutList)).setText(Translator.getTranslation(workout.getDescription()));
 			convertView.findViewById(R.id.workoutDescriptionInAvailableWorkoutList).setVisibility(View.VISIBLE);
 		}
 		((TextView)convertView.findViewById(R.id.workoutTotalRepsInAvailableWorkoutList)).
@@ -124,11 +124,11 @@ public class AvailableWorkoutListAdapter implements ListAdapter {
 
 	@Override
 	public boolean areAllItemsEnabled() {
-		return true;
+		return false;
 	}
 
 	@Override
 	public boolean isEnabled(int position) {
-		return true;
+		return false;
 	}
 }

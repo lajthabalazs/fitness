@@ -70,7 +70,7 @@ public class UpcomingWorkoutAdapter implements ListAdapter, OnClickListener {
 			convertView = inflater.inflate(R.layout.upcoming_workout_list_item, null);
 		}
 		Workout workout = workouts.get(position);
-		((TextView)convertView.findViewById(R.id.workoutNameInUpcomingList)).setText(workout.getName());
+		((TextView)convertView.findViewById(R.id.workoutNameInUpcomingList)).setText(Translator.getTranslation(workout.getName()));
 		int secs = (int) workout.getTotalTime(databaseManager);
 		
 		String timeText = Constants.getEstimatedTimeString(secs, activity);
@@ -82,7 +82,7 @@ public class UpcomingWorkoutAdapter implements ListAdapter, OnClickListener {
 		((TextView)convertView.findViewById(R.id.workoutDueDateInUpcomingList)).setText(dueString);
 		if (workout.getDescription() != null) {
 			convertView.findViewById(R.id.workoutDetailsInUpcomingList).setVisibility(View.VISIBLE);
-			((TextView)convertView.findViewById(R.id.workoutDetailsInUpcomingList)).setText(workout.getDescription());
+			((TextView)convertView.findViewById(R.id.workoutDetailsInUpcomingList)).setText(Translator.getTranslation(workout.getDescription()));
 		} else {
 			convertView.findViewById(R.id.workoutDetailsInUpcomingList).setVisibility(View.GONE);
 		}

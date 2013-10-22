@@ -190,6 +190,6 @@ public class ExerciseType {
 	
 	@Override
 	public String toString() {
-		return id + " " + name + " " + description + " " + instructions;
+		return name;
 	}
 }

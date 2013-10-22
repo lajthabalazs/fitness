@@ -73,9 +73,9 @@ public class AvailableProgramListAdapter implements ListAdapter {
 		if (convertView == null){
 			convertView = layoutInflater.inflate(R.layout.available_program_list_item, null);
 		}
-		((TextView)convertView.findViewById(R.id.programNameInAvailableProgramList)).setText(program.getName());
+		((TextView)convertView.findViewById(R.id.programNameInAvailableProgramList)).setText(Translator.getTranslation(program.getName()));
 		if (program.getDescription() != null && program.getDescription().length() > 0) {
-			((TextView)convertView.findViewById(R.id.programDescriptionInAvailableProgramList)).setText(program.getDescription());
+			((TextView)convertView.findViewById(R.id.programDescriptionInAvailableProgramList)).setText(Translator.getTranslation(program.getDescription()));
 			convertView.findViewById(R.id.programDescriptionInAvailableProgramList).setVisibility(View.VISIBLE);
 		} else {
 			convertView.findViewById(R.id.programDescriptionInAvailableProgramList).setVisibility(View.GONE);

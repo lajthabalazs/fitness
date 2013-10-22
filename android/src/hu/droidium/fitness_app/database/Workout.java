@@ -3,6 +3,7 @@ package hu.droidium.fitness_app.database;
 import hu.droidium.fitness_app.Constants;
 import hu.droidium.fitness_app.DataHelper;
 import hu.droidium.fitness_app.R;
+import hu.droidium.fitness_app.Translator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -148,21 +149,21 @@ public class Workout{
 		List<Pair<String, Integer>> sortedExercises = DataHelper.getSortedExercises(getExercises(databaseManager));
 		String exerciseList = "";
 		for (int i = 0; (count == 0 || i < count) && i < sortedExercises.size(); i++) {
+			ExerciseType exerciseType = databaseManager.getExerciseType(sortedExercises.get(i).first);
 			if (i > 0) {
 				exerciseList = exerciseList + ", ";
 			}
-			exerciseList = exerciseList + databaseManager.getExerciseType(sortedExercises.get(i).first).getName();
+			exerciseList = exerciseList + Translator.getTranslation(exerciseType.getName());
 			if (withReps) {
 				int repsCount = sortedExercises.get(i).second;
-				ExerciseType exerciseType = databaseManager.getExerciseType(sortedExercises.get(i).first);
 				String repsString = "";
 				if (repsCount > 750 && exerciseType.getKUnit() != null) {
 					float kRepsCount = ((float)repsCount) / 1000;
 					String kReps = exerciseType.getKUnit();
-					repsString = String.format(context.getString(R.string.kRepsForListingExercises), kReps, kRepsCount);
+					repsString = String.format(context.getString(R.string.kRepsForListingExercises), Translator.getTranslation(kReps), kRepsCount);
 				} else {
 					String reps = databaseManager.getExerciseType(sortedExercises.get(i).first).getUnit();
-					repsString = String.format(context.getString(R.string.repsForListingExercises), reps, repsCount);
+					repsString = String.format(context.getString(R.string.repsForListingExercises), Translator.getTranslation(reps), repsCount);
 				}
 				exerciseList = exerciseList + repsString;
 			}

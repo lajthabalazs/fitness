@@ -15,7 +15,6 @@ import android.database.DataSetObserver;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class ActiveProgramListAdapter implements ListAdapter {
@@ -70,9 +69,9 @@ public class ActiveProgramListAdapter implements ListAdapter {
 		if (convertView == null){
 			convertView = programsOverviewActivity.getLayoutInflater().inflate(R.layout.active_program_list_item, null);
 		}
-		((TextView)convertView.findViewById(R.id.programNameInActiveProgramList)).setText(program.getName());	
+		((TextView)convertView.findViewById(R.id.programNameInActiveProgramList)).setText(Translator.getTranslation(program.getName()));	
 		((TextView)convertView.findViewById(R.id.programStartInActiveProgramList)).setText(progress.getDateOfNextWorkoutText(databaseManager, programsOverviewActivity));
-		((ProgressBar)convertView.findViewById(R.id.programProgressBarInList)).setProgress(progress.getProgressPercentage(databaseManager));
+		((ProgramProgressView)convertView.findViewById(R.id.programProgress)).setProgress(progress.getProgressPercentage(databaseManager));
 		return convertView;
 	}
 

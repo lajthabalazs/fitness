@@ -10,6 +10,7 @@
     <string name="edit">Edit done reps</string>
     <string name="workoutCompleted">Well done, you completed this workout!</string>
     <string name="secs">s</string>
+    <string name="noActiveProgram">No active program</string>
     <string name="backToWorkoutList">Back to workouts</string>
     <string name="startNewProgram">Start a new program</string>
     <string name="programStartedLabel">Started on %1$s</string>
@@ -55,6 +56,13 @@
     <string name="workoutDueYesterdayDate">Workout was due yesterday.</string>
     <string name="workoutDuePastDate">Workout was due %1$d days ago.</string>
     <string name="workoutDueForToday">Today\'s workout.</string>
+    
+    <string name="skipCurrentWorkoutTitle">Skip current workout?</string>
+	<string name="skipCurrentWorkoutMessage">Are you sure you want to skip current workout?</string>
+    <string name="skipWorkoutsTitle">Skip workouts?</string>
+	<string name="skipWorkoutsMessage">Are you sure you want to skip all those workouts?</string>
+	<string name="skipWorkoutYes">Yes</string>
+    <string name="skipWorkoutNo">No</string>
     
     <string name="workoutDueForTodayProgressList">You have a workout for today.</string>
     

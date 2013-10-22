@@ -4,6 +4,7 @@ import hu.droidium.fitness_app.BreakCountdown;
 import hu.droidium.fitness_app.Constants;
 import hu.droidium.fitness_app.FlurryLogConstants;
 import hu.droidium.fitness_app.R;
+import hu.droidium.fitness_app.Translator;
 import hu.droidium.fitness_app.WorkoutProgressView;
 import hu.droidium.fitness_app.database.DatabaseManager;
 import hu.droidium.fitness_app.database.Exercise;
@@ -125,7 +126,7 @@ public class DoWorkoutActivity extends FitnessBaseActivity implements OnClickLis
 				if (endOfBreak == -1 || endOfBreak < now) {
 					breakLayout.setVisibility(View.GONE);
 					exerciseLayout.setVisibility(View.VISIBLE);
-					exerciseLabel.setText(exerciseType.getName());
+					exerciseLabel.setText(Translator.getTranslation(exerciseType.getName()));
 					if (exercise.getReps() < 5000 || exerciseType.getKUnit() == null) {
 						String unit = exerciseType.getUnit();
 						reps.setText("" + exercise.getReps());
@@ -133,14 +134,14 @@ public class DoWorkoutActivity extends FitnessBaseActivity implements OnClickLis
 							repsLabel.setVisibility(View.GONE);
 						} else {
 							repsLabel.setVisibility(View.VISIBLE);
-							repsLabel.setText(unit);
+							repsLabel.setText(Translator.getTranslation(unit));
 						}
 					} else {
 						String kUnit = exerciseType.getKUnit();
 						float kReps = ((float)exercise.getReps())/1000;
 						reps.setText(String.format("%1$.1f", kReps));
 						repsLabel.setVisibility(View.VISIBLE);
-						repsLabel.setText(kUnit);
+						repsLabel.setText(Translator.getTranslation(kUnit));
 					}
 					endLayout.setVisibility(View.GONE);
 					progressView.setActiveExcercise(actualBlockIndex, actualExerciseIndex);
@@ -309,7 +310,7 @@ public class DoWorkoutActivity extends FitnessBaseActivity implements OnClickLis
 		ProgramProgress programProgress = databaseManager.getProgress(programProgressId);
 		WorkoutProgress workoutProgress = programProgress.getActualWorkout();
 		Exercise exercise = workoutProgress.getExercise(actualBlockIndex, actualExerciseIndex, databaseManager);
-		this.exerciseLabel.setText(exercise.getType() + "");
+		this.exerciseLabel.setText(Translator.getTranslation(exercise.getType().toString()));
 		this.startOfExercise = now;
 		this.reps.setText("" + exercise.getReps());
 		progressChanged();
