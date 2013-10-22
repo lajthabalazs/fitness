@@ -126,13 +126,21 @@ public class DoWorkoutActivity extends FitnessBaseActivity implements OnClickLis
 					breakLayout.setVisibility(View.GONE);
 					exerciseLayout.setVisibility(View.VISIBLE);
 					exerciseLabel.setText(exerciseType.getName());
-					String unit = exerciseType.getUnit();
-					reps.setText("" + exercise.getReps());
-					if (unit == null) {
-						repsLabel.setVisibility(View.GONE);
+					if (exercise.getReps() < 5000 || exerciseType.getKUnit() == null) {
+						String unit = exerciseType.getUnit();
+						reps.setText("" + exercise.getReps());
+						if (unit == null) {
+							repsLabel.setVisibility(View.GONE);
+						} else {
+							repsLabel.setVisibility(View.VISIBLE);
+							repsLabel.setText(unit);
+						}
 					} else {
+						String kUnit = exerciseType.getKUnit();
+						float kReps = ((float)exercise.getReps())/1000;
+						reps.setText(String.format("%1$.1f", kReps));
 						repsLabel.setVisibility(View.VISIBLE);
-						repsLabel.setText(unit);
+						repsLabel.setText(kUnit);
 					}
 					endLayout.setVisibility(View.GONE);
 					progressView.setActiveExcercise(actualBlockIndex, actualExerciseIndex);

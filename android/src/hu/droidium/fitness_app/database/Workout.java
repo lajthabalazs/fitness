@@ -153,9 +153,18 @@ public class Workout{
 			}
 			exerciseList = exerciseList + databaseManager.getExerciseType(sortedExercises.get(i).first).getName();
 			if (withReps) {
-				String reps = databaseManager.getExerciseType(sortedExercises.get(i).first).getUnit();
 				int repsCount = sortedExercises.get(i).second;
-				exerciseList = exerciseList + String.format(context.getString(R.string.repsForListingExercises), reps, repsCount);
+				ExerciseType exerciseType = databaseManager.getExerciseType(sortedExercises.get(i).first);
+				String repsString = "";
+				if (repsCount > 750 && exerciseType.getKUnit() != null) {
+					float kRepsCount = ((float)repsCount) / 1000;
+					String kReps = exerciseType.getKUnit();
+					repsString = String.format(context.getString(R.string.kRepsForListingExercises), kReps, kRepsCount);
+				} else {
+					String reps = databaseManager.getExerciseType(sortedExercises.get(i).first).getUnit();
+					repsString = String.format(context.getString(R.string.repsForListingExercises), reps, repsCount);
+				}
+				exerciseList = exerciseList + repsString;
 			}
 		}
 		if (count != 0 && count < sortedExercises.size()) {

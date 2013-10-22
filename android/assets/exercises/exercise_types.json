@@ -20,6 +20,7 @@
 		"exerciseDescription":"It's a squat, stupid!",
 		"exerciseInstructions":"Bend your knees. Now stand up!",
 		"unit":"reps",
+		"repWeight":0.5,
 		"stamina":4,
 		"strength":3,
 		"speed":1,
@@ -28,6 +29,22 @@
 		"muscles":[
 			"legs"
 		]
+	},
+	{
+		"exerciseId":"2",
+		"exerciseName":"running",
+		"exerciseDescription":"It's just running, stupid!",
+		"exerciseInstructions":"Left foot, right foot.",
+		"unit":"m",
+		"kUnit":"km",
+		"repWeight":0.01,
+		"stamina":5,
+		"strength":2,
+		"speed":3,
+		"flexibility":0,
+		"balance":1,
+		"muscles":[
+			"legs"
+		]
 	}
-	
 ]}

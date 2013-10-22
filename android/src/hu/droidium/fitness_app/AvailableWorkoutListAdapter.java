@@ -75,8 +75,9 @@ public class AvailableWorkoutListAdapter implements ListAdapter {
 		String title = String.format(context.getString(R.string.workoutDay), day);
 		if (workoutName!=null && workoutName.length() > 0) {
 			title = title + ": " + workoutName; 
+			
 		}
-			String totalReps = workout.getExercisesList(0, true, context, databaseManager);
+		String totalReps = workout.getExercisesList(0, true, context, databaseManager);
 		((TextView)convertView.findViewById(R.id.workoutNameInAvailableWorkoutList)).setText(title);
 
 		int secs = (int) workout.getTotalTime(databaseManager);

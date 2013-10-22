@@ -72,12 +72,13 @@
     <string name="repCountText">15</string>
     <string name="repLabelText">reps</string>
     <string name="breakUnit">secs</string>
-    <string name="programWorkoutCount">%1$d workouts in %2$d days, a total of %3$.2f units.</string>
+    <string name="programWorkoutCount">%1$d workouts in %2$d days, a total of %3$.0f units.</string>
     <string name="totalUnits">A total of %1$d units</string>
     <string name="estimatedTimeWithHour">About %1$d hours %2$d mins</string>
     <string name="estimatedTimeWithMinutes">About %1$d mins</string>
     <string name="estimatedTimeWithMinutesAndSecs">About %1$dm %2$ds</string>
     <string name="repsForListingExercises">(%2$d %1$s)</string>
+    <string name="kRepsForListingExercises">(%2$.1f %1$s)</string>
     <string name="workoutExerciseListInAvailableWorkoutList">Exercises: %1$s</string>
     <string name="andMore">, and more&#8230;</string>
     <string name="noExercises">no exercises</string>

@@ -1,0 +1,83 @@
+{"programs":[
+	{
+		"programId": "run_like_hell",
+		"programName":"Running 101",
+		"programDescription":"A basic running workout.",
+		"workouts":[
+		{
+			"workoutName":"Starting out easy",
+			"workoutDescription":"An easy day to get the feel of it.",
+			"workoutDay":0,
+			"blocks":[
+				{
+					"exercises":[
+					{"type":"2","reps":500, "break":0}
+					]
+				}
+			]
+		},
+		{
+			"workoutName":"Getting used to pain",
+			"workoutDescription":"Second day out running.",
+			"workoutDay":2,
+			"blocks":[
+				{
+					"exercises":[
+						{"type":"2","reps":750, "break":0}
+					]
+				}
+			]
+		},
+		{
+			"workoutName":"Getting metric",
+			"workoutDescription":"Your first kilometer in a whole.",
+			"workoutDay":4,
+			"blocks":[
+				{
+					"exercises":[
+						{"type":"2","reps":1000, "break":0}
+					]
+				}
+			]
+		},
+		{
+			"workoutName":"Another monday",
+			"workoutDescription":"Hang in there, it's your second week!",
+			"workoutDay":7,
+			"blocks":[
+				{
+					"exercises":[
+						{"type":"2","reps":1200, "break":0}
+					]
+				}
+			]
+		},
+		{
+			"workoutName":"Mile high club",
+			"workoutDescription":"Let's get this mile started",
+			"workoutDay":9,
+			"blocks":[
+				{
+					"exercises":[
+						{"type":"2","reps":1500, "break":0}
+					]
+				}
+			]
+		},
+		{
+			"workoutName":"Getting crazy",
+			"workoutDescription":"Throw in some pushups!",
+			"workoutDay":11,
+			"blocks":[
+				{
+					"exercises":[
+						{"type":"2","reps":1000, "break":0},
+						{"type":"0","reps":10, "break":0},
+						{"type":"2","reps":500, "break":0}
+					]
+				}
+			]
+		}
+		]
+	}
+]}
