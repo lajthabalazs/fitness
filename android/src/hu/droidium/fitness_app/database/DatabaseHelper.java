@@ -29,6 +29,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	private Dao<ExerciseProgress, Long> exerciseProgressDao;
 	private Dao<WorkoutProgress, Long> workoutProgressDao;
 	private Dao<ProgramProgress, Long> programProgressDao;
+	private Dao<Translation, String> translationDao;
 
 	public DatabaseHelper (Context context){
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -179,4 +180,16 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		}
 		return programProgressDao;
 	}	
+
+	public Dao<Translation, String> getTranslationDao() {
+		if (translationDao == null) {
+			try {
+				translationDao = getDao(Translation.class);
+			} catch (SQLException e) {
+				Log.e(TAG, "Error creating DAO " + e.getMessage());
+				e.printStackTrace();
+			}
+		}
+		return translationDao;
+	}
 }

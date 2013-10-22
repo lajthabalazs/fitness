@@ -8,11 +8,11 @@
 
     <TextView
         android:id="@+id/programNameInAvailableProgramList"
-        style="@android:style/TextAppearance.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:text="@string/programNamePlaceholder" />
+        android:text="@string/programNamePlaceholder"
+        style="@style/ListItemTitle"/>
 
     <TextView
         android:id="@+id/programDescriptionInAvailableProgramList"

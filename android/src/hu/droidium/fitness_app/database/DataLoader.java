@@ -23,6 +23,7 @@ public class DataLoader {
 	private static final String META_FOLDER = "meta";
 	private static final String EXERCISES_FOLDER = "exercises";
 	private static final String PROGRAM_FOLDER = "programs";
+	private static final String TRANSLATION_FOLDER = "translations";
 
 	private static final String PROGRAMS_KEY = "programs";
 	private static final String PROGRAM_ID_KEY = "programId";
@@ -61,8 +62,14 @@ public class DataLoader {
 	private static final String MUSCLE_DESCRIPTION_KEY = "muscleDescription";
 
 	private static final String UNIT_KEY = "unit";
+	private static final String K_UNIT_KEY = "kUnit";
 	private static final String UNIT_WEIGHT_KEY = "repWeight";
 	private static final String UNIT_TIME_KEY = "repTime";
+
+	private static final String TRANSLATION_ORIGINAL_KEY = "original";
+	private static final String TRANSLATION_LANGUAGE_KEY = "language";
+	private static final String TRANSLATION_VALUE_KEY = "value";
+
 
 	public static void loadDataFromAssets(Context context) throws IOException{
 		DatabaseManager databaseManager = DatabaseManager.getInstance(context);
@@ -80,16 +87,23 @@ public class DataLoader {
 		for (Muscle muscle : muscles) {
 			Log.e(TAG, "Muscle " + muscle.getId() + " " + muscle.getName());
 		}
+
 		// Load exercises
-		
 		String[] exercisesFiles = assetManager.list(EXERCISES_FOLDER);
 		for(String exercisesFile : exercisesFiles){
 			loadExerciseMetaDataFromFile(EXERCISES_FOLDER + File.separator + exercisesFile, context);
 		}
+
 		// Load programs
 		String[] programFiles = assetManager.list(PROGRAM_FOLDER);
 		for(String programFile : programFiles){
 			loadProgramsFromFile(PROGRAM_FOLDER + File.separator + programFile, context);
+		}
+
+		// Load translations
+		String[] translationFiles = assetManager.list(TRANSLATION_FOLDER);
+		for(String translationFile : translationFiles){
+			loadTranslationsFromFile(TRANSLATION_FOLDER + File.separator + translationFile, context);
 		}
 	}
 	
@@ -174,6 +188,12 @@ public class DataLoader {
 				} catch (JSONException e) {
 					Log.w(TAG, "No exercise unit " + e.getMessage());
 				}
+				String kUnit = null;
+				try {
+					kUnit = exercise.getString(K_UNIT_KEY);
+				} catch (JSONException e) {
+					Log.w(TAG, "No exercise kUnit " + e.getMessage());
+				}
 				String exerciseDescription = null;
 				try {
 					exerciseDescription = exercise.getString(EXERCISE_DESCRIPTION_KEY);
@@ -204,7 +224,7 @@ public class DataLoader {
 				int flexibility = exercise.getInt(FLEXIBILITY_KEY);
 				int balance = exercise.getInt(BALANCE_KEY);
 				ExerciseType ormExercise = new ExerciseType(exerciseId,
-						exerciseName, exerciseDescription, exerciseInstructions, unit, unitWeight, unitTime,
+						exerciseName, exerciseDescription, exerciseInstructions, unit, kUnit, unitWeight, unitTime,
 						stamina, strength, speed, flexibility, balance);
 				databaseManager.addExerciseType(ormExercise);
 				JSONArray musclesArray = exercise.getJSONArray(MUSCLES_KEY);
@@ -325,7 +345,34 @@ public class DataLoader {
 		}
 	}
 
-	private static JSONObject getRootFromAsset(String assetPath, Context context) throws IOException {
+	private static void loadTranslationsFromFile(String assetPath, Context context) {
+		Log.e(TAG, "Loading translaitons from asset " + assetPath);
+		
+		DatabaseManager databaseManager = DatabaseManager.getInstance(context);
+		JSONArray translations = null;
+		try {
+			translations = getRootArrayFromAsset(assetPath, context);
+		} catch (IOException e) {
+			Log.e(TAG, "Couldn't parse translations. " + e.getLocalizedMessage());
+			e.printStackTrace();
+			return;
+		}
+		for (int i = 0; i < translations.length(); i++) {
+			try {
+				JSONObject translation = translations.getJSONObject(i);
+				String original = translation.getString(TRANSLATION_ORIGINAL_KEY);
+				String language = translation.getString(TRANSLATION_LANGUAGE_KEY);
+				String value = translation.getString(TRANSLATION_VALUE_KEY);
+				Translation ormTranslation = new Translation(original, language, value);
+				databaseManager.addTranslation(ormTranslation);
+				Log.e(TAG, "Added translation " + ormTranslation);
+			} catch (Exception e) {
+				Log.e(TAG, "Couldn't parse muscle: " + e.getLocalizedMessage());
+				e.printStackTrace();
+			}
+		}
+	} 
+	private static StringBuilder loadStringFromAsset(String assetPath, Context context) throws IOException {
         InputStream in = context.getAssets().open(assetPath);
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
         StringBuilder stringBuilder = new StringBuilder();
@@ -335,9 +382,26 @@ public class DataLoader {
         }
 		in.close();
 		bufferedReader.close();
+		return stringBuilder;
+	}
+
+	private static JSONObject getRootFromAsset(String assetPath, Context context) throws IOException {
+		StringBuilder stringBuilder = loadStringFromAsset(assetPath, context);
 		JSONObject root = null;
 		try {
 			root = new JSONObject(stringBuilder.toString());
+		} catch (JSONException e) {
+			e.printStackTrace();
+			throw new IOException(e.getLocalizedMessage());
+		}
+		return root;
+	}
+
+	private static JSONArray getRootArrayFromAsset(String assetPath, Context context) throws IOException {
+		StringBuilder stringBuilder = loadStringFromAsset(assetPath, context);
+		JSONArray root = null;
+		try {
+			root = new JSONArray(stringBuilder.toString());
 		} catch (JSONException e) {
 			e.printStackTrace();
 			throw new IOException(e.getLocalizedMessage());

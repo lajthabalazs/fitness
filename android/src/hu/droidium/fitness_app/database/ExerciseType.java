@@ -24,6 +24,8 @@ public class ExerciseType {
 	@DatabaseField
 	private String unit;
 	@DatabaseField
+	private String kUnit;
+	@DatabaseField
 	private float unitWeight;
 	@DatabaseField
 	private float unitTime;
@@ -40,12 +42,13 @@ public class ExerciseType {
 	@ForeignCollectionField
 	private ForeignCollection<ExerciseTypeMuscle> muscles;
 	
-	public ExerciseType(String id, String name, String description, String instructions, String unit, float unitWeight, float unitTime, int stamina, int strength, int speed, int flexibility, int balance) {
+	public ExerciseType(String id, String name, String description, String instructions, String unit, String kUnit, float unitWeight, float unitTime, int stamina, int strength, int speed, int flexibility, int balance) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.instructions = instructions;
 		this.unit = unit;
+		this.kUnit = kUnit;
 		this.unitTime = unitTime;
 		this.unitWeight = unitWeight;
 		this.stamina = stamina;
@@ -100,6 +103,17 @@ public class ExerciseType {
 		return unit;
 	}
 	
+	public void setKUnit(String unit){
+		this.unit = unit;
+	}
+
+	public String getKUnit() {
+		if ((kUnit == null) || (kUnit.equals(""))) {
+			return null;
+		}
+		return kUnit;
+	}
+
 	public float getUnitWeight() {
 		return unitWeight;
 	}

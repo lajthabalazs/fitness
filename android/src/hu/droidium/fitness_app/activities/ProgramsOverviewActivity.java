@@ -2,17 +2,13 @@ package hu.droidium.fitness_app.activities;
 
 import java.util.List;
 
-import com.flurry.android.FlurryAgent;
-
 import hu.droidium.fitness_app.ActiveProgramListAdapter;
 import hu.droidium.fitness_app.Constants;
 import hu.droidium.fitness_app.R;
 import hu.droidium.fitness_app.database.DatabaseManager;
 import hu.droidium.fitness_app.database.ProgramProgress;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -22,9 +18,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-@SuppressWarnings("unused")
 public class ProgramsOverviewActivity extends FitnessBaseActivity implements OnClickListener, OnItemClickListener, OnItemLongClickListener {
-	private static final String TAG = "ProgramsOverviewActivity";
 	private Button startNewProgram;
 	private ListView programList;
 	

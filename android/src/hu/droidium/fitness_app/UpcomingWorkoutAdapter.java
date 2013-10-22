@@ -2,6 +2,7 @@ package hu.droidium.fitness_app;
 
 import hu.droidium.fitness_app.activities.ProgramProgressDetailsActivity;
 import hu.droidium.fitness_app.database.DatabaseManager;
+import hu.droidium.fitness_app.database.ProgramProgress;
 import hu.droidium.fitness_app.database.Workout;
 
 import java.util.ArrayList;
@@ -25,8 +26,10 @@ public class UpcomingWorkoutAdapter implements ListAdapter, OnClickListener {
 	private ProgramProgressDetailsActivity activity;
 	private boolean hasActual = false;
 	private DatabaseManager databaseManager;
+	private ProgramProgress progress;
 	
-	public UpcomingWorkoutAdapter(ProgramProgressDetailsActivity activity, DatabaseManager databaseManager, LayoutInflater inflater){
+	public UpcomingWorkoutAdapter(ProgramProgress progress, ProgramProgressDetailsActivity activity, DatabaseManager databaseManager, LayoutInflater inflater){
+		this.progress = progress;
 		this.activity = activity;
 		this.inflater = inflater;
 		this.databaseManager = databaseManager;
@@ -69,10 +72,14 @@ public class UpcomingWorkoutAdapter implements ListAdapter, OnClickListener {
 		Workout workout = workouts.get(position);
 		((TextView)convertView.findViewById(R.id.workoutNameInUpcomingList)).setText(workout.getName());
 		int secs = (int) workout.getTotalTime(databaseManager);
+		
 		String timeText = Constants.getEstimatedTimeString(secs, activity);
 		String unitsString = String.format(activity.getString(R.string.totalUnits), (int)workout.getTotalUnits(databaseManager));
+		String dueString = workout.getDueDateString(progress.getProgressId(), databaseManager, activity);
+		
 		((TextView)convertView.findViewById(R.id.workoutEstimatedTimeInUpcomingList)).setText(timeText);
 		((TextView)convertView.findViewById(R.id.workoutUnitsInUpcomingList)).setText(unitsString);
+		((TextView)convertView.findViewById(R.id.workoutDueDateInUpcomingList)).setText(dueString);
 		if (workout.getDescription() != null) {
 			convertView.findViewById(R.id.workoutDetailsInUpcomingList).setVisibility(View.VISIBLE);
 			((TextView)convertView.findViewById(R.id.workoutDetailsInUpcomingList)).setText(workout.getDescription());

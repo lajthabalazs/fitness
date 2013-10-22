@@ -1,5 +1,6 @@
 package hu.droidium.fitness_app.database;
 
+import hu.droidium.fitness_app.Constants;
 import hu.droidium.fitness_app.DataHelper;
 import hu.droidium.fitness_app.R;
 
@@ -17,9 +18,6 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
 public class Workout{
-	
-	@SuppressWarnings("unused")
-	private static final String TAG = "Workout";
 	@DatabaseField(id=true)
 	private String id;
 	@DatabaseField(foreign=true)
@@ -273,6 +271,31 @@ public class Workout{
 		// TODO
 		return null;
 	}
+
+	public String getDueDateString(long progressStart, DatabaseManager databaseManager, Context context) {
+		long today = Constants.stripDate(System.currentTimeMillis());
+		long workoutDate = Constants.stripDate(getDay() * Constants.DAY_MILLIS + progressStart);;
+		if (workoutDate < today) {
+			// Already due
+			int overdue = (int) ((today - workoutDate) / Constants.DAY_MILLIS);
+			if (overdue == 1) {
+				return context.getString(R.string.workoutDueYesterdayDate);
+			} else {
+				 return String.format(context.getString(R.string.workoutDuePastDate),overdue);
+			}
+		} else if (workoutDate > today) {
+			// Due in future
+			int timeLeft = (int) ((workoutDate - today) / Constants.DAY_MILLIS);
+			if (timeLeft == 1) {
+				return context.getString(R.string.workoutDueTomorroDate);
+			} else {
+				return String.format(context.getString(R.string.workoutDueFutureDate),timeLeft);
+			}	
+		} else {
+			return context.getString(R.string.workoutDueForToday);
+		}
+	}
+
 }
 
 

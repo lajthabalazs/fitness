@@ -9,19 +9,9 @@ public class FitnessBaseActivity extends Activity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.setLogEnabled(true);
-		FlurryAgent.setLogEvents(true);
-		FlurryAgent.setLogLevel(Log.VERBOSE);
-
+		FlurryAgent.setUserId("Hello user");
+		Log.e("FlurrySession", "Starting session");
 		FlurryAgent.onStartSession(this, "FXTJ4F3Y4GJ24PHFV2TJ");
-
-		FlurryAgent.logEvent("WTF");
-
-		FlurryAgent.setLogEnabled(true);
-		
-		FlurryAgent.setLogEvents(true);
-		FlurryAgent.setLogLevel(Log.VERBOSE);
-
 		FlurryAgent.logEvent("WTF");
 	}
 
@@ -31,5 +21,4 @@ public class FitnessBaseActivity extends Activity {
 		Log.e("FlurrySession", "Session ended");
 		super.onStop();
 	}
-
 }

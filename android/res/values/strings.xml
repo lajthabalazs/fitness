@@ -14,8 +14,11 @@
     <string name="startNewProgram">Start a new program</string>
     <string name="programStartedLabel">Started on %1$s</string>
     <string name="programDoneLabel">Finished on %1$s</string>
-    <string name="programNextWorkoutLabel">Next workout due in %1$s day%2$s.</string>
-    <string name="programMissedWorkoutLabep">You missed a workout %1$s day%2$s ago.</string>
+    <string name="programNextWorkout">Next workout due in %1$s day%2$s.</string>
+    <string name="programNextWorkoutTomorrow">Next workout due tomorrow.</string>
+    <string name="programNextWorkoutToday">Next workout today.</string>
+    <string name="programMissedWorkout">You missed a workout %1$s day%2$s ago.</string>
+    <string name="programMissedWorkoutYesterday">You missed a workout yesterday.</string>
     <string name="programAbandonnedLabel">Aborted on %1$s</string>
     <string name="doTodaysWorkout">Do today\'s workout</string>
     <string name="doThisWorkout">Do this workout</string>
@@ -32,6 +35,9 @@
     <string name="createDatabase">Create database</string>
     <string name="progressLabel">Name your workout program</string>
     <string name="workoutList">Workouts</string>
+    <string name="availablePrograms">Available programs</string>
+    <string name="yourPrograms">Your programs</string>
+    
     <string name="upcommingWorkouts">Upcoming workouts</string>
     <string name="currentWorkoutLabel">Current workout</string>
     <string name="todaysWorkoutLabel">Today\'s workout</string>
@@ -43,14 +49,17 @@
     <string name="workoutStartToday">Workout started today.</string>
     <string name="workoutStartYesterday">Workout started yesterday.</string>
     <string name="workoutStartDate">Workout started %1$d days ago.</string>
+
     <string name="workoutDueTomorroDate">Workout is due tomorrow.</string>
     <string name="workoutDueFutureDate">Workout due in %1$d days.</string>
     <string name="workoutDueYesterdayDate">Workout was due yesterday.</string>
     <string name="workoutDuePastDate">Workout was due %1$d days ago.</string>
-    <string name="workoutDueToday">You have a workout for today.</string>
+    <string name="workoutDueForToday">Today\'s workout.</string>
+    
+    <string name="workoutDueForTodayProgressList">You have a workout for today.</string>
     
     <string name="exerciseListLabel">Exercises: %1$s</string>
-    <string name="workoutProgressLabel">Progress: %1$d/%2$d exercises done</string>
+    <string name="workoutProgressLabel">%1$d/%2$d exercises done</string>
     <string name="upcomingWorkoutStartNext">Start today</string>
     <string name="upcomingWorkoutJump">Jump here</string>
     <string name="workoutNamePlaceholder">Workout name</string>
@@ -64,10 +73,10 @@
     <string name="repLabelText">reps</string>
     <string name="breakUnit">secs</string>
     <string name="programWorkoutCount">%1$d workouts in %2$d days, a total of %3$.2f units.</string>
-    <string name="totalUnits">Total units: %1$d</string>
-    <string name="estimatedTimeWithHour">Estimated time: %1$d hours %2$d mins</string>
-    <string name="estimatedTimeWithMinutes">Estimated time: %1$d mins</string>
-    <string name="estimatedTimeWithMinutesAndSecs">Estimated time: %1$dm %2$ds</string>
+    <string name="totalUnits">A total of %1$d units</string>
+    <string name="estimatedTimeWithHour">About %1$d hours %2$d mins</string>
+    <string name="estimatedTimeWithMinutes">About %1$d mins</string>
+    <string name="estimatedTimeWithMinutesAndSecs">About %1$dm %2$ds</string>
     <string name="repsForListingExercises">(%2$d %1$s)</string>
     <string name="workoutExerciseListInAvailableWorkoutList">Exercises: %1$s</string>
     <string name="andMore">, and more&#8230;</string>
@@ -82,5 +91,6 @@
     
     <string name="questionMark">Help</string>
     <string name="flurryKey">FXTJ4F3Y4GJ24PHFV2TJ</string>
+    <string name="backToPrograms">Back to programs</string>
     
 </resources>

@@ -11,14 +11,10 @@ import hu.droidium.fitness_app.database.WorkoutProgress;
 
 import java.util.List;
 
-import com.flurry.android.FlurryAgent;
-
-import android.app.Activity;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -27,18 +23,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-@SuppressWarnings("unused")
 public class ProgramProgressDetailsActivity extends FitnessBaseActivity implements OnClickListener {
 	
-	private static final String TAG = "ProgramProgressDetailsActivity";
 	private ProgressBar programProgressBar;
 	private TextView programDetailsText;
 	private Button doWorkout;
+	private Button backToPrograms;
 	private long programId;
 	private DatabaseManager databaseManager;
 	private View upcomingWorkoutsLabel;
 	private ListView upcomingWorkoutsList;
-	private UpcomingWorkoutAdapter upcomingWorkoutsAdapter;
+	private UpcomingWorkoutAdapter upcomingWorkoutAdapter;
 	private TextView currentWorkoutLabel;
 	private TextView currentWorkoutText;
 	private TextView programNameLabel;
@@ -64,6 +59,7 @@ public class ProgramProgressDetailsActivity extends FitnessBaseActivity implemen
 			Toast.makeText(this, "Couldn't start activity, no workout program specified", Toast.LENGTH_LONG).show();
 			finish();
 		}
+		programProgress = databaseManager.getProgress(programId);
 		programNameLabel = (TextView)findViewById(R.id.programNameLabel);
 		programStartDateLabel = (TextView)findViewById(R.id.programProgressDetailsStartDateLabel);
 		programProgressBar = (ProgressBar)findViewById(R.id.programProgressBarOnProgressDetails);
@@ -78,10 +74,12 @@ public class ProgramProgressDetailsActivity extends FitnessBaseActivity implemen
 		workoutProgressLabel = (TextView)findViewById(R.id.workoutProgressLabel);
 		upcomingWorkoutsLabel = findViewById(R.id.upcommingWorkoutsLabel);
 		upcomingWorkoutsList = (ListView)findViewById(R.id.upcommingWorkoutsList);
-		upcomingWorkoutsAdapter = new UpcomingWorkoutAdapter(this, databaseManager, getLayoutInflater());
-		upcomingWorkoutsList.setAdapter(upcomingWorkoutsAdapter);
+		upcomingWorkoutAdapter = new UpcomingWorkoutAdapter(programProgress, this, databaseManager, getLayoutInflater());
+		upcomingWorkoutsList.setAdapter(upcomingWorkoutAdapter);
 		doWorkout = (Button)findViewById(R.id.doTodaysWorkoutOnProgressDetails);
 		doWorkout.setOnClickListener(this);
+		backToPrograms = (Button)findViewById(R.id.backToProgramList);
+		backToPrograms.setOnClickListener(this);
 	}
 	
 	@Override
@@ -114,7 +112,6 @@ public class ProgramProgressDetailsActivity extends FitnessBaseActivity implemen
 			workoutStartDateLabel.setVisibility(View.GONE);
 			workoutProgressLabel.setVisibility(View.GONE);
 			doWorkout.setVisibility(View.GONE);
-			
 		} else {
 			List<Workout> remainingWorkouts = programProgress.getRemainingWorkouts(databaseManager);
 			if ((remainingWorkouts.size() > 0) &&
@@ -161,6 +158,7 @@ public class ProgramProgressDetailsActivity extends FitnessBaseActivity implemen
 				exerciseListLabel.setText(String.format(getResources().getString(R.string.exerciseListLabel), exerciseList));
 				// Exercise due date
 				doWorkout.setVisibility(View.VISIBLE);
+				String dueDateString = workout.getDueDateString(programProgress.getProgressId(), databaseManager, this);
 				long today = Constants.stripDate(System.currentTimeMillis());
 				// Workout has not been started
 				if (workoutProgress.getWorkoutProgressExercisePercentage(databaseManager) == 0) {
@@ -171,27 +169,16 @@ public class ProgramProgressDetailsActivity extends FitnessBaseActivity implemen
 						currentWorkoutLabel.setText(R.string.currentWorkoutLabel);
 						doWorkout.setText(R.string.doTodaysWorkout);
 						// Already due
-						int overdue = (int) ((today - workoutDate) / Constants.DAY_MILLIS);
-						if (overdue == 1) {
-							workoutStartDateLabel.setText(R.string.workoutDueYesterdayDate);
-						} else {
-							workoutStartDateLabel.setText(String.format(getResources().getString(R.string.workoutDuePastDate),overdue));
-						}
 					} else if (workoutDate > today) {
 						// Due in future
 						currentWorkoutLabel.setText(R.string.currentWorkoutLabel);
 						doWorkout.setText(R.string.doThisWorkout);
-						int timeLeft = (int) ((workoutDate - today) / Constants.DAY_MILLIS);
-						if (timeLeft == 1) {
-							workoutStartDateLabel.setText(R.string.workoutDueTomorroDate);
-						} else {
-							workoutStartDateLabel.setText(String.format(getResources().getString(R.string.workoutDueFutureDate),timeLeft));
-						}	
 					} else {
 						currentWorkoutLabel.setText(R.string.todaysWorkoutLabel);
 						doWorkout.setText(R.string.doTodaysWorkout);
 						workoutStartDateLabel.setVisibility(View.GONE);
 					}
+					workoutStartDateLabel.setText(dueDateString);
 				} else { // Workout already started
 					long workoutStartDate = workoutProgress.getStartTime();
 					int delay = (int) ((today - Constants.stripDate(workoutStartDate)) / Constants.DAY_MILLIS);
@@ -225,7 +212,7 @@ public class ProgramProgressDetailsActivity extends FitnessBaseActivity implemen
 			} else {
 				upcomingWorkoutsLabel.setVisibility(View.VISIBLE);
 				upcomingWorkoutsList.setVisibility(View.VISIBLE);
-				upcomingWorkoutsAdapter.setWorkouts(remainingWorkouts, programProgress.getActualWorkout() != null);
+				upcomingWorkoutAdapter.setWorkouts(remainingWorkouts, programProgress.getActualWorkout() != null);
 			}
 		}
 	}
@@ -301,6 +288,15 @@ public class ProgramProgressDetailsActivity extends FitnessBaseActivity implemen
 
 	@Override
 	public void onClick(View v) {
-		startWorkout();
+		switch (v.getId()) {
+			case R.id.doTodaysWorkoutOnProgressDetails: {
+				startWorkout();
+				break;
+			}
+			case R.id.backToProgramList: {
+				finish();
+				break;
+			}
+		}
 	}
 }

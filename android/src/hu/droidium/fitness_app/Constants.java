@@ -21,6 +21,11 @@ public class Constants {
 	public static final long DAY_MILLIS = 24l * 3600 * 1000; 
 	private static final Calendar calendar = Calendar.getInstance();
 	
+	/**
+	 * Returns 00:00 of the given date
+	 * @param date
+	 * @return
+	 */
 	public static long stripDate(long date) {
 		calendar.setTimeInMillis(date);
 		calendar.set(Calendar.MILLISECOND, 0);

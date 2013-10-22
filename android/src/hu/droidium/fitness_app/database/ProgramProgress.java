@@ -109,7 +109,7 @@ public class ProgramProgress {
 	}
 
 	/**
-	 * Searches for a workout the user missed. A workout counts as missed if a day has passed since it's due date.
+	 * Searches for a workout the user missed.
 	 * @return Null if no workout was missed. The workout otherwise.
 	 */
 	public Workout getFirstMissedWorkout(DatabaseManager databaseManager) {
@@ -118,7 +118,7 @@ public class ProgramProgress {
 			return null;
 		} else {
 			// Compares due date to current date
-			long nextDate = Constants.stripDate((nextWorkout.getDay() + 1) * Constants.DAY_MILLIS + progressId);
+			long nextDate = Constants.stripDate(nextWorkout.getDay() * Constants.DAY_MILLIS + progressId);
 			long now = Constants.stripDate(System.currentTimeMillis());
 			if (nextDate < now){
 				return nextWorkout;
@@ -127,7 +127,7 @@ public class ProgramProgress {
 			}
 		}
 	}
-	
+
 	public long getNextWorkoutDay(DatabaseManager databaseManager) {
 		Workout nextWorkout = getNextWorkout(databaseManager);
 		if (nextWorkout == null) {
@@ -251,19 +251,32 @@ public class ProgramProgress {
 		String dateMessage = null;
 		if (isDone(databaseManager)) {
 			// Done
-			dateMessage = context.getResources().getString(R.string.programDoneLabel, Constants.format(getTerminationDate()));
+			dateMessage = context.getString(R.string.programDoneLabel, Constants.format(getTerminationDate()));
 		} else if (getTerminationDate() != -1) {
 			// Aborted
-			dateMessage = context.getResources().getString(R.string.programAbandonnedLabel, Constants.format(getTerminationDate()));
-		} else if (getFirstMissedWorkout(databaseManager) != null){
-			// Missed layout
-			long now = Constants.stripDate(System.currentTimeMillis());
-			long missedWorkout = Constants.stripDate(getWorkoutDate(getFirstMissedWorkout(databaseManager)));
-			long dayDiff = (now - missedWorkout) / Constants.DAY_MILLIS;
-			dateMessage = context.getResources().getString(R.string.programMissedWorkoutLabep, "" + dayDiff, dayDiff > 1?"s":"");
+			dateMessage = context.getString(R.string.programAbandonnedLabel, Constants.format(getTerminationDate()));
 		} else {
-			int dayDiff = getDaysTilNextWorkout(databaseManager);
-			dateMessage = context.getResources().getString(R.string.programNextWorkoutLabel, "" + dayDiff, dayDiff > 1?"s":"");
+			long now = Constants.stripDate(System.currentTimeMillis());
+			if (getFirstMissedWorkout(databaseManager) != null){
+				// Missed layout
+				long missedWorkout = Constants.stripDate(getWorkoutDate(getFirstMissedWorkout(databaseManager)));
+				long dayDiff = (now - missedWorkout) / Constants.DAY_MILLIS;
+				if (dayDiff == 1) {
+					// Missed yesterday
+					dateMessage = context.getString(R.string.programMissedWorkoutYesterday);
+				} else {
+					dateMessage = context.getString(R.string.programMissedWorkout, "" + dayDiff, dayDiff > 1?"s":"");	
+				}
+			} else {
+				int dayDiff = getDaysTilNextWorkout(databaseManager);
+				if (dayDiff == 0) {
+					dateMessage = context.getString(R.string.programNextWorkoutToday);
+				} else if (dayDiff == 1) {
+					dateMessage = context.getString(R.string.programNextWorkoutTomorrow);
+				} else {
+					dateMessage = context.getString(R.string.programNextWorkout, "" + dayDiff, dayDiff > 1?"s":"");
+				}
+			}
 		}
 		return dateMessage;
 	}

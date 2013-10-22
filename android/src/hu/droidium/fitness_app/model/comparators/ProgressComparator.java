@@ -5,12 +5,8 @@ import hu.droidium.fitness_app.database.ProgramProgress;
 
 import java.util.Comparator;
 
-import android.util.Log;
-
-@SuppressWarnings("unused")
 public class ProgressComparator implements Comparator<ProgramProgress> {
 	
-	private static final String TAG = "ProgressComparator";
 	private DatabaseManager databaseManager;
 	
 	

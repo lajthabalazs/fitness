@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/programNamePlaceholder"
-        style="@android:style/TextAppearance.Medium"/>
+        style="@style/ListItemTitle"/>
 
     <ProgressBar
         android:id="@+id/programProgressBarInList"

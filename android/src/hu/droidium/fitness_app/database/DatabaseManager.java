@@ -289,4 +289,31 @@ public class DatabaseManager {
 			return null;
 		}
 	}
+
+	public boolean addTranslation(Translation translaiton) {
+		try {
+			helper.getTranslationDao().create(translaiton);
+			return true;
+		}catch (SQLException e) {
+			Log.e(TAG, "Couldn't add workout progress " + e.getMessage());
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public String getTranslation(String string, String languageCode) {
+		try {
+			String id = Translation.getKey(string, languageCode);
+			Translation translation = helper.getTranslationDao().queryForId(id);
+			if (translation == null) {
+				return string;
+			} else {
+				return translation.getValue();
+			}
+		} catch (SQLException e) {
+			Log.e(TAG, "Couldn't load translation for " + string + " language: " + languageCode + " " + e.getMessage());
+			e.printStackTrace();
+			return string;
+		}
+	}
 }
