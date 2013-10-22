@@ -26,6 +26,8 @@ public class WorkoutProgressView extends View {
 	private int height;
 	private int x;
 	private int y;
+	
+	private boolean done = false;
 
 	//private Paint bgPaint = new Paint();
 	private Paint actualPaint = new Paint();
@@ -124,16 +126,20 @@ public class WorkoutProgressView extends View {
 						offset += unit * EXERCISE_BREAK_WIDTH;
 					}
 					Paint paint = remainingPaint;
-					if (actualBlock > i) {
+					if (done) {
 						paint = donePaint;
-					} else if (actualBlock == i) {
-						if (actualExercise > j) {
+					} else {
+						if (actualBlock > i) {
 							paint = donePaint;
-						} else if (actualExercise == j) {
-							if (inExercise) {
-								paint = actualPaint;
-							} else {
-								paint = nextPaint;
+						} else if (actualBlock == i) {
+							if (actualExercise > j) {
+								paint = donePaint;
+							} else if (actualExercise == j) {
+								if (inExercise) {
+									paint = actualPaint;
+								} else {
+									paint = nextPaint;
+								}
 							}
 						}
 					}
@@ -159,6 +165,7 @@ public class WorkoutProgressView extends View {
 	}
 
 	public void done() {
+		this.done = true;
 		if (workout == null) {
 			this.inExercise = false;
 		} else {
