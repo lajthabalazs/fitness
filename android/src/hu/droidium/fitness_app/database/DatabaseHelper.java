@@ -33,10 +33,12 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
 	public DatabaseHelper (Context context){
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		Log.e(TAG, "Create helper");
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
+		Log.e(TAG, "Create database tables");
 		try {
 			TableUtils.createTable(connectionSource, ExerciseType.class);
 			TableUtils.createTable(connectionSource, Muscle.class);
@@ -50,6 +52,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 			TableUtils.createTable(connectionSource, ProgramProgress.class);
 			TableUtils.createTable(connectionSource, WorkoutProgress.class);
 			TableUtils.createTable(connectionSource, ExerciseProgress.class);
+			
+			TableUtils.createTable(connectionSource, Translation.class);
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException("Can't create database.", e);

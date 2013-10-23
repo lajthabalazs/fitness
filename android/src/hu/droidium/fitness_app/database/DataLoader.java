@@ -1,5 +1,7 @@
 package hu.droidium.fitness_app.database;
 
+import hu.droidium.fitness_app.Constants;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +17,7 @@ import org.json.JSONObject;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.graphics.Color;
 import android.util.Log;
 
 public class DataLoader {
@@ -29,6 +32,7 @@ public class DataLoader {
 	private static final String PROGRAM_ID_KEY = "programId";
 	private static final String PROGRAM_NAME_KEY = "programName";
 	private static final String PROGRAM_DESCRIPTION_KEY = "programDescription";
+	private static final String PROGRAM_COLOR_KEY = "programColor";
 	
 	private static final String WORKOUTS_KEY = "workouts";
 	private static final String WORKOUT_NAME_KEY = "workoutName";
@@ -70,6 +74,8 @@ public class DataLoader {
 	private static final String TRANSLATION_ORIGINAL_KEY = "original";
 	private static final String TRANSLATION_LANGUAGE_KEY = "language";
 	private static final String TRANSLATION_VALUE_KEY = "value";
+
+	private static final float BRIGHTNESS_LIMIT = 0.9f;
 
 
 	public static void loadDataFromAssets(Context context) throws IOException{
@@ -272,7 +278,31 @@ public class DataLoader {
 				} catch (JSONException e) {
 					Log.w(TAG, "No program description " + e.getMessage());
 				}
-				Program ormProgram = new Program(programId, programName, programDescription);
+				int programColor = 0;
+				try {
+					String colorString = program.getString(PROGRAM_COLOR_KEY);
+					// Brighten color if needed
+					int rgb = Color.parseColor(colorString);
+					int red = (rgb >> 16) & 0xFF;
+					int green = (rgb >> 8) & 0xFF;
+					int blue = rgb & 0xFF;
+					if (red < 128) {
+						red += 128;
+					}
+					if (blue < 128){
+						blue += 128;
+					}
+					if (green < 128) {
+						blue += 128;
+					}
+					programColor = Color.rgb(red, green, blue);
+				} catch (JSONException e) {
+					Log.w(TAG, "No program color " + e.getMessage());
+					int red = (int)(Math.random() * 128 + 128);
+					int green = (int)(Math.random() * 128 + 128);
+					int blue = (int)(Math.random() * 128 + 128);
+					programColor = Color.rgb(red, green, blue);				}
+				Program ormProgram = new Program(programId, programName, programDescription, programColor);
 				databaseManager.addProgram(ormProgram);
 				JSONArray workouts = program.getJSONArray(WORKOUTS_KEY);
 				for (int workoutIndex = 0; workoutIndex < workouts.length(); workoutIndex++) {

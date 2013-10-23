@@ -21,6 +21,8 @@ public class Program {
 	private String name;
 	@DatabaseField
 	private String description;
+	@DatabaseField
+	private int color;
 	@ForeignCollectionField()
 	private ForeignCollection<Workout> workouts;
 	
@@ -29,26 +31,39 @@ public class Program {
 	
 	public Program() {}
 	
-	public Program(String id, String name, String description) {
+	public Program(String id, String name, String description, int color) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
+		this.color = color;
 	}
 	
 	public String getId() {
 		return id;
 	}
+	
 	public void setId(String id) {
 		this.id = id;
 	}
+	
 	public String getName() {
 		return name;
 	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	public String getDescription() {
 		return description;
+	}
+	
+	public int getColor() {
+		return color;
+	}
+	
+	public void setColor(int color) {
+		this.color = color;
 	}
 	
 	public void setDescription(String description) {

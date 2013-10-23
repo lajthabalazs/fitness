@@ -20,6 +20,7 @@ public class DatabaseManager {
 	
 	
 	private DatabaseManager(Context context) {
+		Log.e(TAG, "create database manager");
 		helper = new DatabaseHelper(context.getApplicationContext());
 	}
 		

@@ -15,14 +15,16 @@ public class Constants {
 	public static final int RESULT_STARTED_NEW_PROGRAM = 1;
 	public static final String PROGRAM_ID_KEY = "program_id";
 	public static final String REPS_DEFAULT_UNIT = "reps";
-	
+
 	private static final Date date = new Date();
-	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-	public static final long DAY_MILLIS = 24l * 3600 * 1000; 
+	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat(
+			"yyyy-MM-dd", Locale.getDefault());
+	public static final long DAY_MILLIS = 24l * 3600 * 1000;
 	private static final Calendar calendar = Calendar.getInstance();
-	
+
 	/**
 	 * Returns 00:00 of the given date
+	 * 
 	 * @param date
 	 * @return
 	 */
@@ -34,12 +36,12 @@ public class Constants {
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		return calendar.getTimeInMillis();
 	}
-	
-	public static String format(long millis){
+
+	public static String format(long millis) {
 		date.setTime(millis);
 		return dateFormatter.format(date);
 	}
-	
+
 	public static String getEstimatedTimeString(int secs, Context context) {
 		String timeText = "";
 		if (secs > 3600) {
@@ -47,16 +49,20 @@ public class Constants {
 			int minutes = (secs - 3600 * hours) / 60;
 			secs = secs - 3600 * hours - minutes * 60;
 			if (secs > 30) {
-				minutes ++;
+				minutes++;
 			}
-			timeText = String.format(context.getString(R.string.estimatedTimeWithHour), hours, minutes);
+			timeText = String.format(
+					context.getString(R.string.estimatedTimeWithHour), hours,
+					minutes);
 		} else {
 			int minutes = secs / 60;
 			secs = secs - minutes * 60;
 			if (secs > 30) {
-				minutes ++;
+				minutes++;
 			}
-			timeText = String.format(context.getString(R.string.estimatedTimeWithMinutes), minutes);
+			timeText = String.format(
+					context.getString(R.string.estimatedTimeWithMinutes),
+					minutes);
 		}
 		return timeText;
 	}
