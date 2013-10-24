@@ -31,7 +31,7 @@ public final class R {
         public static final int question_mark=0x7f020001;
     }
     public static final class id {
-        public static final int action_settings=0x7f09003f;
+        public static final int action_settings=0x7f090044;
         public static final int addFifteen=0x7f090012;
         public static final int backToProgramList=0x7f090035;
         public static final int backToWorkoutList=0x7f090019;
@@ -39,6 +39,10 @@ public final class R {
         public static final int breakLayout=0x7f090015;
         public static final int breakUnit=0x7f090011;
         public static final int cancelButton=0x7f090023;
+        public static final int checkBox1=0x7f090038;
+        public static final int checkBox2=0x7f090039;
+        public static final int checkBox3=0x7f09003a;
+        public static final int checkBox4=0x7f09003b;
         public static final int continueWorkout=0x7f090013;
         public static final int createDatabase=0x7f090003;
         public static final int currentWorkoutDescription=0x7f09002e;
@@ -69,10 +73,11 @@ public final class R {
         public static final int programWorkoutsInAvailableProgramList=0x7f09000a;
         public static final int reps=0x7f09001c;
         public static final int repsLabel=0x7f09001d;
+        public static final int resetDataButton=0x7f09003c;
         public static final int showExercisesButton=0x7f090006;
         public static final int showMusclesButton=0x7f090005;
         public static final int showProgramsButton=0x7f090007;
-        public static final int sorterLabel=0x7f090038;
+        public static final int sorterLabel=0x7f09003d;
         public static final int startNewProgram=0x7f090024;
         public static final int stringList=0x7f090027;
         public static final int textView1=0x7f090025;
@@ -81,20 +86,20 @@ public final class R {
         public static final int upcommingWorkoutsList=0x7f090034;
         public static final int wellDoneText=0x7f090018;
         public static final int workoutDescriptionInAvailableWorkoutList=0x7f09000c;
-        public static final int workoutDetailsInUpcomingList=0x7f09003a;
-        public static final int workoutDueDateInUpcomingList=0x7f09003b;
+        public static final int workoutDetailsInUpcomingList=0x7f09003f;
+        public static final int workoutDueDateInUpcomingList=0x7f090040;
         public static final int workoutEstimatedTimeInAvailableWorkoutList=0x7f09000e;
-        public static final int workoutEstimatedTimeInUpcomingList=0x7f09003c;
+        public static final int workoutEstimatedTimeInUpcomingList=0x7f090041;
         public static final int workoutList=0x7f090022;
         public static final int workoutNameInAvailableWorkoutList=0x7f09000b;
-        public static final int workoutNameInUpcomingList=0x7f090039;
+        public static final int workoutNameInUpcomingList=0x7f09003e;
         public static final int workoutProgress=0x7f090014;
         public static final int workoutProgressLabel=0x7f090030;
-        public static final int workoutSkipToThisInUpcomingList=0x7f09003e;
+        public static final int workoutSkipToThisInUpcomingList=0x7f090043;
         public static final int workoutStartDateLabel=0x7f090031;
         public static final int workoutTotalRepsInAvailableWorkoutList=0x7f09000d;
         public static final int workoutUnitsInAvailableWorkoutList=0x7f09000f;
-        public static final int workoutUnitsInUpcomingList=0x7f09003d;
+        public static final int workoutUnitsInUpcomingList=0x7f090042;
     }
     public static final class layout {
         public static final int active_program_list_item=0x7f030000;
@@ -109,10 +114,11 @@ public final class R {
         public static final int program_list_layout=0x7f030009;
         public static final int program_progress_details_activity=0x7f03000a;
         public static final int programs_overview_activity=0x7f03000b;
-        public static final int simple_list_layout=0x7f03000c;
-        public static final int sorter_chooser=0x7f03000d;
-        public static final int sorter_chooser_dropdown=0x7f03000e;
-        public static final int upcoming_workout_list_item=0x7f03000f;
+        public static final int settings=0x7f03000c;
+        public static final int simple_list_layout=0x7f03000d;
+        public static final int sorter_chooser=0x7f03000e;
+        public static final int sorter_chooser_dropdown=0x7f03000f;
+        public static final int upcoming_workout_list_item=0x7f030010;
     }
     public static final class menu {
         public static final int main=0x7f080000;
@@ -135,11 +141,16 @@ public final class R {
         public static final int currentWorkoutDescription=0x7f06002b;
         public static final int currentWorkoutLabel=0x7f060026;
         public static final int currentWorkoutNamePlaceholder=0x7f060042;
+        public static final int deleteProgramProgressDelete=0x7f060062;
+        public static final int deleteProgramProgressMessage=0x7f060061;
+        public static final int deleteProgramProgressTitle=0x7f060060;
         public static final int doThisWorkout=0x7f060015;
         public static final int doTodaysWorkout=0x7f060014;
         public static final int done=0x7f060005;
         public static final int edit=0x7f060006;
         public static final int editRepsDialogTitle=0x7f060053;
+        public static final int enableNotifications=0x7f060067;
+        public static final int enableSounds=0x7f060066;
         public static final int estimatedTimeWithHour=0x7f06004b;
         public static final int estimatedTimeWithMinutes=0x7f06004c;
         public static final int estimatedTimeWithMinutesAndSecs=0x7f06004d;
@@ -150,6 +161,7 @@ public final class R {
         public static final int flurryQuestionNegative=0x7f06005f;
         public static final int flurryQuestionPositive=0x7f06005e;
         public static final int flurryQuestionTitle=0x7f06005c;
+        public static final int flurrySettings=0x7f060064;
         public static final int hasWorkoutToday=0x7f060017;
         public static final int hello_world=0x7f060002;
         public static final int kRepsForListingExercises=0x7f06004f;
@@ -175,6 +187,8 @@ public final class R {
         public static final int repsForListingExercises=0x7f06004e;
         public static final int resumeWorkout=0x7f060016;
         public static final int secs=0x7f060008;
+        public static final int settings=0x7f060063;
+        public static final int showDonePrograms=0x7f060065;
         public static final int showExercises=0x7f060019;
         public static final int showMuscles=0x7f06001a;
         public static final int showPrograms=0x7f06001b;

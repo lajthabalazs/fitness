@@ -1,7 +1,6 @@
 package hu.droidium.fitness_app.database;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
@@ -323,6 +322,14 @@ public class DatabaseManager {
 			Log.e(TAG, "Couldn't load translation for " + string + " language: " + languageCode + " " + e.getMessage());
 			e.printStackTrace();
 			return string;
+		}
+	}
+
+	public void removeProgramProgress(ProgramProgress progress) {
+		try {
+			helper.getProgramProgressDao().delete(progress);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 }

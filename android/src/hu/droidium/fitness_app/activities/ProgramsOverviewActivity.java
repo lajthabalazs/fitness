@@ -8,8 +8,12 @@ import hu.droidium.fitness_app.FlurryLogConstants;
 import hu.droidium.fitness_app.R;
 import hu.droidium.fitness_app.database.DatabaseManager;
 import hu.droidium.fitness_app.database.ProgramProgress;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -45,6 +49,10 @@ public class ProgramsOverviewActivity extends FitnessBaseActivity implements OnC
 	@Override
 	protected void onResume() {
 		super.onResume();
+		refreshUI();
+	}
+	
+	private void refreshUI() {
 		List<ProgramProgress> programs = databaseManager.getProgressList();
 		if (programs != null && programs.size() > 0) {
 			programAdapter.updatePrograms(programs);
@@ -53,7 +61,7 @@ public class ProgramsOverviewActivity extends FitnessBaseActivity implements OnC
 			noActiveProgram.setVisibility(View.VISIBLE);
 		}
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == Constants.RESULT_STARTED_NEW_PROGRAM) {
@@ -67,6 +75,22 @@ public class ProgramsOverviewActivity extends FitnessBaseActivity implements OnC
 		} else {
 			// Otherwise let the user browse other programs
 			super.onActivityResult(requestCode, resultCode, data);
+		}
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.action_settings) {
+			// TODO go to settings
+			return true;
+		} else {
+			return super.onOptionsItemSelected(item);
 		}
 	}
 
@@ -87,6 +111,23 @@ public class ProgramsOverviewActivity extends FitnessBaseActivity implements OnC
 
 	@Override
 	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		return false;
+		final ProgramProgress progress = (ProgramProgress)programAdapter.getItem(arg2);
+		Builder builder = new Builder(this);
+		builder.setTitle(R.string.deleteProgramProgressTitle);
+		builder.setMessage(R.string.deleteProgramProgressMessage);
+		builder.setPositiveButton(R.string.deleteProgramProgressDelete, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				databaseManager.removeProgramProgress(progress);
+				refreshUI();
+			}
+		});
+		builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+			}
+		});
+		builder.create().show();
+		return true;
 	}
 }

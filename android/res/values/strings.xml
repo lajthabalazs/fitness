@@ -106,4 +106,13 @@
     <string name="flurryQuestionMessage">To provide the best experience, we would like to understand how you use this app. Would you mind if we record you usage data? No personal information will be stored.</string>
     <string name="flurryQuestionPositive">Sure, I\'ll help</string>
     <string name="flurryQuestionNegative">Not now</string>
+
+    <string name="deleteProgramProgressTitle">Delete program</string>
+    <string name="deleteProgramProgressMessage">If you delete this program, your recorded progress for this program will be lost. Are you sure?</string>
+    <string name="deleteProgramProgressDelete">Yes, delete it</string>
+    <string name="settings">Settings</string>
+    <string name="flurrySettings">Enable anonimus logging</string>
+    <string name="showDonePrograms">Should finished programs be displayed in the program list?</string>
+    <string name="enableSounds">Enable sounds for countdown</string>
+    <string name="enableNotifications">Enable notifications for due workouts</string>
 </resources>
