@@ -28,6 +28,7 @@ public class Program {
 	
 	// Cache
 	private int totalLength = -1;
+	private float totalUnits = -1;
 	
 	public Program() {}
 	
@@ -36,6 +37,10 @@ public class Program {
 		this.name = name;
 		this.description = description;
 		this.color = color;
+	}
+	
+	public boolean refresh(DatabaseManager databaseManager) {
+		return refresh(databaseManager, false);
 	}
 
 	public boolean refresh(DatabaseManager databaseManager, boolean forced) {
@@ -116,7 +121,7 @@ public class Program {
 		if (totalLength != -1) {
 			return totalLength;
 		}
-		workouts = databaseManager.getProgram(id).workouts;
+		refresh(databaseManager);
 		for (Workout workout : workouts) {
 			totalLength = Math.max(totalLength, workout.getDay());
 		}
@@ -131,8 +136,12 @@ public class Program {
 	 * @return
 	 */
 	public float getTotalUnits(DatabaseManager databaseManager) {
-		float totalUnits = 0f;
-		workouts = databaseManager.getProgram(id).workouts;
+		if (totalUnits != -1) {
+			return totalUnits;
+		} else {
+			totalUnits = 0f;
+		}
+		refresh(databaseManager);
 		for (Workout workout : workouts) {
 			totalUnits += workout.getTotalUnits(databaseManager);
 		}

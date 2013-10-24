@@ -44,6 +44,10 @@ public class ExerciseType {
 	
 	public ExerciseType() {}
 	
+	public boolean refresh(DatabaseManager databaseManager) {
+		return refresh(databaseManager, false);
+	}
+
 	public ExerciseType(String id, String name, String description, String instructions, String unit, String kUnit, float unitWeight, float unitTime, int stamina, int strength, int speed, int flexibility, int balance) {
 		this.id = id;
 		this.name = name;

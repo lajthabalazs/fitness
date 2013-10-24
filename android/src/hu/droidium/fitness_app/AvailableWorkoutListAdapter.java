@@ -69,7 +69,7 @@ public class AvailableWorkoutListAdapter implements ListAdapter {
 			convertView = layoutInflater.inflate(R.layout.available_workout_list_item, null);
 		}
 		Workout workout = (Workout)getItem(position);
-		workout = databaseManager.getWorkout(workout.getId());
+		workout.refresh(databaseManager);
 		int day = workout.getDay() + 1;
 		String workoutName = workout.getName();
 		String title = String.format(context.getString(R.string.workoutDay), day);

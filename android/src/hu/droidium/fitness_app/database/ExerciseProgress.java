@@ -29,6 +29,24 @@ public class ExerciseProgress {
 		this.completionTime = (int)workoutTime;
 		this.competedOn = date;
 	}
+	
+	public boolean refresh(DatabaseManager databaseManager) {
+		return refresh(databaseManager, false);
+	}
+
+	public boolean refresh(DatabaseManager databaseManager, boolean forced) {
+		if (workoutProgress == null || forced) {
+			ExerciseProgress other = databaseManager.getExerciseProgress(id);
+			this.workoutProgress = other.workoutProgress;
+			this.exercise = other.exercise;
+			this.doneReps = other.doneReps;
+			this.completionTime = other.completionTime;
+			this.competedOn = other.competedOn;
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	public long getId() {
 		return id;

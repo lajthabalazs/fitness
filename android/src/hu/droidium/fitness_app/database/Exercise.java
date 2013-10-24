@@ -35,15 +35,19 @@ public class Exercise {
 		this.breakSecs = breakSecs;
 	}
 	
+	public boolean refresh(DatabaseManager databaseManager) {
+		return refresh(databaseManager, false);
+	}
+
 	public boolean refresh(DatabaseManager databaseManager, boolean forced) {
 		if (type == null || forced) {
-			Exercise otherExercise = databaseManager.getExercise(id);
-			this.block = otherExercise.block;
-			this.order = otherExercise.order;
-			this.type = otherExercise.type;
-			this.reps = otherExercise.reps;
-			this.targetSecs = otherExercise.targetSecs;
-			this.breakSecs = otherExercise.breakSecs;
+			Exercise other = databaseManager.getExercise(id);
+			this.block = other.block;
+			this.order = other.order;
+			this.type = other.type;
+			this.reps = other.reps;
+			this.targetSecs = other.targetSecs;
+			this.breakSecs = other.breakSecs;
 			return true;
 		} else {
 			return false;

@@ -32,6 +32,10 @@ public class Block {
 		this.order = order;
 	}
 	
+	public boolean refresh(DatabaseManager databaseManager) {
+		return refresh(databaseManager, false);
+	}
+
 	public boolean refresh(DatabaseManager databaseManager, boolean forced) {
 		if (workout == null || forced) {
 			Block otherBlock = databaseManager.getBlock(id);
@@ -93,9 +97,7 @@ public class Block {
 	}
 	
 	public int getExerciseCount(DatabaseManager databaseManager) {
-		if (exercises == null) {
-			exercises = databaseManager.getBlock(id).exercises;
-		}
+		refresh(databaseManager);
 		return exercises.size();
 	}
 	
@@ -105,11 +107,12 @@ public class Block {
 	 * @return
 	 */
 	public float getTotalUnits(DatabaseManager databaseManager) {
-		exercises = databaseManager.getBlock(id).exercises;
+		refresh(databaseManager);
 		float totalUnits = 0;
 		for (Exercise exercise : exercises){
-			exercise = databaseManager.getExercise(exercise.getId());
-			ExerciseType type = databaseManager.getExerciseType(exercise.getType().getId());
+			exercise.refresh(databaseManager);
+			ExerciseType type = exercise.getType();
+			type.refresh(databaseManager);
 			totalUnits += exercise.getReps() * type.getUnitWeight();
 		}
 		return totalUnits;
@@ -121,11 +124,12 @@ public class Block {
 	 * @return
 	 */
 	public float getTotalTime(DatabaseManager databaseManager) {
-		exercises = databaseManager.getBlock(id).exercises;
+		refresh(databaseManager);
 		float totalTime = 0;
 		for (Exercise exercise : exercises){
-			exercise = databaseManager.getExercise(exercise.getId());
-			ExerciseType type = databaseManager.getExerciseType(exercise.getType().getId());
+			exercise.refresh(databaseManager);
+			ExerciseType type = exercise.getType();
+			type.refresh(databaseManager);
 			if (exercise.getTargetSecs() > 0) {
 				totalTime += exercise.getTargetSecs();
 			} else {

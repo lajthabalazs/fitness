@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.TreeSet;
 
 import android.database.DataSetObserver;
-import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
@@ -65,8 +64,9 @@ public class ActiveProgramListAdapter implements ListAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ProgramProgress progress = (ProgramProgress)getItem(position);
-		progress = databaseManager.getProgress(progress.getProgressId());
-		Program program = databaseManager.getProgram(progress.getProgram().getId());
+		progress.refresh(databaseManager);
+		Program program = progress.getProgram();
+		program.refresh(databaseManager);
 		if (convertView == null){
 			convertView = programsOverviewActivity.getLayoutInflater().inflate(R.layout.active_program_list_item, null);
 		}

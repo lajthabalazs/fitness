@@ -40,6 +40,10 @@ public class WorkoutProgress {
 		this.finishDate = -1;
 	}
 	
+	public boolean refresh(DatabaseManager databaseManager) {
+		return refresh(databaseManager, false);
+	}
+
 	public boolean refresh(DatabaseManager databaseManager, boolean forced) {
 		if (workout == null || forced) {
 			WorkoutProgress other = databaseManager.getWorkoutProgress(id);
@@ -129,12 +133,14 @@ public class WorkoutProgress {
 
 	public void exerciseDone(ProgramProgress programProgress, Exercise exercise, int reps, long workoutTime, long date, DatabaseManager databaseManager) {
 		ExerciseProgress exerciseProgress = new ExerciseProgress(this, exercise, reps, workoutTime, date);
-		Workout workout = databaseManager.getWorkout(this.workout.getId());
+		refresh(databaseManager);
+		workout.refresh(databaseManager);
 		databaseManager.addExerciseProgress(exerciseProgress);
-		Block block = databaseManager.getBlock(exercise.getBlock().getId());
-		int blockIndex = block.getOrder();
+		exercise.refresh(databaseManager);
+		exercise.getBlock().refresh(databaseManager);
+		int blockIndex = exercise.getBlock().getOrder();
 		int blockCount = workout.getNumberOfBlocks(databaseManager);
-		int exerciseCount = block.getExerciseCount(databaseManager);
+		int exerciseCount = exercise.getBlock().getExerciseCount(databaseManager);
 		int exerciseIndex = exercise.getOrder();
 		Log.i(TAG, "Finished exercise " + exerciseIndex + "/" + exerciseCount + " of block " + blockIndex + "/" + blockCount);
 		if (exerciseIndex == exerciseCount - 1) {
@@ -166,10 +172,11 @@ public class WorkoutProgress {
 	}
 
 	public Exercise getExercise(int actualBlockIndex, int actualExerciseIndex, DatabaseManager databaseManager) {
-		workout = databaseManager.getWorkoutProgress(getId()).getWorkout();
-		workout = databaseManager.getWorkout(workout.getId());
-		Block block = databaseManager.getBlock(workout.getBlocks().get(actualBlockIndex).getId());
-		Exercise exercise = databaseManager.getExercise(block.getExercises().get(actualExerciseIndex).getId());
+		refresh(databaseManager);
+		workout.refresh(databaseManager);
+		Block block = workout.getBlocks().get(actualBlockIndex);
+		block.refresh(databaseManager);
+		Exercise exercise = block.getExercises().get(actualExerciseIndex);
 		return exercise;
 	}
 	

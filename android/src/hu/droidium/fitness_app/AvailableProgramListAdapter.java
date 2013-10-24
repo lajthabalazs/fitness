@@ -66,7 +66,7 @@ public class AvailableProgramListAdapter implements ListAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Program program = (Program)getItem(position);
-		program = databaseManager.getProgram(program.getId());
+		program.refresh(databaseManager);
 		int workoutCount = program.getWorkouts().size();
 		int totalLengthOfProgram = program.getTotalLength(databaseManager);
 		float totalUnits = program.getTotalUnits(databaseManager);

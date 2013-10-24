@@ -13,7 +13,6 @@ import hu.droidium.fitness_app.database.ProgramProgress;
 import hu.droidium.fitness_app.database.Workout;
 import hu.droidium.fitness_app.database.WorkoutProgress;
 
-import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,7 +44,6 @@ public class DoWorkoutActivity extends FitnessBaseActivity implements OnClickLis
 	private Button doneButton;
 	private Button backToWorkouts;
 	private TextView exerciseLabel;
-	private WorkoutProgress progress;
 	private long endOfBreak = -1;
 	private long startOfExercise = -1;
 	private BreakCountdown breakCountdown;
@@ -91,17 +89,16 @@ public class DoWorkoutActivity extends FitnessBaseActivity implements OnClickLis
 		super.onResume();
 		if (programProgressId != -1) {
 			ProgramProgress programProgress = databaseManager.getProgress(programProgressId);
-			progress = programProgress.getActualWorkout();
-			if (progress == null) {
+			WorkoutProgress workoutProgress = programProgress.getActualWorkout();
+			if (workoutProgress == null) {
 				progressView.done();
 				breakLayout.setVisibility(View.GONE);
 				exerciseLayout.setVisibility(View.GONE);
 				endLayout.setVisibility(View.VISIBLE);
 			} else {
-				// Needs deep loading
-				progress = databaseManager.getWorkoutProgress(progress.getId());
-				Workout workout = databaseManager.getWorkout(progress.getWorkout().getId());
-				progressView.setWorkout(workout);
+				// Needs reloading
+				workoutProgress.refresh(databaseManager, true);
+				progressView.setWorkout(workoutProgress.getWorkout());
 				progressChanged();
 			}
 		}
@@ -109,18 +106,22 @@ public class DoWorkoutActivity extends FitnessBaseActivity implements OnClickLis
 
 	private void progressChanged() {
 		long now = System.currentTimeMillis();
-		if (progress.getFinishDate() == -1) {
-			int actualBlockIndex = progress.getActualBlock();
-			int actualExerciseIndex = progress.getActualExercise();
-			if (progress == null) {
-				// TODO this should not happen
-				progressView.done();
-				breakLayout.setVisibility(View.GONE);
-				exerciseLayout.setVisibility(View.GONE);
-				endLayout.setVisibility(View.VISIBLE);
-			} else {
-				Exercise exercise = progress.getExercise(actualBlockIndex, actualExerciseIndex, databaseManager);
-				ExerciseType exerciseType = databaseManager.getExerciseType(exercise.getType().getId());
+		ProgramProgress programProgress = databaseManager.getProgress(programProgressId);
+		WorkoutProgress workoutProgress = programProgress.getActualWorkout();
+		if (workoutProgress == null) {
+			progressView.done();
+			breakLayout.setVisibility(View.GONE);
+			exerciseLayout.setVisibility(View.GONE);
+			endLayout.setVisibility(View.VISIBLE);
+		} else {
+	
+			workoutProgress.refresh(databaseManager);
+			if (workoutProgress.getFinishDate() == -1) {
+				int actualBlockIndex = workoutProgress.getActualBlock();
+				int actualExerciseIndex = workoutProgress.getActualExercise();
+				Exercise exercise = workoutProgress.getExercise(actualBlockIndex, actualExerciseIndex, databaseManager);
+				ExerciseType exerciseType = exercise.getType();
+				exerciseType.refresh(databaseManager);
 				if (endOfBreak == -1 || endOfBreak < now) {
 					breakLayout.setVisibility(View.GONE);
 					exerciseLayout.setVisibility(View.VISIBLE);
@@ -156,17 +157,18 @@ public class DoWorkoutActivity extends FitnessBaseActivity implements OnClickLis
 					breakCountdown.execute(remainingSecs);
 					progressView.setActiveBreak(actualBlockIndex, actualExerciseIndex);
 				}
+			} else {
+				HashMap<String, String> params = new HashMap<String, String>();
+				Workout workout = workoutProgress.getWorkout();
+				workout.refresh(databaseManager);
+				params.put(Constants.PROGRAM_ID_KEY, workout.getProgram().getId());
+				params.put(Constants.WORKOUT_ID, workout.getId());
+				log(FlurryLogConstants.FINISHED_WORKOUT, params);
+				progressView.done();
+				breakLayout.setVisibility(View.GONE);
+				exerciseLayout.setVisibility(View.GONE);
+				endLayout.setVisibility(View.VISIBLE);
 			}
-		} else {
-			HashMap<String, String> params = new HashMap<String, String>();
-			Workout workout = databaseManager.getWorkout(progress.getWorkout().getId());
-			params.put(Constants.PROGRAM_ID_KEY, workout.getProgram().getId());
-			params.put(Constants.WORKOUT_ID, workout.getId());
-			log(FlurryLogConstants.FINISHED_WORKOUT, params);
-			progressView.done();
-			breakLayout.setVisibility(View.GONE);
-			exerciseLayout.setVisibility(View.GONE);
-			endLayout.setVisibility(View.VISIBLE);
 		}
 	}
 	
@@ -184,11 +186,15 @@ public class DoWorkoutActivity extends FitnessBaseActivity implements OnClickLis
 			case R.id.exerciseTypeHelp : {
 				// TODO Go to exercise type help page
 				try {
-					int actualBlockIndex = progress.getActualBlock();
-					int actualExerciseIndex = progress.getActualExercise();
+					ProgramProgress programProgress = databaseManager.getProgress(programProgressId);
+					WorkoutProgress workoutProgress = programProgress.getActualWorkout();
+					workoutProgress.refresh(databaseManager);
+					int actualBlockIndex = workoutProgress.getActualBlock();
+					int actualExerciseIndex = workoutProgress.getActualExercise();
 
-					Exercise exercise = progress.getExercise(actualBlockIndex, actualExerciseIndex, databaseManager);
-					ExerciseType exerciseType = databaseManager.getExerciseType(exercise.getType().getId());
+					Exercise exercise = workoutProgress.getExercise(actualBlockIndex, actualExerciseIndex, databaseManager);
+					ExerciseType exerciseType = exercise.getType();
+					exerciseType.refresh(databaseManager);
 					Map<String, String> helpParams = new HashMap<String, String>();
 					helpParams.put(FlurryLogConstants.EXERCISE_TYPE_ID, exerciseType.getId());
 			 
@@ -206,16 +212,20 @@ public class DoWorkoutActivity extends FitnessBaseActivity implements OnClickLis
 			}
 			case R.id.continueWorkout : {
 				try {
-					int actualBlockIndex = progress.getActualBlock();
-					int actualExerciseIndex = progress.getActualExercise();
+					ProgramProgress programProgress = databaseManager.getProgress(programProgressId);
+					WorkoutProgress workoutProgress = programProgress.getActualWorkout();
+					workoutProgress.refresh(databaseManager);
+					int actualBlockIndex = workoutProgress.getActualBlock();
+					int actualExerciseIndex = workoutProgress.getActualExercise();
 
-					Exercise exercise = progress.getExercise(actualBlockIndex, actualExerciseIndex, databaseManager);
-					ExerciseType exerciseType = databaseManager.getExerciseType(exercise.getType().getId());
+					Exercise exercise = workoutProgress.getExercise(actualBlockIndex, actualExerciseIndex, databaseManager);
+					ExerciseType exerciseType = exercise.getType();
+					exerciseType.refresh(databaseManager);
 					Map<String, String> continueParams = new HashMap<String, String>();
 					continueParams.put(FlurryLogConstants.EXERCISE_TYPE_ID, exerciseType.getId());
 					continueParams.put(FlurryLogConstants.BLOCK_INDEX, "" + actualBlockIndex);
 					continueParams.put(FlurryLogConstants.EXERCISE_INDEX, "" + actualExerciseIndex);
-					continueParams.put(FlurryLogConstants.WORKOUT_ID, progress.getWorkout().getId());
+					continueParams.put(FlurryLogConstants.WORKOUT_ID, workoutProgress.getWorkout().getId());
 			 
 			        log(FlurryLogConstants.SKIPPED_BREAK, continueParams);
 				} catch (Exception e) {
@@ -231,16 +241,20 @@ public class DoWorkoutActivity extends FitnessBaseActivity implements OnClickLis
 			} case R.id.addFifteen : {
 				if (breakCountdown != null && breakCountdown.getRemainingTimeInSecs() > 0) {
 					try {
-						int actualBlockIndex = progress.getActualBlock();
-						int actualExerciseIndex = progress.getActualExercise();
+						ProgramProgress programProgress = databaseManager.getProgress(programProgressId);
+						WorkoutProgress workoutProgress = programProgress.getActualWorkout();
+						workoutProgress.refresh(databaseManager);
+						int actualBlockIndex = workoutProgress.getActualBlock();
+						int actualExerciseIndex = workoutProgress.getActualExercise();
 
-						Exercise exercise = progress.getExercise(actualBlockIndex, actualExerciseIndex, databaseManager);
-						ExerciseType exerciseType = databaseManager.getExerciseType(exercise.getType().getId());
+						Exercise exercise = workoutProgress.getExercise(actualBlockIndex, actualExerciseIndex, databaseManager);
+						ExerciseType exerciseType = exercise.getType();
+						exerciseType.refresh(databaseManager);
 						Map<String, String> continueParams = new HashMap<String, String>();
 						continueParams.put(FlurryLogConstants.EXERCISE_TYPE_ID, exerciseType.getId());
 						continueParams.put(FlurryLogConstants.BLOCK_INDEX, "" + actualBlockIndex);
 						continueParams.put(FlurryLogConstants.EXERCISE_INDEX, "" + actualExerciseIndex);
-						continueParams.put(FlurryLogConstants.WORKOUT_ID, progress.getWorkout().getId());
+						continueParams.put(FlurryLogConstants.WORKOUT_ID, workoutProgress.getWorkout().getId());
 				        log(FlurryLogConstants.ADDED_EXTRA_TIME, continueParams);
 					} catch (Exception e) {
 						log(FlurryLogConstants.ADDED_EXTRA_TIME);
@@ -264,16 +278,20 @@ public class DoWorkoutActivity extends FitnessBaseActivity implements OnClickLis
 							int reps = Integer.parseInt(input.getText().toString());
 							exerciseDone(reps);
 							try {
-								int actualBlockIndex = progress.getActualBlock();
-								int actualExerciseIndex = progress.getActualExercise();
+								ProgramProgress programProgress = databaseManager.getProgress(programProgressId);
+								WorkoutProgress workoutProgress = programProgress.getActualWorkout();
+								workoutProgress.refresh(databaseManager);
+								int actualBlockIndex = workoutProgress.getActualBlock();
+								int actualExerciseIndex = workoutProgress.getActualExercise();
 
-								Exercise exercise = progress.getExercise(actualBlockIndex, actualExerciseIndex, databaseManager);
-								ExerciseType exerciseType = databaseManager.getExerciseType(exercise.getType().getId());
+								Exercise exercise = workoutProgress.getExercise(actualBlockIndex, actualExerciseIndex, databaseManager);
+								ExerciseType exerciseType = exercise.getType();
+								exerciseType.refresh(databaseManager);
 								Map<String, String> continueParams = new HashMap<String, String>();
 								continueParams.put(FlurryLogConstants.EXERCISE_TYPE_ID, exerciseType.getId());
 								continueParams.put(FlurryLogConstants.BLOCK_INDEX, "" + actualBlockIndex);
 								continueParams.put(FlurryLogConstants.EXERCISE_INDEX, "" + actualExerciseIndex);
-								continueParams.put(FlurryLogConstants.WORKOUT_ID, progress.getWorkout().getId());
+								continueParams.put(FlurryLogConstants.WORKOUT_ID, workoutProgress.getWorkout().getId());
 						        log(FlurryLogConstants.EDITED_REPS, continueParams);
 							} catch (Exception e) {
 								log(FlurryLogConstants.EDITED_REPS);
@@ -294,23 +312,23 @@ public class DoWorkoutActivity extends FitnessBaseActivity implements OnClickLis
 	}
 	
 	private void exerciseDone(int reps) {
-		long now = System.currentTimeMillis();
-		int actualBlockIndex = progress.getActualBlock();
-		int actualExerciseIndex = progress.getActualExercise();
 		ProgramProgress programProgress = databaseManager.getProgress(programProgressId);
 		WorkoutProgress workoutProgress = programProgress.getActualWorkout();
+		workoutProgress.refresh(databaseManager);
+
+		long now = System.currentTimeMillis();
+		int actualBlockIndex = workoutProgress.getActualBlock();
+		int actualExerciseIndex = workoutProgress.getActualExercise();
 		if (workoutProgress != null) {
 			Log.i(TAG, "Done exercise " + actualExerciseIndex + " of block " + actualBlockIndex);
 			Exercise exercise = workoutProgress.getExercise(actualBlockIndex, actualExerciseIndex, databaseManager);
 			if (reps == -1) {
 				reps = exercise.getReps();
 			}
-			progress.exerciseDone(programProgress, exercise, reps, now - startOfExercise, now, databaseManager);
-			if (progress.getFinishDate() == -1) {
+			workoutProgress.exerciseDone(programProgress, exercise, reps, now - startOfExercise, now, databaseManager);
+			if (workoutProgress.getFinishDate() == -1) {
 				endOfBreak = now + 1000 * exercise.getBreakSecs();
 			}
-		} else {
-			throw new InvalidParameterException("There should be an actual workout!");
 		}
 		progressChanged();
 	}
@@ -322,10 +340,11 @@ public class DoWorkoutActivity extends FitnessBaseActivity implements OnClickLis
 	public void endOfBreak() {
 		endOfBreak = -1;
 		long now = System.currentTimeMillis();
-		int actualBlockIndex = progress.getActualBlock();
-		int actualExerciseIndex = progress.getActualExercise();
 		ProgramProgress programProgress = databaseManager.getProgress(programProgressId);
 		WorkoutProgress workoutProgress = programProgress.getActualWorkout();
+		workoutProgress.refresh(databaseManager);
+		int actualBlockIndex = workoutProgress.getActualBlock();
+		int actualExerciseIndex = workoutProgress.getActualExercise();
 		Exercise exercise = workoutProgress.getExercise(actualBlockIndex, actualExerciseIndex, databaseManager);
 		this.exerciseLabel.setText(Translator.getTranslation(exercise.getType().toString()));
 		this.startOfExercise = now;

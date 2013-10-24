@@ -93,7 +93,8 @@ public class ProgramProgressDetailsActivity extends FitnessBaseActivity implemen
 	
 	private void updateUI() {
 		programProgress = databaseManager.getProgress(programId);
-		Program program  = databaseManager.getProgram(programProgress.getProgram().getId());
+		Program program  = programProgress.getProgram();
+		program.refresh(databaseManager);
 		String programStartDate = Constants.format(programProgress.getProgressId());
 		programStartDateLabel.setText(String.format(getResources().getString(R.string.programStartedLabel), programStartDate));
 		programNameLabel.setText(Translator.getTranslation(program.getName()));
@@ -126,8 +127,10 @@ public class ProgramProgressDetailsActivity extends FitnessBaseActivity implemen
 			}
 			// Actual workout box
 			if (programProgress.getActualWorkout() != null) {
-				WorkoutProgress workoutProgress = databaseManager.getWorkoutProgress(programProgress.getActualWorkout().getId());
-				Workout workout = databaseManager.getWorkout(workoutProgress.getWorkout().getId());
+				WorkoutProgress workoutProgress = programProgress.getActualWorkout();
+				workoutProgress.refresh(databaseManager);
+				Workout workout = workoutProgress.getWorkout();
+				workout.refresh(databaseManager);
 				currentWorkoutLabel.setVisibility(View.VISIBLE);
 				currentWorkoutText.setVisibility(View.VISIBLE);
 				exerciseListLabel.setVisibility(View.VISIBLE);
@@ -241,7 +244,7 @@ public class ProgramProgressDetailsActivity extends FitnessBaseActivity implemen
 				actualWorkout = progress.startWorkout(System.currentTimeMillis(), nextWorkout, databaseManager);
 			}
 			if (actualWorkout != null) {
-				actualWorkout = databaseManager.getWorkoutProgress(actualWorkout.getId());
+				actualWorkout.refresh(databaseManager);
 				// Log with flurry
 				HashMap<String, String> params = new HashMap<String, String>();
 				params.put(Constants.PROGRAM_ID_KEY, progress.getProgram().getId());

@@ -6,7 +6,6 @@ public class ProgramUnitComparator extends ProgramComparator {
 
 	public ProgramUnitComparator(String displayName, String name) {
 		super(displayName, name);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

@@ -171,6 +171,14 @@ public class DatabaseManager {
 		}
 	}
 	
+	public ExerciseTypeMuscle getExerciseTypeMuscle(String id) {
+		try {
+			return helper.getExerciseTypeMuscleDao().queryForId(id);
+		} catch (SQLException e) {
+			return null;
+		}
+	}
+	
 	public void associateMuscleWithExercise(ExerciseType exerciseType, Muscle muscle) {
 		ExerciseTypeMuscle exerciseTypeMuscle = new ExerciseTypeMuscle(muscle, exerciseType);
 		try {

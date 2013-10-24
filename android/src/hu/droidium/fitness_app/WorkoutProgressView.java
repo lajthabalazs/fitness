@@ -75,18 +75,20 @@ public class WorkoutProgressView extends View {
 	public void setWorkout(Workout workout) {
 		this.workout = workout;
 		if (workout != null) {
+			workout.refresh(databaseManager);
 			blockCount = workout.getNumberOfBlocks(databaseManager);
 			// One unit break between blocks, one unit for each exercise, 0.2 unit of break between each exercise
 			exerciseCount = 0;
 			maxTotalValue = 0;
 			deepLoadedBlocks = new ArrayList<Block>();
 			for (Block block : workout.getBlocks()){
-				block = databaseManager.getBlock(block.getId());
+				block.refresh(databaseManager);
 				deepLoadedBlocks.add(block);
 				exerciseCount += block.getExerciseCount(databaseManager);				
 				for (Exercise exercise : block.getExercises()) {
-					exercise = databaseManager.getExercise(exercise.getId());
-					ExerciseType type = databaseManager.getExerciseType(exercise.getType().getId());
+					exercise.refresh(databaseManager);
+					ExerciseType type = exercise.getType();
+					type.refresh(databaseManager);
 					maxTotalValue = Math.max(maxTotalValue, exercise.getReps() * type.getUnitWeight());
 				}
 			}
@@ -143,9 +145,10 @@ public class WorkoutProgressView extends View {
 							}
 						}
 					}
-					Exercise exercise = databaseManager.getExercise(exercises.get(j).getId());
-					ExerciseType type = databaseManager.getExerciseType(exercise.getType().getId());
-					float columnHeight = (height * exercise.getReps() * type.getUnitWeight()) / maxTotalValue;
+					exercises.get(j).refresh(databaseManager);
+					ExerciseType type = exercises.get(j).getType();
+					type.refresh(databaseManager);
+					float columnHeight = (height * exercises.get(j).getReps() * type.getUnitWeight()) / maxTotalValue;
 					canvas.drawRect(offset, y + height - columnHeight, offset + unit, y + height, paint);
 					offset += unit;
 				}

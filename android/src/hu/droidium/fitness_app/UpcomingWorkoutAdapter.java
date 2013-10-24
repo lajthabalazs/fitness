@@ -70,6 +70,7 @@ public class UpcomingWorkoutAdapter implements ListAdapter, OnClickListener {
 			convertView = inflater.inflate(R.layout.upcoming_workout_list_item, null);
 		}
 		Workout workout = workouts.get(position);
+		workout.refresh(databaseManager);
 		((TextView)convertView.findViewById(R.id.workoutNameInUpcomingList)).setText(Translator.getTranslation(workout.getName()));
 		int secs = (int) workout.getTotalTime(databaseManager);
 		

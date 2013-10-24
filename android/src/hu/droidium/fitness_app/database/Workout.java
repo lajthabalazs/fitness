@@ -45,6 +45,10 @@ public class Workout{
 		this.description = description;
 	}
 	
+	public boolean refresh(DatabaseManager databaseManager) {
+		return refresh(databaseManager, false);
+	}
+
 	public boolean refresh(DatabaseManager databaseManager, boolean forced) {
 		if (name == null || forced) {
 			Workout other = databaseManager.getWorkout(id);
@@ -126,9 +130,7 @@ public class Workout{
 	}
 
 	public final int getNumberOfBlocks(DatabaseManager databaseManager){
-		if (blocks == null) {
-			blocks = databaseManager.getWorkout(id).blocks;
-		}
+		refresh(databaseManager);
 		return getBlocks().size();
 	}
 	
@@ -142,9 +144,7 @@ public class Workout{
 	}
 
 	public int getTotalNumberOfExercises(DatabaseManager databaseManager) {
-		if (blocks == null) {
-			blocks = databaseManager.getWorkout(id).blocks;
-		}
+		refresh(databaseManager);
 		int exerciseCount = 0;
 		for (Block block : blocks) {
 			exerciseCount += block.getExerciseCount(databaseManager);
@@ -200,7 +200,7 @@ public class Workout{
 	 * @return
 	 */
 	public float getTotalUnits(DatabaseManager databaseManager) {
-		blocks = databaseManager.getWorkout(id).blocks;
+		refresh(databaseManager);
 		float totalUnits = 0;
 		for (Block block : blocks) {
 			totalUnits += block.getTotalUnits(databaseManager);
@@ -214,7 +214,7 @@ public class Workout{
 	 * @return
 	 */
 	public float getTotalTime(DatabaseManager databaseManager) {
-		blocks = databaseManager.getWorkout(id).blocks;
+		refresh(databaseManager);
 		float totalTime = 0;
 		for (Block block : blocks) {
 			totalTime += block.getTotalTime(databaseManager);
@@ -228,14 +228,12 @@ public class Workout{
 	 * @return
 	 */
 	public HashMap<String, Integer> getExercises(DatabaseManager databaseManager){
+		refresh(databaseManager);
 		HashMap<String, Integer> reps = new HashMap<String, Integer>();
-		if (blocks == null) {
-			blocks = databaseManager.getWorkout(id).blocks;
-		}
 		for (Block block : blocks) {
-			block = databaseManager.getBlock(block.getId());
+			block.refresh(databaseManager);
 			for (Exercise exercise : block.getExercises()){
-				exercise = databaseManager.getExercise(exercise.getId());
+				exercise.refresh(databaseManager);
 				String exerciseTypeId = exercise.getType().getId();
 				Integer savedReps = reps.get(exerciseTypeId);
 				if (savedReps == null) {

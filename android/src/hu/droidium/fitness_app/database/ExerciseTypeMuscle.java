@@ -21,6 +21,21 @@ public class ExerciseTypeMuscle {
 		this.exerciseType = exerciseType;
 	}
 	
+	public boolean refresh(DatabaseManager databaseManager) {
+		return refresh(databaseManager, false);
+	}
+	
+	public boolean refresh(DatabaseManager databaseManager, boolean forced) {
+		if (muscle == null || forced) {
+			ExerciseTypeMuscle other = databaseManager.getExerciseTypeMuscle(id);
+			this.muscle = other.muscle;
+			this.exerciseType = other.exerciseType;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public Muscle getMuscle() {
 		return muscle;
 	}

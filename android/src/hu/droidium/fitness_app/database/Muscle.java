@@ -21,6 +21,10 @@ public class Muscle {
 		this.description = description;
 	}
 	
+	public boolean refresh(DatabaseManager databaseManager) {
+		return refresh(databaseManager, false);
+	}
+
 	public boolean refresh(DatabaseManager databaseManager, boolean forced) {
 		if (name == null || forced) {
 			Muscle other = databaseManager.getMuscle(id);

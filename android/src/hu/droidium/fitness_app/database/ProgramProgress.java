@@ -39,6 +39,10 @@ public class ProgramProgress {
 		this.progressId = id;
 		this.program = program;		
 	}
+
+	public boolean refresh(DatabaseManager databaseManager) {
+		return refresh(databaseManager, false);
+	}
 	
 	public boolean refresh(DatabaseManager databaseManager, boolean forced) {
 		if (program == null || forced) {
@@ -106,7 +110,8 @@ public class ProgramProgress {
 	/* ******************************************************************** */
 	
 	public boolean isDone(DatabaseManager databaseManager) {
-		loadFields(databaseManager);
+		refresh(databaseManager);
+		program.refresh(databaseManager);
 		if (terminationDate == -1) {
 			return false;
 		}
@@ -147,7 +152,7 @@ public class ProgramProgress {
 		if (nextWorkout == null) {
 			return -1;
 		} else {
-			nextWorkout = databaseManager.getWorkout(nextWorkout.getId());
+			nextWorkout.refresh(databaseManager);
 			int nextWorkoutDay = nextWorkout.getDay();
 			return Constants.stripDate(progressId) + Constants.DAY_MILLIS * nextWorkoutDay;
 		}
@@ -168,22 +173,11 @@ public class ProgramProgress {
 		return progressId;
 	}
 
-	public void loadFields(DatabaseManager databaseManager) {
-		if (program == null || doneWorkouts == null) {
-			ProgramProgress loadedProgress = databaseManager.getProgress(progressId);
-			actualWorkout = loadedProgress.actualWorkout;
-			program = loadedProgress.program;
-			doneWorkouts = loadedProgress.doneWorkouts;
-		}
-		if (program.getWorkouts() == null) {
-			program = databaseManager.getProgram(this.program.getId());
-		}
-	}
-	
 	public Workout getNextWorkout(DatabaseManager databaseManager) {
-		loadFields(databaseManager);
+		refresh(databaseManager);
+		program.refresh(databaseManager);
 		if (actualWorkout != null) {
-			actualWorkout = databaseManager.getWorkoutProgress(actualWorkout.getId());
+			actualWorkout.refresh(databaseManager);
 			return actualWorkout.getWorkout();
 		}
 		HashSet<String> doneWorkoutIds = new HashSet<String>();
@@ -206,17 +200,17 @@ public class ProgramProgress {
 	}
 	
 	public int getProgressPercentage(DatabaseManager databaseManager) {
-		loadFields(databaseManager);
+		refresh(databaseManager);
+		program.refresh(databaseManager);
 		HashSet<String> doneWorkoutIds = new HashSet<String>();
-		program = databaseManager.getProgram(program.getId());
 		// Add actual workout as "done"
 		if (actualWorkout != null) {
-			actualWorkout = databaseManager.getWorkoutProgress(actualWorkout.getId());
+			actualWorkout.refresh(databaseManager);
 			doneWorkoutIds.add(actualWorkout.getWorkout().getId());
 		}
 		boolean hasActualBeenDone = false;
 		for (WorkoutProgress workoutProgress : doneWorkouts) {
-			workoutProgress = databaseManager.getWorkoutProgress(workoutProgress.getId());
+			workoutProgress.refresh(databaseManager);
 			doneWorkoutIds.add(workoutProgress.getWorkout().getId());
 			if (actualWorkout != null) {
 				if (workoutProgress.getWorkout().getId().equals(actualWorkout.getId())) {
@@ -237,14 +231,14 @@ public class ProgramProgress {
 	}
 
 	public List<Workout> getRemainingWorkouts(DatabaseManager databaseManager) {
-		loadFields(databaseManager);
-		program = databaseManager.getProgram(program.getId());
+		refresh(databaseManager);
+		program.refresh(databaseManager);
 		HashSet<String> doneWorkoutIds = new HashSet<String>();
 		if (actualWorkout != null) {
 			doneWorkoutIds.add(actualWorkout.getWorkout().getId());
 		}
 		for (WorkoutProgress workoutProgress : doneWorkouts) {
-			workoutProgress = databaseManager.getWorkoutProgress(workoutProgress.getId());
+			workoutProgress.refresh(databaseManager);
 			doneWorkoutIds.add(workoutProgress.getWorkout().getId());
 		}
 		TreeSet<Workout> workoutOrderer = new TreeSet<Workout>(new WorkoutComparator());
@@ -261,7 +255,8 @@ public class ProgramProgress {
 	}
 	
 	public String getDateOfNextWorkoutText(DatabaseManager databaseManager, Context context) {
-		loadFields(databaseManager);
+		refresh(databaseManager);
+		program.refresh(databaseManager);
 		String dateMessage = null;
 		if (isDone(databaseManager)) {
 			// Done
@@ -303,16 +298,16 @@ public class ProgramProgress {
 		Log.i(TAG, "Start workout " + workout.getId());
 		// Check if there are any workouts that need to be skipped
 		HashSet<String> doneWorkoutIds = new HashSet<String>();
-		doneWorkouts = databaseManager.getProgress(progressId).doneWorkouts;
+		refresh(databaseManager);
 		if (actualWorkout != null) {
-			actualWorkout = databaseManager.getWorkoutProgress(actualWorkout.getId());
+			actualWorkout.refresh(databaseManager);
 			doneWorkoutIds.add(actualWorkout.getWorkout().getId());
 		}
 		for (WorkoutProgress doneWorkout : doneWorkouts) {
-			doneWorkout = databaseManager.getWorkoutProgress(doneWorkout.getId());
+			doneWorkout.refresh(databaseManager);
 			doneWorkoutIds.add(doneWorkout.getWorkout().getId());
 		}
-		program = databaseManager.getProgram(program.getId());
+		program.refresh(databaseManager);
 		// Add skipped workouts
 		for (Workout programWorkout : program.getWorkouts()) {
 			if (!doneWorkoutIds.contains(programWorkout.getId()) && (workout.getDay() > programWorkout.getDay())) {
@@ -323,13 +318,13 @@ public class ProgramProgress {
 			}
 		}
 		if (actualWorkout != null) {
-			actualWorkout = databaseManager.getWorkoutProgress(actualWorkout.getId());
+			actualWorkout.refresh(databaseManager);
 			doneWorkoutIds.add(actualWorkout.getWorkout().getId());
 			actualWorkout.setFinishDate(now);
 			actualWorkout.setProgramProgress(this);
 			databaseManager.updateWorkoutProgress(actualWorkout);
 		}
-		program = databaseManager.getProgram(program.getId());
+		program.refresh(databaseManager);
 		WorkoutProgress actualWorkout = new WorkoutProgress(now, workout);
 		if (!databaseManager.addWorkoutProgress(actualWorkout)){
 			actualWorkout = null;
