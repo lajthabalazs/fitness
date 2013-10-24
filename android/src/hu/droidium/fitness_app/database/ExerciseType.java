@@ -42,6 +42,8 @@ public class ExerciseType {
 	@ForeignCollectionField
 	private ForeignCollection<ExerciseTypeMuscle> muscles;
 	
+	public ExerciseType() {}
+	
 	public ExerciseType(String id, String name, String description, String instructions, String unit, String kUnit, float unitWeight, float unitTime, int stamina, int strength, int speed, int flexibility, int balance) {
 		this.id = id;
 		this.name = name;
@@ -58,7 +60,27 @@ public class ExerciseType {
 		this.balance = balance;
 	}
 
-	public ExerciseType() {}
+	public boolean refresh(DatabaseManager databaseManager, boolean forced) {
+		if (name == null || forced) {
+			ExerciseType other = databaseManager.getExerciseType(id);
+			this.name = other.name;
+			this.description = other.description;
+			this.instructions = other.instructions;
+			this.unit = other.unit;
+			this.kUnit = other.kUnit;
+			this.unitWeight = other.unitWeight;
+			this.unitTime = other.unitTime;
+			this.stamina = other.stamina;
+			this.strength = other.strength;
+			this.speed = other.speed;
+			this.flexibility = other.flexibility;
+			this.balance = other.balance;
+			this.muscles = other.muscles;
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	public String getId() {
 		return id;

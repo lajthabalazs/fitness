@@ -2,13 +2,14 @@ package hu.droidium.fitness_app;
 
 public class FlurryLogConstants {
 	
-	public static final String ENABLE_FLURRY = "Enable Flurry";
-	
 	public static final String ADDED_PROGRAM = "Added_new_program";
 	public static final String CANCELLED_PROGRAM = "Cancelled_new_program";
 	public static final String CANCELLED_PROGRAM_AT_DETAILS = "Cancelled_new_program_at_program_details";
 
 	public static final String REORDERED_PROGRAMS = "Reordered_programs";
+	public static final String REORDERED_PROGRAMS_NAME = "name";
+	public static final String REORDERED_PROGRAMS_LENGTH = "length";
+	public static final String REORDERED_PROGRAMS_LENGTH_DESC = "length_desc";
 
 	public static final String STARTED_PROGRAM = "Started_program";
 

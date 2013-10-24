@@ -1,6 +1,7 @@
 package hu.droidium.fitness_app.activities;
 
 import hu.droidium.fitness_app.Constants;
+import hu.droidium.fitness_app.FlurryLogConstants;
 import hu.droidium.fitness_app.R;
 import hu.droidium.fitness_app.Translator;
 import hu.droidium.fitness_app.UpcomingWorkoutAdapter;
@@ -10,6 +11,7 @@ import hu.droidium.fitness_app.database.ProgramProgress;
 import hu.droidium.fitness_app.database.Workout;
 import hu.droidium.fitness_app.database.WorkoutProgress;
 
+import java.util.HashMap;
 import java.util.List;
 
 import android.app.AlertDialog.Builder;
@@ -200,9 +202,13 @@ public class ProgramProgressDetailsActivity extends FitnessBaseActivity implemen
 					doWorkout.setText(R.string.resumeWorkout);
 				}
 			} else {
+
 				currentWorkoutLabel.setVisibility(View.GONE);
 				currentWorkoutText.setVisibility(View.GONE);
 				exerciseListLabel.setVisibility(View.GONE);
+				currentWorkoutDescription.setVisibility(View.GONE);				
+				currentWorkoutTime.setVisibility(View.GONE);
+				currentWorkoutUnits.setVisibility(View.GONE);
 				workoutStartDateLabel.setVisibility(View.GONE);
 				workoutProgressLabel.setVisibility(View.GONE);
 				doWorkout.setVisibility(View.GONE);
@@ -235,6 +241,13 @@ public class ProgramProgressDetailsActivity extends FitnessBaseActivity implemen
 				actualWorkout = progress.startWorkout(System.currentTimeMillis(), nextWorkout, databaseManager);
 			}
 			if (actualWorkout != null) {
+				actualWorkout = databaseManager.getWorkoutProgress(actualWorkout.getId());
+				// Log with flurry
+				HashMap<String, String> params = new HashMap<String, String>();
+				params.put(Constants.PROGRAM_ID_KEY, progress.getProgram().getId());
+				params.put(Constants.WORKOUT_ID, actualWorkout.getWorkout().getId());
+				log(FlurryLogConstants.STARTED_WORKOUT, params);
+				
 				intent.putExtra(Constants.PROGRAM_PROGRESS_ID, progress.getProgressId());
 				intent.putExtra(Constants.WORKOUT_PROGRESS_ID, actualWorkout.getId());
 				startActivity(intent);
@@ -250,6 +263,7 @@ public class ProgramProgressDetailsActivity extends FitnessBaseActivity implemen
 		if (index == 0 && programProgress.getActualWorkout() == null) {
 			// Start next workout, no questions asked
 			programProgress.startWorkout(System.currentTimeMillis(), workout, databaseManager);
+			log(FlurryLogConstants.STARTED_WORKOUT_EARLY);
 			startWorkout();
 		} else if (index == 0 && programProgress.getActualWorkout() != null){
 			Builder builder = new Builder(this);

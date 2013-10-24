@@ -18,8 +18,7 @@ public class DatabaseManager {
 	
 	private DatabaseHelper helper;
 	
-	
-	private DatabaseManager(Context context) {
+	protected DatabaseManager(Context context) {
 		Log.e(TAG, "create database manager");
 		helper = new DatabaseHelper(context.getApplicationContext());
 	}
@@ -151,6 +150,16 @@ public class DatabaseManager {
 		}
 		return muscles;
 	}
+	
+	public Muscle getMuscle(String id) {
+		try {
+			return helper.getMuscleDao().queryForId(id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 
 	public boolean addExerciseType(ExerciseType ormExercise) {
 		try {

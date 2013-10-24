@@ -31,6 +31,19 @@ public class Block {
 		this.name = name;
 		this.order = order;
 	}
+	
+	public boolean refresh(DatabaseManager databaseManager, boolean forced) {
+		if (workout == null || forced) {
+			Block otherBlock = databaseManager.getBlock(id);
+			this.workout = otherBlock.workout;
+			this.name = otherBlock.name;
+			this.order = otherBlock.order;
+			this.exercises = otherBlock.exercises;
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	public String getId() {
 		return id;
@@ -51,7 +64,7 @@ public class Block {
 	public int getOrder() {
 		return order;
 	}
-
+	
 	public void setOrder(int order) {
 		this.order = order;
 	}

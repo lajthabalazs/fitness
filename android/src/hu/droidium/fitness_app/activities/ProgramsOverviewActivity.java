@@ -4,6 +4,7 @@ import java.util.List;
 
 import hu.droidium.fitness_app.ActiveProgramListAdapter;
 import hu.droidium.fitness_app.Constants;
+import hu.droidium.fitness_app.FlurryLogConstants;
 import hu.droidium.fitness_app.R;
 import hu.droidium.fitness_app.database.DatabaseManager;
 import hu.droidium.fitness_app.database.ProgramProgress;
@@ -56,6 +57,7 @@ public class ProgramsOverviewActivity extends FitnessBaseActivity implements OnC
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == Constants.RESULT_STARTED_NEW_PROGRAM) {
+			log(FlurryLogConstants.ADDED_PROGRAM);
 			long progressId = data.getLongExtra(Constants.PROGRAM_PROGRESS_ID, -1);
 			if (progressId != -1) {
 				Intent intent = new Intent(this, ProgramProgressDetailsActivity.class);

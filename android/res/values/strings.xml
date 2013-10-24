@@ -102,4 +102,8 @@
     <string name="flurryKey">FXTJ4F3Y4GJ24PHFV2TJ</string>
     <string name="backToPrograms">Back to programs</string>
     
+    <string name="flurryQuestionTitle">Help us</string>
+    <string name="flurryQuestionMessage">To provide the best experience, we would like to understand how you use this app. Would you mind if we record you usage data? No personal information will be stored.</string>
+    <string name="flurryQuestionPositive">Sure</string>
+    <string name="flurryQuestionNegative">No</string>
 </resources>

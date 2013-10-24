@@ -1,7 +1,10 @@
 package hu.droidium.fitness_app.activities;
 
+import java.util.HashMap;
+
 import hu.droidium.fitness_app.AvailableProgramListAdapter;
 import hu.droidium.fitness_app.Constants;
+import hu.droidium.fitness_app.FlurryLogConstants;
 import hu.droidium.fitness_app.R;
 import hu.droidium.fitness_app.database.DatabaseManager;
 import hu.droidium.fitness_app.database.Program;
@@ -75,6 +78,8 @@ public class ProgramListActivity extends FitnessBaseActivity implements OnClickL
 	public void onClick(View v) {
 		if (v.getId() == R.id.cancelButton) {
 			// Cancels the new program
+			setResult(Constants.RESULT_CANCEL);
+			log(FlurryLogConstants.CANCELLED_PROGRAM);
 			finish();
 		}
 	}
@@ -106,6 +111,9 @@ public class ProgramListActivity extends FitnessBaseActivity implements OnClickL
 	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
 			long arg3) {
 		selectedComparator = comparators[arg2];
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put(FlurryLogConstants.REORDERED_PROGRAMS, comparators[arg2].getName());
+		log(FlurryLogConstants.REORDERED_PROGRAMS, params);
 		refreshUI();
 	}
 

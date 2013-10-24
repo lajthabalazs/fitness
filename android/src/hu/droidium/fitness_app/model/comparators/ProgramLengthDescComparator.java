@@ -1,5 +1,6 @@
 package hu.droidium.fitness_app.model.comparators;
 
+import hu.droidium.fitness_app.FlurryLogConstants;
 import hu.droidium.fitness_app.database.DatabaseManager;
 import hu.droidium.fitness_app.database.Program;
 
@@ -11,7 +12,7 @@ public class ProgramLengthDescComparator extends ProgramComparator{
 	private DatabaseManager databaseManager;
 
 	public ProgramLengthDescComparator(String displayName, DatabaseManager databaseManager) {
-		super(displayName);
+		super(displayName, FlurryLogConstants.REORDERED_PROGRAMS_LENGTH_DESC);
 		this.databaseManager = databaseManager;
 	}
 

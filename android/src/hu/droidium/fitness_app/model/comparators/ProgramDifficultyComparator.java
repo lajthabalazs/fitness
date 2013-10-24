@@ -4,8 +4,8 @@ import hu.droidium.fitness_app.database.Program;
 
 public class ProgramDifficultyComparator extends ProgramComparator {
 
-	public ProgramDifficultyComparator(String displayName) {
-		super(displayName);
+	public ProgramDifficultyComparator(String displayName, String name) {
+		super(displayName, name);
 	}
 
 	@Override

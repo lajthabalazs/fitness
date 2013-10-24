@@ -31,8 +31,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.flurry.android.FlurryAgent;
-
 public class DoWorkoutActivity extends FitnessBaseActivity implements OnClickListener {
 	private static final String TAG = "ExerciseActivity";
 	private WorkoutProgressView progressView;
@@ -160,6 +158,11 @@ public class DoWorkoutActivity extends FitnessBaseActivity implements OnClickLis
 				}
 			}
 		} else {
+			HashMap<String, String> params = new HashMap<String, String>();
+			Workout workout = databaseManager.getWorkout(progress.getWorkout().getId());
+			params.put(Constants.PROGRAM_ID_KEY, workout.getProgram().getId());
+			params.put(Constants.WORKOUT_ID, workout.getId());
+			log(FlurryLogConstants.FINISHED_WORKOUT, params);
 			progressView.done();
 			breakLayout.setVisibility(View.GONE);
 			exerciseLayout.setVisibility(View.GONE);
@@ -189,9 +192,9 @@ public class DoWorkoutActivity extends FitnessBaseActivity implements OnClickLis
 					Map<String, String> helpParams = new HashMap<String, String>();
 					helpParams.put(FlurryLogConstants.EXERCISE_TYPE_ID, exerciseType.getId());
 			 
-			        FlurryAgent.logEvent(FlurryLogConstants.ASKED_FOR_EXERCISE_DETAILS, helpParams);
+					log(FlurryLogConstants.ASKED_FOR_EXERCISE_DETAILS, helpParams);
 				} catch (Exception e) {
-					FlurryAgent.logEvent(FlurryLogConstants.ASKED_FOR_EXERCISE_DETAILS);
+					log(FlurryLogConstants.ASKED_FOR_EXERCISE_DETAILS);
 				}
 
 				Toast.makeText(this, "Feature not yet implemented", Toast.LENGTH_LONG).show();
@@ -214,9 +217,9 @@ public class DoWorkoutActivity extends FitnessBaseActivity implements OnClickLis
 					continueParams.put(FlurryLogConstants.EXERCISE_INDEX, "" + actualExerciseIndex);
 					continueParams.put(FlurryLogConstants.WORKOUT_ID, progress.getWorkout().getId());
 			 
-			        FlurryAgent.logEvent(FlurryLogConstants.SKIPPED_BREAK, continueParams);
+			        log(FlurryLogConstants.SKIPPED_BREAK, continueParams);
 				} catch (Exception e) {
-					FlurryAgent.logEvent(FlurryLogConstants.SKIPPED_BREAK);
+					log(FlurryLogConstants.SKIPPED_BREAK);
 				}
 				endOfBreak();
 				progressChanged();
@@ -238,10 +241,9 @@ public class DoWorkoutActivity extends FitnessBaseActivity implements OnClickLis
 						continueParams.put(FlurryLogConstants.BLOCK_INDEX, "" + actualBlockIndex);
 						continueParams.put(FlurryLogConstants.EXERCISE_INDEX, "" + actualExerciseIndex);
 						continueParams.put(FlurryLogConstants.WORKOUT_ID, progress.getWorkout().getId());
-				 
-				        FlurryAgent.logEvent(FlurryLogConstants.ADDED_EXTRA_TIME, continueParams);
+				        log(FlurryLogConstants.ADDED_EXTRA_TIME, continueParams);
 					} catch (Exception e) {
-						FlurryAgent.logEvent(FlurryLogConstants.ADDED_EXTRA_TIME);
+						log(FlurryLogConstants.ADDED_EXTRA_TIME);
 					}
 					endOfBreak += 15000;
 					breakCountdown.addSecs(15);
@@ -261,6 +263,21 @@ public class DoWorkoutActivity extends FitnessBaseActivity implements OnClickLis
 						try {
 							int reps = Integer.parseInt(input.getText().toString());
 							exerciseDone(reps);
+							try {
+								int actualBlockIndex = progress.getActualBlock();
+								int actualExerciseIndex = progress.getActualExercise();
+
+								Exercise exercise = progress.getExercise(actualBlockIndex, actualExerciseIndex, databaseManager);
+								ExerciseType exerciseType = databaseManager.getExerciseType(exercise.getType().getId());
+								Map<String, String> continueParams = new HashMap<String, String>();
+								continueParams.put(FlurryLogConstants.EXERCISE_TYPE_ID, exerciseType.getId());
+								continueParams.put(FlurryLogConstants.BLOCK_INDEX, "" + actualBlockIndex);
+								continueParams.put(FlurryLogConstants.EXERCISE_INDEX, "" + actualExerciseIndex);
+								continueParams.put(FlurryLogConstants.WORKOUT_ID, progress.getWorkout().getId());
+						        log(FlurryLogConstants.EDITED_REPS, continueParams);
+							} catch (Exception e) {
+								log(FlurryLogConstants.EDITED_REPS);
+							}
 						} catch (Exception e) {
 							exerciseDone(-1);
 						}

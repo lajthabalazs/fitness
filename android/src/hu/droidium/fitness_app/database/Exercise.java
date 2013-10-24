@@ -34,6 +34,22 @@ public class Exercise {
 		this.targetSecs = targetSecs;
 		this.breakSecs = breakSecs;
 	}
+	
+	public boolean refresh(DatabaseManager databaseManager, boolean forced) {
+		if (type == null || forced) {
+			Exercise otherExercise = databaseManager.getExercise(id);
+			this.block = otherExercise.block;
+			this.order = otherExercise.order;
+			this.type = otherExercise.type;
+			this.reps = otherExercise.reps;
+			this.targetSecs = otherExercise.targetSecs;
+			this.breakSecs = otherExercise.breakSecs;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 
 	public Block getBlock() {
 		return block;

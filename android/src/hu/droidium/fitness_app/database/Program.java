@@ -14,7 +14,7 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable
 public class Program {
 	
-	private static final String TAG = "ORMProgram";
+	private static final String TAG = "Program";
 	@DatabaseField(id=true)
 	private String id;
 	@DatabaseField
@@ -37,7 +37,20 @@ public class Program {
 		this.description = description;
 		this.color = color;
 	}
-	
+
+	public boolean refresh(DatabaseManager databaseManager, boolean forced) {
+		if (name == null || forced) {
+			Program other = databaseManager.getProgram(id);
+			this.name = other.name;
+			this.description = other.description;
+			this.color = other.color;
+			this.workouts = other.workouts;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public String getId() {
 		return id;
 	}

@@ -4,8 +4,8 @@ import hu.droidium.fitness_app.database.Program;
 
 public class ProgramUnitComparator extends ProgramComparator {
 
-	public ProgramUnitComparator(String displayName) {
-		super(displayName);
+	public ProgramUnitComparator(String displayName, String name) {
+		super(displayName, name);
 		// TODO Auto-generated constructor stub
 	}
 

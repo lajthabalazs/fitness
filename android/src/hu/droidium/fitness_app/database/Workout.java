@@ -21,14 +21,14 @@ import com.j256.ormlite.table.DatabaseTable;
 public class Workout{
 	@DatabaseField(id=true)
 	private String id;
-	@DatabaseField(foreign=true)
-	private Program program;
 	@DatabaseField
 	private String name;
 	@DatabaseField
 	private int day; // The day of the program the workout is scheduled, starting from the beginning of the program
 	@DatabaseField
 	private String description;
+	@DatabaseField(foreign=true)
+	private Program program;
 	@ForeignCollectionField(orderColumnName="order")
 	private ForeignCollection<Block> blocks;
 	@DatabaseField(defaultValue="false")
@@ -44,6 +44,22 @@ public class Workout{
 		this.name = name;
 		this.description = description;
 	}
+	
+	public boolean refresh(DatabaseManager databaseManager, boolean forced) {
+		if (name == null || forced) {
+			Workout other = databaseManager.getWorkout(id);
+			this.name = other.name;
+			this.day = other.day;
+			 this.description = other.description;
+			 this.program = other.program;
+			 this.blocks = other.blocks;
+			 this.skipped = other.skipped;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 
 	public String getId() {
 		return id;

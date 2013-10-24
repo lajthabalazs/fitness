@@ -20,9 +20,9 @@ public class WorkoutProgress {
 	@DatabaseField
 	private long startTime;
 	@DatabaseField(foreign=true)
-	private ProgramProgress programProgress;
-	@DatabaseField(foreign=true)
 	private Workout workout;
+	@DatabaseField(foreign=true)
+	private ProgramProgress programProgress;
 	@DatabaseField
 	private int actualBlock;
 	@DatabaseField
@@ -33,11 +33,29 @@ public class WorkoutProgress {
 	private long finishDate = -1;
 	
 	public WorkoutProgress() {}
+	
 	public WorkoutProgress(long startTime, Workout workout) {
 		this.startTime = startTime;
 		this.workout = workout;
 		this.finishDate = -1;
 	}
+	
+	public boolean refresh(DatabaseManager databaseManager, boolean forced) {
+		if (workout == null || forced) {
+			WorkoutProgress other = databaseManager.getWorkoutProgress(id);
+			this.startTime = other.startTime;
+			this.workout = other.workout;
+			this.programProgress = other.programProgress;
+			this.actualBlock = other.actualBlock;
+			this.actualExercise = other.actualExercise;
+			this.doneExercises = other.doneExercises;
+			this.finishDate = other.finishDate;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	
 	public long getId() {
 		return id;

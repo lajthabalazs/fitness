@@ -146,6 +146,10 @@ public final class R {
         public static final int exerciseListLabel=0x7f06003b;
         public static final int exerciseNamePlaceholder=0x7f060044;
         public static final int flurryKey=0x7f06005a;
+        public static final int flurryQuestionMessage=0x7f06005d;
+        public static final int flurryQuestionNegative=0x7f06005f;
+        public static final int flurryQuestionPositive=0x7f06005e;
+        public static final int flurryQuestionTitle=0x7f06005c;
         public static final int hasWorkoutToday=0x7f060017;
         public static final int hello_world=0x7f060002;
         public static final int kRepsForListingExercises=0x7f06004f;

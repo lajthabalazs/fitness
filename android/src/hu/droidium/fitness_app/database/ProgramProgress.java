@@ -39,6 +39,20 @@ public class ProgramProgress {
 		this.progressId = id;
 		this.program = program;		
 	}
+	
+	public boolean refresh(DatabaseManager databaseManager, boolean forced) {
+		if (program == null || forced) {
+			ProgramProgress other = databaseManager.getProgress(progressId);
+			program = other.program;
+			terminationDate = other.terminationDate;
+			doneWorkouts = other.doneWorkouts;
+			actualWorkout = other.actualWorkout;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 
 	public long getProgressId() {
 		return progressId;

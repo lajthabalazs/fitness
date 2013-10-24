@@ -1,7 +1,10 @@
 package hu.droidium.fitness_app.activities;
 
+import java.util.HashMap;
+
 import hu.droidium.fitness_app.AvailableWorkoutListAdapter;
 import hu.droidium.fitness_app.Constants;
+import hu.droidium.fitness_app.FlurryLogConstants;
 import hu.droidium.fitness_app.R;
 import hu.droidium.fitness_app.Translator;
 import hu.droidium.fitness_app.database.DatabaseManager;
@@ -63,6 +66,7 @@ public class ProgramDetailsActivity extends FitnessBaseActivity implements OnCli
 		switch (v.getId()) {
 		case R.id.cancelButton: {
 			setResult(Constants.RESULT_CANCEL);
+			log(FlurryLogConstants.CANCELLED_PROGRAM_AT_DETAILS);
 			finish();
 			break;
 		}
@@ -74,6 +78,9 @@ public class ProgramDetailsActivity extends FitnessBaseActivity implements OnCli
 			Intent output = new Intent();
 			output.putExtra(Constants.PROGRAM_PROGRESS_ID, progress.getProgressId());
 			setResult(Constants.RESULT_STARTED_NEW_PROGRAM, output);
+			HashMap<String, String> params = new HashMap<String, String>();
+			params.put(Constants.PROGRAM_ID_KEY, program.getId());
+			log(FlurryLogConstants.STARTED_PROGRAM, params);
 			finish();
 			break;
 		}

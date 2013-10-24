@@ -1,7 +1,5 @@
 package hu.droidium.fitness_app.database;
 
-import hu.droidium.fitness_app.Constants;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -74,9 +72,6 @@ public class DataLoader {
 	private static final String TRANSLATION_ORIGINAL_KEY = "original";
 	private static final String TRANSLATION_LANGUAGE_KEY = "language";
 	private static final String TRANSLATION_VALUE_KEY = "value";
-
-	private static final float BRIGHTNESS_LIMIT = 0.9f;
-
 
 	public static void loadDataFromAssets(Context context) throws IOException{
 		DatabaseManager databaseManager = DatabaseManager.getInstance(context);

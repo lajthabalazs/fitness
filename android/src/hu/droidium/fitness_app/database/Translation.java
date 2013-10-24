@@ -16,6 +16,7 @@ public class Translation {
 	}
 	
 	public Translation() {}
+	
 	public String getKey() {
 		return key;
 	}
