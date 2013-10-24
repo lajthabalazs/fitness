@@ -1,6 +1,7 @@
 package hu.droidium.fitness_app.database;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
@@ -30,16 +31,6 @@ public class DatabaseManager {
 		return instance;
 	}
 	
-	public List<ExerciseType> getTypes(){
-		List<ExerciseType> types = null;
-		try {
-			types = helper.getExerciseTypeDao().queryForAll();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return types;
-	}
-
 	public boolean addExercise(Exercise ormExercise) {
 		try {
 			helper.getExerciseDao().createOrUpdate(ormExercise);

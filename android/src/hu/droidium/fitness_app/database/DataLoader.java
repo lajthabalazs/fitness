@@ -245,7 +245,7 @@ public class DataLoader {
 		Log.e(TAG, "Loading programs from file " + assetPath);
 		// Get database manager
 		DatabaseManager databaseManager = DatabaseManager.getInstance(context);
-		List<ExerciseType> typeList = databaseManager.getTypes();
+		List<ExerciseType> typeList = databaseManager.getExerciseTypes();
 		HashMap<String, ExerciseType> types = new HashMap<String, ExerciseType>();
 		for (ExerciseType type : typeList) {
 			types.put(type.getId(), type);

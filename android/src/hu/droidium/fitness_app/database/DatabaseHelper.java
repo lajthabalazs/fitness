@@ -70,6 +70,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		if (muscleDao == null) {
 			try {
 				muscleDao = getDao(Muscle.class);
+				muscleDao.setObjectCache(true);
 			} catch (SQLException e) {
 				Log.e(TAG, "Error creating DAO " + e.getMessage());
 				e.printStackTrace();
@@ -82,6 +83,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		if (exerciseTypeDao == null) {
 			try {
 				exerciseTypeDao = getDao(ExerciseType.class);
+				exerciseTypeDao.setObjectCache(true);
 			} catch (SQLException e) {
 				Log.e(TAG, "Error creating DAO " + e.getMessage());
 				e.printStackTrace();
@@ -94,6 +96,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		if (exerciseTypeMuscleDao == null) {
 			try {
 				exerciseTypeMuscleDao = getDao(ExerciseTypeMuscle.class);
+				exerciseTypeMuscleDao.setObjectCache(true);
 			} catch (SQLException e) {
 				Log.e(TAG, "Error creating DAO " + e.getMessage());
 				e.printStackTrace();
@@ -106,6 +109,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		if (blockDao == null) {
 			try {
 				blockDao = getDao(Block.class);
+				blockDao.setObjectCache(true);
 			} catch (SQLException e) {
 				Log.e(TAG, "Error creating DAO " + e.getMessage());
 				e.printStackTrace();
@@ -118,6 +122,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		if (exerciseDao == null) {
 			try {
 				exerciseDao = getDao(Exercise.class);
+				exerciseDao.setObjectCache(true);
 			} catch (SQLException e) {
 				Log.e(TAG, "Error creating DAO " + e.getMessage());
 				e.printStackTrace();
@@ -130,6 +135,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		if (programDao == null) {
 			try {
 				programDao = getDao(Program.class);
+				programDao.setObjectCache(true);
 			} catch (SQLException e) {
 				Log.e(TAG, "Error creating DAO " + e.getMessage());
 				e.printStackTrace();
@@ -142,6 +148,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		if (workoutDao == null) {
 			try {
 				workoutDao = getDao(Workout.class);
+				workoutDao.setObjectCache(true);
 			} catch (SQLException e) {
 				Log.e(TAG, "Error creating DAO " + e.getMessage());
 				e.printStackTrace();
@@ -190,6 +197,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		if (translationDao == null) {
 			try {
 				translationDao = getDao(Translation.class);
+				translationDao.setObjectCache(true);
 			} catch (SQLException e) {
 				Log.e(TAG, "Error creating DAO " + e.getMessage());
 				e.printStackTrace();
