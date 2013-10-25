@@ -37,7 +37,7 @@ public class Block {
 	}
 
 	public boolean refresh(DatabaseManager databaseManager, boolean forced) {
-		if (workout == null || forced) {
+		if (workout == null || exercises == null || forced) {
 			Block otherBlock = databaseManager.getBlock(id);
 			this.workout = otherBlock.workout;
 			this.name = otherBlock.name;

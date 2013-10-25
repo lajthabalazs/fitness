@@ -64,6 +64,9 @@ public class FitnessBaseActivity extends Activity {
 	}
 	
 	protected void enableFlurry() {
+		if (prefs == null) {
+			prefs = getSharedPreferences(FLURRY_PREFS, Context.MODE_PRIVATE);
+		}
 		prefs.edit().putLong(FLURRY_USER_ID_KEY, (long)(Math.random() * 1000000000)).
 		putInt(FLURRY_ENABLED_KEY, FLURRY_ENABLED).commit();
 		long userId = prefs.getLong(FLURRY_USER_ID_KEY, -1);
@@ -73,14 +76,23 @@ public class FitnessBaseActivity extends Activity {
 	}
 
 	protected void disableFlurry() {
+		if (prefs == null) {
+			prefs = getSharedPreferences(FLURRY_PREFS, Context.MODE_PRIVATE);
+		}
 		prefs.edit().putInt(FLURRY_ENABLED_KEY, FLURRY_DISABLED).commit();
 	}
 
 	protected boolean isFlurryEnabled() {
-		return prefs.getBoolean(FLURRY_ENABLED_KEY, false);
+		if (prefs == null) {
+			prefs = getSharedPreferences(FLURRY_PREFS, Context.MODE_PRIVATE);
+		}
+		return prefs.getInt(FLURRY_ENABLED_KEY, FLURRY_UNKNOWN) == FLURRY_ENABLED;
 	}
 
 	protected void log(String event) {
+		if (prefs == null) {
+			prefs = getSharedPreferences(FLURRY_PREFS, Context.MODE_PRIVATE);
+		}
 		int flurryDecision = prefs.getInt(FLURRY_ENABLED_KEY, FLURRY_UNKNOWN);
 		if (flurryDecision == FLURRY_ENABLED) {
 			FlurryAgent.logEvent(event);
@@ -88,6 +100,9 @@ public class FitnessBaseActivity extends Activity {
 	}
 
 	protected void log(String event, Map<String, String> params) {
+		if (prefs == null) {
+			prefs = getSharedPreferences(FLURRY_PREFS, Context.MODE_PRIVATE);
+		}
 		int flurryDecision = prefs.getInt(FLURRY_ENABLED_KEY, FLURRY_UNKNOWN);
 		if (flurryDecision == FLURRY_ENABLED) {
 			FlurryAgent.logEvent(event, params);
@@ -97,6 +112,9 @@ public class FitnessBaseActivity extends Activity {
 
 	@Override
 	protected void onStop() {
+		if (prefs == null) {
+			prefs = getSharedPreferences(FLURRY_PREFS, Context.MODE_PRIVATE);
+		}
 		prefs = getSharedPreferences(FLURRY_PREFS, Context.MODE_PRIVATE);
 		int flurryDecision = prefs.getInt(FLURRY_ENABLED_KEY, FLURRY_UNKNOWN);
 		if (flurryDecision == FLURRY_ENABLED) {

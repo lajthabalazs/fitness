@@ -1,5 +1,6 @@
 package hu.droidium.fitness_app.activities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import hu.droidium.fitness_app.ActiveProgramListAdapter;
@@ -11,6 +12,7 @@ import hu.droidium.fitness_app.database.ProgramProgress;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 public class ProgramsOverviewActivity extends FitnessBaseActivity implements OnClickListener, OnItemClickListener, OnItemLongClickListener {
@@ -29,11 +32,14 @@ public class ProgramsOverviewActivity extends FitnessBaseActivity implements OnC
 	private ActiveProgramListAdapter programAdapter;
 	private DatabaseManager databaseManager;
 	private View noActiveProgram;
+	private SharedPreferences prefs;
+	private ImageView settingsImage;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.programs_overview_activity);
+		prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
 		databaseManager = DatabaseManager.getInstance(this);
 		programList = (ListView)findViewById(R.id.programList);
 		programList.setOnItemClickListener(this);
@@ -44,6 +50,8 @@ public class ProgramsOverviewActivity extends FitnessBaseActivity implements OnC
 		programList.setAdapter(programAdapter);
 		startNewProgram = (Button)findViewById(R.id.startNewProgram);
 		startNewProgram.setOnClickListener(this);
+		settingsImage = (ImageView)findViewById(R.id.settingsIcon);
+		settingsImage.setOnClickListener(this);
 	}
 	
 	@Override
@@ -53,11 +61,12 @@ public class ProgramsOverviewActivity extends FitnessBaseActivity implements OnC
 	}
 	
 	private void refreshUI() {
-		List<ProgramProgress> programs = databaseManager.getProgressList();
+		List<ProgramProgress> programs = databaseManager.getProgressList(prefs.getBoolean(Constants.SETTINGS_SHOW_DONE_PROGRAMS, true));
 		if (programs != null && programs.size() > 0) {
 			programAdapter.updatePrograms(programs);
 			noActiveProgram.setVisibility(View.GONE);
 		} else {
+			programAdapter.updatePrograms(new ArrayList<ProgramProgress>());
 			noActiveProgram.setVisibility(View.VISIBLE);
 		}
 	}
@@ -96,8 +105,18 @@ public class ProgramsOverviewActivity extends FitnessBaseActivity implements OnC
 
 	@Override
 	public void onClick(View v) {
-		Intent intent = new Intent(this, ProgramListActivity.class);
-		startActivityForResult(intent, ProgramListActivity.ADD_DETAILS);
+		switch(v.getId()) {
+			case R.id.settingsIcon: {
+				Intent intent = new Intent(this, SettingsActivity.class);
+				startActivity(intent);
+				break;
+			}
+			case R.id.startNewProgram : {
+				Intent intent = new Intent(this, ProgramListActivity.class);
+				startActivityForResult(intent, ProgramListActivity.ADD_DETAILS);
+				break;
+			}
+		}
 	}
 	
 	@Override

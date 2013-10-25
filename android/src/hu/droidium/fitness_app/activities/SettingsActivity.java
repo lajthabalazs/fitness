@@ -1,6 +1,7 @@
 package hu.droidium.fitness_app.activities;
 
 import hu.droidium.fitness_app.Constants;
+import hu.droidium.fitness_app.FlurryLogConstants;
 import hu.droidium.fitness_app.R;
 import hu.droidium.fitness_app.database.DatabaseManager;
 import android.app.AlertDialog.Builder;
@@ -15,8 +16,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.Toast;
 
-public class SettingsActivity extends FitnessBaseActivity implements OnCheckedChangeListener, OnClickListener {
+public class SettingsActivity extends FitnessBaseActivity implements OnCheckedChangeListener, OnClickListener, DeleteProgramListener {
 	private CheckBox flurryCheck;
 	private CheckBox showDone;
 	private CheckBox sounds;
@@ -45,7 +47,7 @@ public class SettingsActivity extends FitnessBaseActivity implements OnCheckedCh
 		notifications.setOnCheckedChangeListener(this);
 		
 		resetData = (Button) findViewById(R.id.resetDataButton);
-		resetData.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);
+		resetData.getBackground().setColorFilter(Color.parseColor("#F5474E"), PorterDuff.Mode.MULTIPLY);
 		resetData.setOnClickListener(this);
 	}
 
@@ -62,17 +64,34 @@ public class SettingsActivity extends FitnessBaseActivity implements OnCheckedCh
 			}
 			case R.id.settingsShowDone : {
 				SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
-				prefs.edit().putBoolean(Constants.SETTINGS_SHOW_DONE_PROGRAMS, isChecked);
+				if (isChecked) {
+					log(FlurryLogConstants.SHOW_DONE_PROGRAMS);
+				} else {
+					log(FlurryLogConstants.HIDE_DONE_PROGRAMS);
+				}
+				prefs.edit().putBoolean(Constants.SETTINGS_SHOW_DONE_PROGRAMS, isChecked).commit();
 				break;
 			}
 			case R.id.settingsEnableSound : {
 				SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
-				prefs.edit().putBoolean(Constants.SETTINGS_SOUND, isChecked);
+				if (isChecked) {
+					Toast.makeText(this, R.string.soundsNotYetImplemented, Toast.LENGTH_LONG).show();
+					log(FlurryLogConstants.ENABLE_SOUND);
+				} else {
+					log(FlurryLogConstants.DISABLE_SOUND);
+				}
+				prefs.edit().putBoolean(Constants.SETTINGS_SOUND, isChecked).commit();
 				break;
 			}
 			case R.id.settingsEnableNotifications : {
 				SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
-				prefs.edit().putBoolean(Constants.SETTINGS_NOTIFICATIONS, isChecked);
+				if (isChecked) {
+					Toast.makeText(this, R.string.notificationsNotYetImplemented, Toast.LENGTH_LONG).show();
+					log(FlurryLogConstants.ENABLE_NOTIFICATIONS);
+				} else {
+					log(FlurryLogConstants.DISABLE_NOTIFICATIONS);
+				}
+				prefs.edit().putBoolean(Constants.SETTINGS_NOTIFICATIONS, isChecked).commit();
 				break;
 			}
 		}
@@ -87,7 +106,7 @@ public class SettingsActivity extends FitnessBaseActivity implements OnCheckedCh
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				DatabaseManager databaseManager = DatabaseManager.getInstance(SettingsActivity.this);
-				databaseManager.removeAllUserData(SettingsActivity.this);
+				databaseManager.removeAllUserData(SettingsActivity.this, SettingsActivity.this);
 			}
 		});
 		builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -96,5 +115,10 @@ public class SettingsActivity extends FitnessBaseActivity implements OnCheckedCh
 			}
 		});
 		builder.create().show();
+	}
+
+	@Override
+	public void deleted() {
+		log(FlurryLogConstants.REMOVED_ALL_DATA);
 	}
 }

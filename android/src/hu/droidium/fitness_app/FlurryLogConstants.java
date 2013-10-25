@@ -32,7 +32,14 @@ public class FlurryLogConstants {
 	
 	public static final String REMOVED_PROGRAM = "Removed_program";
 	public static final String REMOVED_ALL_DATA = "Removed_all_data";
+	
 	public static final String ENABLE_SOUND = "Enable_sound";
 	public static final String ENABLE_NOTIFICATIONS = "Enable_notifications";
+
+	public static final String DISABLE_SOUND = "Disable_sounds";
+	public static final String DISABLE_NOTIFICATIONS = "Disable_notifications";
+
+	public static final String SHOW_DONE_PROGRAMS = "Show_done_programs";
+	public static final String HIDE_DONE_PROGRAMS = "Hide_done_programs";
 
 }

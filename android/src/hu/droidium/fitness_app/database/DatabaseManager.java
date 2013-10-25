@@ -1,6 +1,7 @@
 package hu.droidium.fitness_app.database;
 
 import hu.droidium.fitness_app.R;
+import hu.droidium.fitness_app.activities.DeleteProgramListener;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -221,7 +222,7 @@ public class DatabaseManager {
 		} else {
 			try {
 				Map<String, Object> values = new HashMap<String, Object>();
-				values.put("terminationDate", new Long(-1));
+				values.put("terminationDate", Long.valueOf(-1));
 				programProgresses = helper.getProgramProgressDao().queryForFieldValues(values);
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -352,7 +353,7 @@ public class DatabaseManager {
 		}
 	}
 
-	public void removeAllUserData(Activity activity) {
+	public void removeAllUserData(Activity activity, final DeleteProgramListener listener) {
 		Builder builder = new Builder(activity);
 		builder.setTitle(R.string.deleteAllProgramProgressSecondTitle);
 		builder.setMessage(R.string.deleteAllProgramProgressSecondMessage);
@@ -360,6 +361,7 @@ public class DatabaseManager {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				removeAllUserData();
+				listener.deleted();
 			}
 		});
 		builder.setNegativeButton(R.string.deleteAllProgramProgressSecondCancel, new DialogInterface.OnClickListener() {

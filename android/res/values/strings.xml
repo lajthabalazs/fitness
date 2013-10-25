@@ -126,4 +126,8 @@
     <string name="enableSounds">Enable sounds for countdown</string>
     <string name="enableNotifications">Enable notifications for due workouts</string>
     <string name="removeAllData">Delete progress data</string>
+    
+    <string name="soundsNotYetImplemented">Sounds not yet implemented.</string>
+    <string name="notificationsNotYetImplemented">Notifications not yet implemented.</string>
+    
 </resources>
