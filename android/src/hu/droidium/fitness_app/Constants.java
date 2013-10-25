@@ -15,6 +15,10 @@ public class Constants {
 	public static final int RESULT_STARTED_NEW_PROGRAM = 1;
 	public static final String PROGRAM_ID_KEY = "program_id";
 	public static final String REPS_DEFAULT_UNIT = "reps";
+	
+	public static final String SETTINGS_SOUND= "Sound enabled";
+	public static final String SETTINGS_NOTIFICATIONS = "Notifications enabled";
+	public static final String SETTINGS_SHOW_DONE_PROGRAMS = "Show done programs";
 
 	private static final Date date = new Date();
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat(

@@ -1,9 +1,18 @@
 package hu.droidium.fitness_app.database;
 
-import java.sql.SQLException;
-import java.util.List;
+import hu.droidium.fitness_app.R;
 
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.j256.ormlite.table.TableUtils;
+
+import android.app.Activity;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 
 /**
@@ -201,14 +210,24 @@ public class DatabaseManager {
 	/* **********************   PROGRESS   **************************** */
 	/* **************************************************************** */
 	
-	public List<ProgramProgress> getProgressList() {
-		List<ProgramProgress> exercises = null;
-		try {
-			exercises = helper.getProgramProgressDao().queryForAll();
-		} catch (SQLException e) {
-			e.printStackTrace();
+	public List<ProgramProgress> getProgressList(boolean showDone) {
+		List<ProgramProgress> programProgresses = null;
+		if (showDone) {
+			try {
+				programProgresses = helper.getProgramProgressDao().queryForAll();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				Map<String, Object> values = new HashMap<String, Object>();
+				values.put("terminationDate", new Long(-1));
+				programProgresses = helper.getProgramProgressDao().queryForFieldValues(values);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
-		return exercises;
+		return programProgresses;
 	}
 
 	public ProgramProgress getProgress(long programId) {
@@ -330,6 +349,45 @@ public class DatabaseManager {
 			helper.getProgramProgressDao().delete(progress);
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+	}
+
+	public void removeAllUserData(Activity activity) {
+		Builder builder = new Builder(activity);
+		builder.setTitle(R.string.deleteAllProgramProgressSecondTitle);
+		builder.setMessage(R.string.deleteAllProgramProgressSecondMessage);
+		builder.setPositiveButton(R.string.deleteAllProgramProgressSecondDelete, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				removeAllUserData();
+			}
+		});
+		builder.setNegativeButton(R.string.deleteAllProgramProgressSecondCancel, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+			}
+		});
+		builder.create().show();
+	}
+
+	protected void removeAllUserData() {
+		try {
+			TableUtils.clearTable(helper.getConnectionSource(), ProgramProgress.class);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		try {
+			TableUtils.clearTable(helper.getConnectionSource(), WorkoutProgress.class);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		try {
+			TableUtils.clearTable(helper.getConnectionSource(), ExerciseProgress.class);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 }

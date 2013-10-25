@@ -15,12 +15,15 @@ import com.flurry.android.FlurryAgent;
 
 public class FitnessBaseActivity extends Activity {
 	
+	protected static final String PREFS = "Preferences";
 	private static final String FLURRY_PREFS = "Flurry preferences";
 	private static final String FLURRY_ENABLED_KEY = "Flurry enabled key";
 	private static final String FLURRY_USER_ID_KEY = "Flurry user id";
 	private static final int FLURRY_UNKNOWN = -1;
 	private static final int FLURRY_DISABLED = 1;
 	private static final int FLURRY_ENABLED = 0;
+	private static final String FLURRY_KEY = "FXTJ4F3Y4GJ24PHFV2TJ";
+	
 	private SharedPreferences prefs;
 	@Override
 	protected void onStart() {
@@ -31,7 +34,7 @@ public class FitnessBaseActivity extends Activity {
 			long userId = prefs.getLong(FLURRY_USER_ID_KEY, -1);
 			Log.e("FlurrySession", "Starting session");
 			FlurryAgent.setUserId("" + userId);
-			FlurryAgent.onStartSession(this, "FXTJ4F3Y4GJ24PHFV2TJ");
+			FlurryAgent.onStartSession(this, FLURRY_KEY);
 		}
 	}
 	
@@ -46,14 +49,13 @@ public class FitnessBaseActivity extends Activity {
 			builder.setPositiveButton(R.string.flurryQuestionPositive, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					prefs.edit().putLong(FLURRY_USER_ID_KEY, (long)(Math.random() * 1000000000)).
-						putInt(FLURRY_ENABLED_KEY, FLURRY_ENABLED).commit();
+					enableFlurry();
 				}
 			});
 			builder.setNegativeButton(R.string.flurryQuestionNegative, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					prefs.edit().putInt(FLURRY_ENABLED_KEY, FLURRY_DISABLED).commit();
+					disableFlurry();
 				}
 			});
 			builder.create();
@@ -61,6 +63,23 @@ public class FitnessBaseActivity extends Activity {
 		}
 	}
 	
+	protected void enableFlurry() {
+		prefs.edit().putLong(FLURRY_USER_ID_KEY, (long)(Math.random() * 1000000000)).
+		putInt(FLURRY_ENABLED_KEY, FLURRY_ENABLED).commit();
+		long userId = prefs.getLong(FLURRY_USER_ID_KEY, -1);
+		Log.e("FlurrySession", "Starting session");
+		FlurryAgent.setUserId("" + userId);
+		FlurryAgent.onStartSession(this, FLURRY_KEY);
+	}
+
+	protected void disableFlurry() {
+		prefs.edit().putInt(FLURRY_ENABLED_KEY, FLURRY_DISABLED).commit();
+	}
+
+	protected boolean isFlurryEnabled() {
+		return prefs.getBoolean(FLURRY_ENABLED_KEY, false);
+	}
+
 	protected void log(String event) {
 		int flurryDecision = prefs.getInt(FLURRY_ENABLED_KEY, FLURRY_UNKNOWN);
 		if (flurryDecision == FLURRY_ENABLED) {
@@ -74,6 +93,7 @@ public class FitnessBaseActivity extends Activity {
 			FlurryAgent.logEvent(event, params);
 		}
 	}
+	
 
 	@Override
 	protected void onStop() {

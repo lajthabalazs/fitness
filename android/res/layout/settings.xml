@@ -11,25 +11,25 @@
         android:text="@string/settings" />
 
     <CheckBox
-        android:id="@+id/checkBox1"
+        android:id="@+id/settingsFlurry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/flurrySettings" />
 
     <CheckBox
-        android:id="@+id/checkBox2"
+        android:id="@+id/settingsShowDone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/showDonePrograms" />
 
     <CheckBox
-        android:id="@+id/checkBox3"
+        android:id="@+id/settingsEnableSound"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/enableSounds" />
 
     <CheckBox
-        android:id="@+id/checkBox4"
+        android:id="@+id/settingsEnableNotifications"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/enableNotifications" />
@@ -39,6 +39,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Button" />
+        android:text="@string/removeAllData" />
 
 </LinearLayout>

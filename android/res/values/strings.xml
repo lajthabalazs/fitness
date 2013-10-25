@@ -110,9 +110,20 @@
     <string name="deleteProgramProgressTitle">Delete program</string>
     <string name="deleteProgramProgressMessage">If you delete this program, your recorded progress for this program will be lost. Are you sure?</string>
     <string name="deleteProgramProgressDelete">Yes, delete it</string>
+	
+	<string name="deleteAllProgramProgressTitle">Delete user data</string>
+    <string name="deleteAllProgramProgressMessage">All your progress data will be lost. Are you sure?</string>
+    <string name="deleteAllProgramProgressDelete">Yes, delete it</string>
+    
+	<string name="deleteAllProgramProgressSecondTitle">Delete user data</string>
+    <string name="deleteAllProgramProgressSecondMessage">Are you really, really, really, really sure? All your progress data will be lost.</string>
+    <string name="deleteAllProgramProgressSecondDelete">Yes, delete it</string>
+    <string name="deleteAllProgramProgressSecondCancel">No, it was a mistake</string>
+    
     <string name="settings">Settings</string>
-    <string name="flurrySettings">Enable anonimus logging</string>
+    <string name="flurrySettings">Enable anonymous logging</string>
     <string name="showDonePrograms">Should finished programs be displayed in the program list?</string>
     <string name="enableSounds">Enable sounds for countdown</string>
     <string name="enableNotifications">Enable notifications for due workouts</string>
+    <string name="removeAllData">Delete progress data</string>
 </resources>

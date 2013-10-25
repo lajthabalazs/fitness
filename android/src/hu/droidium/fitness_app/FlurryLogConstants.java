@@ -29,4 +29,10 @@ public class FlurryLogConstants {
 
 	public static final String BLOCK_INDEX = "Block_index";
 	public static final String EXERCISE_INDEX = "Exercise_index";
+	
+	public static final String REMOVED_PROGRAM = "Removed_program";
+	public static final String REMOVED_ALL_DATA = "Removed_all_data";
+	public static final String ENABLE_SOUND = "Enable_sound";
+	public static final String ENABLE_NOTIFICATIONS = "Enable_notifications";
+
 }

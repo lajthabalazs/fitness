@@ -34,6 +34,7 @@
         <activity android:name=".activities.ProgramProgressDetailsActivity"></activity>
         <activity android:name=".activities.DoWorkoutActivity"></activity>
         <activity android:name=".activities.FitnessBaseActivity"></activity>
+        <activity android:name=".activities.SettingsActivity"></activity>
     </application>
 
 </manifest>
