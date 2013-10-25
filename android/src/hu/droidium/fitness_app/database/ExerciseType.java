@@ -65,7 +65,7 @@ public class ExerciseType {
 	}
 
 	public boolean refresh(DatabaseManager databaseManager, boolean forced) {
-		if (name == null || forced) {
+		if (name == null || muscles == null || forced) {
 			ExerciseType other = databaseManager.getExerciseType(id);
 			this.name = other.name;
 			this.description = other.description;

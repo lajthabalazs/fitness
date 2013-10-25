@@ -40,7 +40,7 @@ public class Exercise {
 	}
 
 	public boolean refresh(DatabaseManager databaseManager, boolean forced) {
-		if (type == null || forced) {
+		if (type == null || block == null || forced) {
 			Exercise other = databaseManager.getExercise(id);
 			this.block = other.block;
 			this.order = other.order;

@@ -44,7 +44,7 @@ public class Program {
 	}
 
 	public boolean refresh(DatabaseManager databaseManager, boolean forced) {
-		if (name == null || forced) {
+		if (name == null || workouts == null || forced) {
 			Program other = databaseManager.getProgram(id);
 			this.name = other.name;
 			this.description = other.description;

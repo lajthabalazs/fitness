@@ -35,7 +35,7 @@ public class ExerciseProgress {
 	}
 
 	public boolean refresh(DatabaseManager databaseManager, boolean forced) {
-		if (workoutProgress == null || forced) {
+		if (workoutProgress == null || exercise == null || forced) {
 			ExerciseProgress other = databaseManager.getExerciseProgress(id);
 			this.workoutProgress = other.workoutProgress;
 			this.exercise = other.exercise;

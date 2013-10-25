@@ -50,7 +50,7 @@ public class Workout{
 	}
 
 	public boolean refresh(DatabaseManager databaseManager, boolean forced) {
-		if (name == null || forced) {
+		if (name == null || blocks == null || program == null || forced) {
 			Workout other = databaseManager.getWorkout(id);
 			this.name = other.name;
 			this.day = other.day;

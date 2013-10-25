@@ -45,7 +45,7 @@ public class ProgramProgress {
 	}
 	
 	public boolean refresh(DatabaseManager databaseManager, boolean forced) {
-		if (program == null || forced) {
+		if (program == null || doneWorkouts == null || forced) {
 			ProgramProgress other = databaseManager.getProgress(progressId);
 			program = other.program;
 			terminationDate = other.terminationDate;
