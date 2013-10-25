@@ -143,6 +143,7 @@ public final class R {
         public static final int currentWorkoutDescription=0x7f06002b;
         public static final int currentWorkoutLabel=0x7f060026;
         public static final int currentWorkoutNamePlaceholder=0x7f060042;
+        public static final int databaseCreated=0x7f060074;
         public static final int deleteAllProgramProgressDelete=0x7f060065;
         public static final int deleteAllProgramProgressMessage=0x7f060064;
         public static final int deleteAllProgramProgressSecondCancel=0x7f060069;
@@ -174,6 +175,8 @@ public final class R {
         public static final int hasWorkoutToday=0x7f060017;
         public static final int hello_world=0x7f060002;
         public static final int kRepsForListingExercises=0x7f06004f;
+        public static final int loadingDataMessage=0x7f060073;
+        public static final int loadingDataTitle=0x7f060072;
         public static final int noActiveProgram=0x7f060009;
         public static final int noExercises=0x7f060052;
         public static final int notificationsNotYetImplemented=0x7f060071;

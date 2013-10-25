@@ -130,4 +130,7 @@
     <string name="soundsNotYetImplemented">Sounds not yet implemented.</string>
     <string name="notificationsNotYetImplemented">Notifications not yet implemented.</string>
     
+    <string name="loadingDataTitle">Preparing database</string>
+    <string name="loadingDataMessage">Populating database from assets, this might take several minutes. Be patient, this will happen only once.</string>
+    <string name="databaseCreated">Database created</string>
 </resources>
