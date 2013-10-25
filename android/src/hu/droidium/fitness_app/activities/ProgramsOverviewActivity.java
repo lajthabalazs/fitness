@@ -1,15 +1,20 @@
 package hu.droidium.fitness_app.activities;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import hu.droidium.fitness_app.ActiveProgramListAdapter;
 import hu.droidium.fitness_app.Constants;
 import hu.droidium.fitness_app.FlurryLogConstants;
 import hu.droidium.fitness_app.R;
+import hu.droidium.fitness_app.database.DataLoader;
 import hu.droidium.fitness_app.database.DatabaseManager;
+import hu.droidium.fitness_app.database.Program;
 import hu.droidium.fitness_app.database.ProgramProgress;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.AlertDialog.Builder;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,6 +29,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class ProgramsOverviewActivity extends FitnessBaseActivity implements OnClickListener, OnItemClickListener, OnItemLongClickListener {
 	private Button startNewProgram;
@@ -34,7 +40,9 @@ public class ProgramsOverviewActivity extends FitnessBaseActivity implements OnC
 	private View noActiveProgram;
 	private SharedPreferences prefs;
 	private ImageView settingsImage;
-
+	private boolean paused = false;
+	private ProgressDialog progressDialog;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -57,7 +65,46 @@ public class ProgramsOverviewActivity extends FitnessBaseActivity implements OnC
 	@Override
 	protected void onResume() {
 		super.onResume();
-		refreshUI();
+		paused = false;
+		// Check if database should be populated
+		List<Program> programs = databaseManager.getPrograms();
+		if (programs == null || programs.size() == 0){
+			progressDialog = new ProgressDialog(this);
+			progressDialog.setTitle(R.string.loadingDataTitle);
+			progressDialog.setMessage(getString(R.string.loadingDataMessage));
+			progressDialog.setCancelable(false);
+			progressDialog.show();
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						DataLoader.loadDataFromAssets(ProgramsOverviewActivity.this);
+						if (!paused) {
+							runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									progressDialog.cancel();
+									Toast.makeText(ProgramsOverviewActivity.this, R.string.databaseCreated, Toast.LENGTH_LONG).show();
+								}
+							});
+						}
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}).start();
+		} else {
+			refreshUI();
+		}
+	}
+	
+	@Override
+	protected void onPause() {
+		paused = true;
+		if (progressDialog != null) {
+			progressDialog.cancel();
+		}
+		super.onPause();
 	}
 	
 	private void refreshUI() {

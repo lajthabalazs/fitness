@@ -15,20 +15,16 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <activity
-            android:name="hu.droidium.fitness_app.activities.TestActivity"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity android:name="ExerciseActivity">
         </activity>
         <activity android:name=".activities.MuscleListActivity"></activity>
         <activity android:name=".activities.ExerciseListActivity"></activity>
         <activity android:name=".activities.ProgramListActivity"></activity>
         <activity android:name=".activities.ProgramsOverviewActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".activities.ProgramDetailsActivity"></activity>
         <activity android:name=".activities.ProgramProgressDetailsActivity"></activity>

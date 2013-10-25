@@ -1,50 +1,100 @@
 {"exercises":[
 	{
 		"exerciseId":"0",
-		"exerciseName":"pushup",
-		"exerciseDescription":"It's a pushup, stupid!",
-		"exerciseInstructions":"Get down, push up.",
+		"exerciseName":"Push-ups",
+		"exerciseDescription":"",
+		"exerciseInstructions":"Lie face down on the floor, palms against floor under your shoulders, toes curled upwards against the floor. Use your arms to lift your body while maintaining a straight line from head to heel. Extend your arms fully. Then bend your arms until your chest or chin almost touches the floor. Rest only in the upper position.",
 		"unit":"reps",
-		"stamina":2,
-		"strength":5,
+		"stamina":0,
+		"strength":0,
 		"speed":0,
 		"flexibility":0,
-		"balance":1,
+		"balance":0,
 		"muscles":[
-			"legs","biceps"
 		]
 	},
 	{
 		"exerciseId":"1",
-		"exerciseName":"squats",
-		"exerciseDescription":"It's a squat, stupid!",
-		"exerciseInstructions":"Bend your knees. Now stand up!",
+		"exerciseName":"Jumping Jacks",
+		"exerciseDescription":"",
+		"exerciseInstructions":"Jump to a position with the legs spread wide and the hands touching overhead and then jump back to a position with the feet together and the arms at the sides.",
 		"unit":"reps",
-		"repWeight":0.5,
-		"stamina":4,
-		"strength":3,
-		"speed":1,
-		"flexibility":1,
-		"balance":2,
+		"stamina":0,
+		"strength":0,
+		"speed":0,
+		"flexibility":0,
+		"balance":0,
 		"muscles":[
-			"legs"
 		]
 	},
 	{
 		"exerciseId":"2",
-		"exerciseName":"running",
-		"exerciseDescription":"It's just running, stupid!",
-		"exerciseInstructions":"Left foot, right foot.",
-		"unit":"m",
-		"kUnit":"km",
-		"repWeight":0.01,
-		"stamina":5,
-		"strength":2,
-		"speed":3,
+		"exerciseName":"Sit-ups",
+		"exerciseDescription":"",
+		"exerciseInstructions":"Lay down with the back on the floor, knees bent, and bottoms of feet against the floor. Lift your shoulders off the floor by tightening your abdominal muscles and bring your chest to touch your knees. Finally lower the back to the floor with a smooth movement.",
+		"unit":"reps",
+		"stamina":0,
+		"strength":0,
+		"speed":0,
 		"flexibility":0,
-		"balance":1,
+		"balance":0,
 		"muscles":[
-			"legs"
+		]
+	},
+	{
+		"exerciseId":"3",
+		"exerciseName":"Crunches",
+		"exerciseDescription":"",
+		"exerciseInstructions":"Like the sit-up: lay down with the back on the floor, knees bent, and bottoms of feet against the floor. But instead of bringing the whole torso area closer to the knees, only perform a concentrated but shorter movement: lift your shoulder blades off the floor, and tighten your abdominals.",
+		"unit":"reps",
+		"stamina":0,
+		"strength":0,
+		"speed":0,
+		"flexibility":0,
+		"balance":0,
+		"muscles":[
+		]
+	},
+	{
+		"exerciseId":"4",
+		"exerciseName":"lunges",
+		"exerciseDescription":"",
+		"exerciseInstructions":"Bringing one leg forward and almost kneeling on the back leg. Once the front leg creates a perfect 90 degree angle you stand up and alternate legs. Keeping your back straight and chest out is important for proper form. A repetition is complete when you've done it for both legs.",
+		"unit":"reps",
+		"stamina":0,
+		"strength":0,
+		"speed":0,
+		"flexibility":0,
+		"balance":0,
+		"muscles":[
+		]
+	},
+	{
+		"exerciseId":"5",
+		"exerciseName":"Pull-ups",
+		"exerciseDescription":"",
+		"exerciseInstructions":"Find a chin-up-bar (any vertical bar high enough supporting your weight will do) grasp it using a shoulder-width grip. By bending your arms, lift your body up, keeping the back straight. Pull yourself up until your chin touches the bar.",
+		"unit":"reps",
+		"stamina":0,
+		"strength":0,
+		"speed":0,
+		"flexibility":0,
+		"balance":0,
+		"muscles":[
+		]
+	},
+	{
+		"exerciseId":"6",
+		"exerciseName":"Squats",
+		"exerciseDescription":"",
+		"exerciseInstructions":"Stand with your feet shoulder width apart. Squat down as far as possible. Bring your arms forward, parallel to the floor. Return to standing position.",
+		"unit":"reps",
+		"stamina":0,
+		"strength":0,
+		"speed":0,
+		"flexibility":0,
+		"balance":0,
+		"muscles":[
 		]
 	}
 ]}
