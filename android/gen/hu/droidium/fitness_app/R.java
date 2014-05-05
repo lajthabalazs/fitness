@@ -132,7 +132,7 @@ public final class R {
         public static final int andMore=0x7f060051;
         public static final int app_name=0x7f060000;
         public static final int availablePrograms=0x7f060023;
-        public static final int backToPrograms=0x7f06005b;
+        public static final int backToPrograms=0x7f06005a;
         public static final int backToWorkoutList=0x7f06000a;
         public static final int breakDurationPlaceholder=0x7f060043;
         public static final int breakTitle=0x7f060045;
@@ -166,7 +166,7 @@ public final class R {
         public static final int estimatedTimeWithMinutesAndSecs=0x7f06004d;
         public static final int exerciseListLabel=0x7f06003b;
         public static final int exerciseNamePlaceholder=0x7f060044;
-        public static final int flurryKey=0x7f06005a;
+        public static final int flurryKey=0x7f06005b;
         public static final int flurryQuestionMessage=0x7f06005d;
         public static final int flurryQuestionNegative=0x7f06005f;
         public static final int flurryQuestionPositive=0x7f06005e;
